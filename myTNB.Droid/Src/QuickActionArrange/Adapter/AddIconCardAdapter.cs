@@ -6,11 +6,13 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.QuickActionArrange.Model;
 using myTNB_Android.Src.Utils;
@@ -69,8 +71,9 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
             try
             {
+
                 vh.btnNewIcon.SetImageResource(Resource.Drawable.ic_plusround_black);
-                vh.btnNewIcon.Click += (sender, e) =>
+                vh.containerNewIcon.Click += (sender, e) =>
                 {
                     listener?.OnItemClickAddIcon();
                     Log.Debug("ClickEvent", "Button clicked!");
@@ -101,12 +104,14 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
         public class AddIconAdapterViewHolder : RecyclerView.ViewHolder
         {
-            public ImageButton btnNewIcon { get; private set; }
+            public ImageView btnNewIcon { get; private set; }
+            public LinearLayout containerNewIcon { get; private set; }
             private Context context;
 
             public AddIconAdapterViewHolder(View itemView) : base(itemView)
             {
-                btnNewIcon = itemView.FindViewById<ImageButton>(Resource.Id.btnNewIcon);
+                btnNewIcon = itemView.FindViewById<ImageView>(Resource.Id.imageActionIcon);
+                containerNewIcon = itemView.FindViewById<LinearLayout>(Resource.Id.btnNewIcon);
                 context = itemView.Context;
             }
         }

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
@@ -13,15 +15,20 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB.Mobile;
+using myTNB.Mobile.API.Models.Home.PostServices;
+using myTNB.Mobile.AWS.Managers.MoreIcon;
+using myTNB.Mobile.AWS.Models.MoreIcon;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.DeviceCache;
 using myTNB_Android.Src.MyHome.Model;
 using myTNB_Android.Src.QuickActionArrange.Adapter;
 using myTNB_Android.Src.QuickActionArrange.Model;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.QuickActionArrange.Adapter.QuickActionLockedAndExtraAdapter;
+using Feature = myTNB_Android.Src.QuickActionArrange.Model.Feature;
 
 namespace myTNB_Android.Src.QuickActionArrange.Activity
 {
@@ -483,52 +490,118 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
         }
 
         private Snackbar mRearrangeSnackbar;
-        private void OnSave()
+        private async void OnSave()
         {
             try
             {
-                RunOnUiThread(() =>
+                ShowProgressDialog();
+                // Concatenate the lists and assign the result to a new list
+                List<Feature> listFinal = new List<Feature>();
+                //<MyServiceModel> concatenatedList = listLockedQuickAction.Concat(currentIconList).ToList();
+
+                var concatenatedList = lockedListFeatureIcon.Cast<dynamic>().Concat(currentIconList.Cast<dynamic>()).ToList();
+
+                //fixListCurrentIcon
+                var updatedList = masterDataListFeatureModel
+                            .Join(concatenatedList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = concatenatedList.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                // Update myServicesList with the sorted order
+                listFinal.Clear();
+                listFinal.AddRange(updatedList);
+
+
+                List<Features> iconListFeature = new List<Features>();
+                foreach (var item in listFinal)
                 {
-                    try
+                    Features features = new Features
                     {
-                        ShowProgressDialog();
-                        // Concatenate the lists and assign the result to a new list
-                        List<Feature> listFinal = new List<Feature>();
-                        //<MyServiceModel> concatenatedList = listLockedQuickAction.Concat(currentIconList).ToList();
+                        serviceId = item.ServiceId,
+                        serviceName = item.ServiceName,
+                        isAvailable = item.isAvailable,
+                        isLocked = item.isLocked
+                    };
+                    iconListFeature.Add(features);
+                }
 
-                        var concatenatedList = lockedListFeatureIcon.Cast<dynamic>().Concat(currentIconList.Cast<dynamic>()).ToList();
-
-                        //fixListCurrentIcon
-                        var updatedList = masterDataListFeatureModel
-                                    .Join(concatenatedList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                                    {
-                                        OriginalItem = item1,
-                                        Order = concatenatedList.IndexOf(item2)
-                                    })
-                                    .OrderBy(pair => pair.Order)
-                                    .Select(pair => pair.OriginalItem)
-                                    .ToList();
-
-                        // Update myServicesList with the sorted order
-                        listFinal.Clear();
-                        listFinal.AddRange(updatedList);
-                        UserSessions.RemoveQuickActionList();
-                        UserSessions.SetQuickActionList(listFinal);
-
-                        Intent result = new Intent();
-                        result.PutExtra("IconList", "true");
-                        SetResult(Result.Ok, result);
-                        Finish();
-                    }
-                    catch (Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-                });
-            }
+                await GetMoreIconListAsync(iconListFeature, listFinal);
+            }            
             catch (Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
+            }
+        }
+
+        private async Task GetMoreIconListAsync(List<Features> moreIconList, List<Feature> listMoreIconFinal)
+        {
+            try
+            {
+                if (!AccessTokenCache.Instance.HasTokenSaved(this))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this, accessToken);
+                }
+
+                UserInfoExtra usrinf = new UserInfoExtra();
+                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+                usrinf.DeviceID = this.DeviceId();
+                usrinf.FCMToken = FirebaseTokenEntity.GetLatest().FBToken;
+                usrinf.Language = LanguageUtil.GetAppLanguage().ToUpper();
+                usrinf.sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
+                usrinf.UserID = UserEntity.GetActive().UserID;
+                usrinf.UserName = UserEntity.GetActive().Email;
+                //usrinf.UserID = "D364591A-218B-426C-AE95-100129767EAC";
+
+                DeviceInfoExtra currentDeviceInf = new DeviceInfoExtra()
+                {
+                    DeviceId = this.DeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = Constants.DEVICE_PLATFORM,
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
+                };
+
+                MoreIconResponse moreiconResponse = await MoreIconManager.Instance.UpdateMoreIconList(currentDeviceInf, usrinf, AccessTokenCache.Instance.GetAccessToken(this), UserEntity.GetActive().Email, UserEntity.GetActive().UserID
+                                                                                                    , moreIconList);
+                if (moreiconResponse != null
+               && moreiconResponse.StatusDetail != null
+               && moreiconResponse.StatusDetail.IsSuccess)
+                {
+                    UserSessions.RemoveQuickActionList();
+                    UserSessions.SetQuickActionList(listMoreIconFinal);
+
+                    try
+                    {
+                        // Format as string
+                        string formattedDateString = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        UserSessions.SaveTimeStampQuickAction(PreferenceManager.GetDefaultSharedPreferences(this), formattedDateString);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    UserSessions.SaveUserEmailQuickAction(PreferenceManager.GetDefaultSharedPreferences(this), UserEntity.GetActive().Email);
+                }
+                //else
+                //{
+                //    UserSessions.RemoveQuickActionList();
+                //}
+                HideProgressDialog();
+                Intent result = new Intent();
+                result.PutExtra("IconList", "true");
+                SetResult(Result.Ok, result);
+                Finish();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -558,34 +631,37 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
 
         public override void OnBackPressed()
         {
-            if (btnSubmit.Enabled)
-            {
-                if (!this.GetIsClicked())
-                {
-                    this.SetIsClicked(true);
+            SetResult(Result.Canceled);
+            this.Finish();
 
-                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                        .SetTitle(GetLabelByLanguage("rearrangeTitle"))
-                        .SetMessage(GetLabelByLanguage("rearrangeMsg"))
-                        .SetCTALabel(GetLabelCommonByLanguage("no"))
-                        .SetCTAaction(() =>
-                        {
-                            SetResult(Result.Canceled);
-                            this.Finish();
-                        })
-                        .SetSecondaryCTAaction(() =>
-                        {
-                            OnSave();
-                        })
-                        .SetSecondaryCTALabel(GetLabelCommonByLanguage("yes"))
-                        .Build().Show();
-                }
-            }
-            else
-            {
-                SetResult(Result.Canceled);
-                this.Finish();
-            }
+            //if (btnSubmit.Enabled)
+            //{
+            //    if (!this.GetIsClicked())
+            //    {
+            //        this.SetIsClicked(true);
+
+            //        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            //            .SetTitle(GetLabelByLanguage("rearrangeTitle"))
+            //            .SetMessage(GetLabelByLanguage("rearrangeMsg"))
+            //            .SetCTALabel(GetLabelCommonByLanguage("no"))
+            //            .SetCTAaction(() =>
+            //            {
+            //                SetResult(Result.Canceled);
+            //                this.Finish();
+            //            })
+            //            .SetSecondaryCTAaction(() =>
+            //            {
+            //                OnSave();
+            //            })
+            //            .SetSecondaryCTALabel(GetLabelCommonByLanguage("yes"))
+            //            .Build().Show();
+            //    }
+            //}
+            //else
+            //{
+            //    SetResult(Result.Canceled);
+            //    this.Finish();
+            //}
         }
 
         public override void OnTrimMemory(TrimMemory level)

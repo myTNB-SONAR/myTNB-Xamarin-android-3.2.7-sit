@@ -60,6 +60,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static bool FirstTimeMyServiceInitiate = true;
         private static bool FirstTimeNewFAQInitiate = true;
         private static List<MyServiceModel> myServicesList = new List<MyServiceModel>();
+        private static List<MyServiceModel> myServicesListInitial = new List<MyServiceModel>();
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
         private static NewFAQParentEntity NewFAQParentManager;
         private static NewFAQEntity NewFAQManager;
@@ -2050,14 +2051,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
-            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0
-                && UserSessions.GetUserEmailQuickAction(this.mPref) != null && !string.IsNullOrEmpty(UserSessions.GetUserEmailQuickAction(this.mPref))
-                && UserSessions.GetUserEmailQuickAction(this.mPref) == UserEntity.GetActive().Email)
+            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
             {
+                myServicesListInitial = DeepClone(filteredServices);
                 List<Feature> listIconNew = new List<Feature>();
+                List<Feature> listIconNewUpdate = new List<Feature>();
                 listIconNew = UserSessions.GetQuickActionList();
 
-                var updatedList = myServicesList
+                var updatedList = filteredServices
                     .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
                     {
                         OriginalItem = item1,
@@ -2070,6 +2071,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 // Update myServicesList with the sorted order
                 filteredServices.Clear();
                 filteredServices.AddRange(updatedList);
+                // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
+                var updatedStoreList = listIconNew
+                    .Join(filteredServices, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                    {
+                        OriginalItem = item1,
+                        Order = filteredServices.IndexOf(item2)
+                    })
+                    .OrderBy(pair => pair.Order)
+                    .Select(pair => pair.OriginalItem)
+                    .ToList();
+
+                // Update myServicesList with the sorted order
+                listIconNewUpdate.AddRange(updatedStoreList);
+                UserSessions.RemoveQuickActionList();
+                UserSessions.SetQuickActionList(listIconNewUpdate);
             }
 
             if (filteredServices.Count > 6)
@@ -2108,6 +2124,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
+        }
+
+        static List<T> DeepClone<T>(List<T> original)
+        {
+            string json = JsonConvert.SerializeObject(original);
+            return JsonConvert.DeserializeObject<List<T>>(json);
         }
 
         private void QuickActionRearrangeData()
@@ -2208,21 +2230,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else
                     {
-                        // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
-                        var updatedList = listIconSiteCore
-                            .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                            {
-                                OriginalItem = item1,
-                                Order = myServicesList.IndexOf(item2)
-                            })
-                            .OrderBy(pair => pair.Order)
-                            .Select(pair => pair.OriginalItem)
-                            .ToList();
-
-                        // Update myServicesList with the sorted order
-                        listIconNew.AddRange(updatedList);
-                        UserSessions.RemoveQuickActionList();
-                        UserSessions.SetQuickActionList(listIconNew);
+                        UserSessions.SetQuickActionList(listIconSiteCore);
                     }
                 }
                 ProcessMyServices();
@@ -2340,11 +2348,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 isMyServiceExpanded = false;
             }
 
+            myServicesListInitial = DeepClone(myServicesList);
             List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
             if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
             {
                 List<Feature> listIconNew = new List<Feature>();
-
+                List<Feature> listIconNewUpdate = new List<Feature>();
                 listIconNew = UserSessions.GetQuickActionList();
 
                 var updatedList = myServicesList
@@ -2359,6 +2368,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 // Update myServicesList with the sorted order
                 newIconListArrangge.AddRange(updatedList);
+
+                // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
+                var updatedStoreList = listIconNew
+                    .Join(newIconListArrangge, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                    {
+                        OriginalItem = item1,
+                        Order = newIconListArrangge.IndexOf(item2)
+                    })
+                    .OrderBy(pair => pair.Order)
+                    .Select(pair => pair.OriginalItem)
+                    .ToList();
+
+                // Update myServicesList with the sorted order
+                listIconNewUpdate.AddRange(updatedStoreList);
+                UserSessions.RemoveQuickActionList();
+                UserSessions.SetQuickActionList(listIconNewUpdate);
             }
             else
             {
@@ -3333,32 +3358,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.RestartHomeMenu();
                     }
                 }
-                else if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
-                {
-                    if (MyHomeUtility.Instance.IsAccountEligible)
-                    {
-                        UserSessions.SetShownBeforeHomeDashboardTutorial(this.mPref);
-                        UserSessions.UpdateHomeTutorialShown(this.mPref);
-                        if (HomeMenuUtils.GetIsRestartHomeMenu())
-                        {
-                            this.mView.ResetNewFAQScroll();
-                            this.mView.OnShowHomeMenuFragmentTutorialDialog();
-                        }
-                        else
-                        {
-                            normalTokenSource.Cancel();
-                            trackCurrentLoadMoreCount = 0;
-                            HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
-                            isMyServiceExpanded = false;
-                            HomeMenuUtils.SetIsMyServiceExpanded(false);
-                            isQuery = false;
-                            HomeMenuUtils.SetIsQuery(false);
-                            HomeMenuUtils.SetQueryWord(string.Empty);
-                            HomeMenuUtils.SetIsRestartHomeMenu(true);
-                            this.mView.RestartHomeMenu();
-                        }
-                    }
-                }
+                //else if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
+                //{
+                //    if (MyHomeUtility.Instance.IsAccountEligible)
+                //    {
+                //        UserSessions.SetShownBeforeHomeDashboardTutorial(this.mPref);
+                //        UserSessions.UpdateHomeTutorialShown(this.mPref);
+                //        if (HomeMenuUtils.GetIsRestartHomeMenu())
+                //        {
+                //            this.mView.ResetNewFAQScroll();
+                //            this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                //        }
+                //        else
+                //        {
+                //            normalTokenSource.Cancel();
+                //            trackCurrentLoadMoreCount = 0;
+                //            HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
+                //            isMyServiceExpanded = false;
+                //            HomeMenuUtils.SetIsMyServiceExpanded(false);
+                //            isQuery = false;
+                //            HomeMenuUtils.SetIsQuery(false);
+                //            HomeMenuUtils.SetQueryWord(string.Empty);
+                //            HomeMenuUtils.SetIsRestartHomeMenu(true);
+                //            this.mView.RestartHomeMenu();
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -3389,21 +3414,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Feature = FeatureType.AccountsNC
                 });
 
-                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
-                {
-                    newList.Add(new NewAppModel()
-                    {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false,
-                        Feature = FeatureType.MyHome,
-                        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                    });
-                }
+                //if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
+                //{
+                //    newList.Add(new NewAppModel()
+                //    {
+                //        ContentShowPosition = ContentType.TopRight,
+                //        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                //        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                //        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                //        NeedHelpHide = isNeedHelpHide,
+                //        IsButtonShow = false,
+                //        Feature = FeatureType.MyHome,
+                //        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                //        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                //    });
+                //}
 
                 return newList;
             }
@@ -3521,21 +3546,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Feature = FeatureType.QuickActions
                 });
 
-                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
-                {
-                    newList.Add(new NewAppModel()
-                    {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false,
-                        Feature = FeatureType.MyHome,
-                        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                    });
-                }
+                //if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
+                //{
+                //    newList.Add(new NewAppModel()
+                //    {
+                //        ContentShowPosition = ContentType.TopRight,
+                //        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                //        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                //        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                //        NeedHelpHide = isNeedHelpHide,
+                //        IsButtonShow = false,
+                //        Feature = FeatureType.MyHome,
+                //        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                //        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                //    });
+                //}
 
                 if (!isNeedHelpHide)
                 {
@@ -3555,7 +3580,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             else
             {
-                if (UserSessions.HomeDashboardTutorialHasShownBefore(this.mPref) && !UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
+                bool bypassMyHome = false;
+                if (bypassMyHome)
+                //if (UserSessions.HomeDashboardTutorialHasShownBefore(this.mPref) && !UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
                 {
                     if (MyHomeUtility.Instance.IsAccountEligible)
                     {
@@ -3653,21 +3680,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         Feature = FeatureType.QuickActions
                     });
 
-                    if (MyHomeUtility.Instance.IsAccountEligible)
-                    {
-                        newList.Add(new NewAppModel()
-                        {
-                            ContentShowPosition = ContentType.TopRight,
-                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                            NeedHelpHide = isNeedHelpHide,
-                            IsButtonShow = false,
-                            Feature = FeatureType.MyHome,
-                            DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                            DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                        });
-                    }
+                    //if (MyHomeUtility.Instance.IsAccountEligible)
+                    //{
+                    //    newList.Add(new NewAppModel()
+                    //    {
+                    //        ContentShowPosition = ContentType.TopRight,
+                    //        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                    //        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                    //        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    //        NeedHelpHide = isNeedHelpHide,
+                    //        IsButtonShow = false,
+                    //        Feature = FeatureType.MyHome,
+                    //        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                    //        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                    //    });
+                    //}
 
                     if (!isNeedHelpHide)
                     {
@@ -3820,7 +3847,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             
         public List<MyServiceModel> GetCurrentQuickActionList()
         {
-            return myServicesList;
+            return myServicesListInitial;
         }
     }
 }

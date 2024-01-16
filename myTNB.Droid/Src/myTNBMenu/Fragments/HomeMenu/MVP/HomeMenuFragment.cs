@@ -638,12 +638,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 try
                 {
-                    //Android.Graphics.Drawables.Drawable d = ContextCompat.GetDrawable(this.Context, Resource.Drawable.ic_pen_blue);
-                    //// Set the bounds to define the size (adjust width and height as needed)
-                    //int iconSize = 16;
-                    //d.SetBounds(0, 0, iconSize, iconSize);
-                    //quickActionIcon.SetCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
-
                     // Load the drawable
                     Android.Graphics.Drawables.Drawable d = ContextCompat.GetDrawable(this.Context, Resource.Drawable.ic_pen_blue);
 
@@ -4575,9 +4569,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 usrinf.FCMToken = FirebaseTokenEntity.GetLatest().FBToken;
                 usrinf.Language = LanguageUtil.GetAppLanguage().ToUpper();
                 usrinf.sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
-                //usrinf.UserID = UserEntity.GetActive().UserID;   //uncomment when already exist data
+                usrinf.UserID = UserEntity.GetActive().UserID;
                 usrinf.UserName = UserEntity.GetActive().Email;
-                usrinf.UserID = "D364591A-218B-426C-AE95-100129767EAC";
 
                 DeviceInfoExtra currentDeviceInf = new DeviceInfoExtra()
                 {
@@ -4629,7 +4622,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     UserSessions.RemoveQuickActionList();
-                    this.presenter.ProcessMyServices();
+                    this.presenter.DataSortIconList();
                 }
                 //HideProgressDialog();
             }

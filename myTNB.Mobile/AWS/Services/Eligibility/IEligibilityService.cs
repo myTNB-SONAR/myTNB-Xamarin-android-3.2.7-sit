@@ -23,5 +23,13 @@ namespace myTNB.Mobile.AWS.Services.Eligibility
             , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
             , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
             , string environment = AWSConstants.Environment);
+
+        [Post("/Eligibility/api/v1/Eligibility/UpdateMoreIcon")]
+        Task<HttpResponseMessage> UpdateMoreIconList([Body] UpdateMoreIconRequest request
+            , CancellationToken cancellationToken
+            , [Header(AWSConstants.Headers.Authorization)] string accessToken
+            , [Header(AWSConstants.Headers.ViewInfo)] string viewInfo
+            , [Header(AWSConstants.Headers.XAPIKey)] string xAPIKey = AWSConstants.XAPIKey
+            , string environment = AWSConstants.Environment);
     }
 }
