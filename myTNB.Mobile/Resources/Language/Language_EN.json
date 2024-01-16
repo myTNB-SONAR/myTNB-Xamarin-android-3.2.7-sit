@@ -260,7 +260,8 @@
     //DiscoverMore
     "DiscoverMore": "Discover More",
     "DiscoverMoreTitle": "The new Energy Budget feature is here!",
-    "DiscoverMoreDate": "07 May 2021"
+    "DiscoverMoreDate": "07 May 2021",
+    "quickActionTitle": "Quick Actions"
   },
   "Tabbar": {
     "home": "Home",
@@ -3182,6 +3183,17 @@
             "isSuccess": true,
             "type": "none"
           }
+        ],
+        "MoreIconList": [
+          {
+            "code": "7200",
+            "title": "",
+            "message": "",
+            "primaryCTATitle": "",
+            "secondaryCTATitle": "",
+            "isSuccess": true,
+            "type": "none"
+          }
         ]
       }
     ]
@@ -3318,7 +3330,8 @@
     ],
     "IsMyHomeMarketingPopupEnable": true,
     "ForceHidemyHomeBanner": false,
-    "IsDSNotificationEnable": true
+    "IsDSNotificationEnable": true,
+    "QuickActionTimeRangeInMin": 30
   },
   "StatementPeriod": {
     "title": "Account Statement",
@@ -3615,5 +3628,55 @@
     "paymentHistoryEmptyMessage": "No payment history was recorded up to now",
     "paymentHistoryRefreshMessage": "There seems to be a problem retrieving your payment history. Please try again.",
     "paymentHistoryRefreshBtnText": "Try Again"
-  }
+  },
+  "RearrangeQuickAction": {
+    "title": "Manage Quick Actions",
+    "extraIconTitle": "Add a action to your Quick Action",
+    "defaultIconTitle": "Simply hold and drag to rearrange the actions.",
+    "saveChangesBtn": "Save Changes"
+  },
+  "Feature": [
+    {
+      "ServiceName": "Pay My Bills",
+      "ServiceId": "1004",
+      "isLocked": "true",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "View My e-Bills / Advice",
+      "ServiceId": "1005",
+      "isLocked": "true",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "My Energy Budget",
+      "ServiceId": "1007",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "myHome",
+      "ServiceId": "1008",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Self Meter Reading",
+      "ServiceId": "1001",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Submit & Track Enquiry",
+      "ServiceId": "1003",
+      "isLocked": "false",
+      "isAvailable": "true"
+    },
+    {
+      "ServiceName": "Application Status",
+      "ServiceId": "1006",
+      "isLocked": "false",
+      "isAvailable": "true"
+    }
+  ]
 }

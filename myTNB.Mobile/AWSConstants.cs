@@ -152,6 +152,8 @@
             internal const string GetEKYCIdentification = "EKYCIdentification";
             public const string EligibilityByCriteria = "EligibilityByCriteria";
 
+            //MoreIcon
+            internal const string GetMoreIconStatus = "MoreIconList";
         }
     }
 }
