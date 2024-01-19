@@ -59,7 +59,12 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
             try
             {
                 vh.IconName.Text = filterServiceName(item.ServiceName);
-                if (item.isAvailable == false)
+
+                if (item.isLocked)
+                {
+                    vh.Icon.SetImageResource(Resource.Drawable.ic_locked_white);
+                }
+                else if (!item.isAvailable)
                 {
                     vh.Icon.SetImageResource(Resource.Drawable.ic_plusround_black);
                     vh.Icon.Clickable = true;
@@ -68,12 +73,6 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
                         listener?.OnItemClick(position);
                     };
                 }
-
-                if (item.isLocked)
-                {
-                    vh.Icon.SetImageResource(Resource.Drawable.ic_locked_white);
-                }
-
                 try
                 {
                     switch (item.ServiceId)

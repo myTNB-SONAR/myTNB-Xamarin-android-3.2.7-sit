@@ -530,7 +530,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         if (extras.ContainsKey("IconList"))
                         {
                             isFromPageRearrangeIcon = true;
-                            this.presenter.ListAfterRearrangeIcon();
+                            this.presenter.ListAfterRearrangeIcon(isFromPageRearrangeIcon);
                         }
                     }
                 }
@@ -1148,7 +1148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             });
         }
 
-        public void SetMyServicesResult(List<MyServiceModel> list)
+        public void SetMyServicesResult(List<MyServiceModel> list, bool indicator)
         {
             try
             {
@@ -1156,28 +1156,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
-                        myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                        myServiceAdapter.NotifyDataSetChanged();
-                        myServicesList.Clear();
-                        myServicesList.AddRange(list);
-                        myServiceAdapter.ClickChanged += OnClickChanged;
-                        this.SetIsClicked(false);
-                        try
+                        if (!indicator)
                         {
-                            myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
-                            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                            myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
+                            myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                            myServiceAdapter.NotifyDataSetChanged();
+                            myServicesList.Clear();
+                            myServicesList.AddRange(list);
+                            myServiceAdapter.ClickChanged += OnClickChanged;
+                            this.SetIsClicked(false);
+                            try
+                            {
+                                myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
+                                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            myServiceShimmerView.Visibility = ViewStates.Gone;
+
+                            myServiceView.Visibility = ViewStates.Visible;
+                            containerQuickAction.Visibility = ViewStates.Visible;
+
+                            SetupMyHomeBanner();
                         }
-                        catch (System.Exception e)
+                        else
                         {
-                            Utility.LoggingNonFatalError(e);
+                            myServiceListRecycleView.Post(() =>
+                            {
+                                myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
+                                myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                                myServiceAdapter.NotifyDataSetChanged();
+                                myServiceAdapter.ClickChanged += OnClickChanged;
+                                myServicesList.Clear();
+                                myServicesList.AddRange(list);
+                            });
+
+                            this.SetIsClicked(false);
+                            try
+                            {
+                                myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
+                                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            myServiceShimmerView.Visibility = ViewStates.Gone;
+
+                            myServiceView.Visibility = ViewStates.Visible;
+                            containerQuickAction.Visibility = ViewStates.Visible;
+
+                            SetupMyHomeBanner();
                         }
-                        myServiceShimmerView.Visibility = ViewStates.Gone;
-
-                        myServiceView.Visibility = ViewStates.Visible;
-                        containerQuickAction.Visibility = ViewStates.Visible;
-
-                        SetupMyHomeBanner();
                     }
                     catch (System.Exception ex)
                     {
@@ -1766,7 +1798,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (this.presenter != null)
                 {
-                    if (this.presenter.GetIsLoadedHomeDone() && !isFromPageRearrangeIcon)
+                    if (this.presenter.GetIsLoadedHomeDone())
+                    {
+                        this.presenter.OnCheckMyServiceNewFAQState();
+                    }
+                    else if (isFromPageRearrangeIcon)
                     {
                         this.presenter.OnCheckMyServiceNewFAQState();
                     }

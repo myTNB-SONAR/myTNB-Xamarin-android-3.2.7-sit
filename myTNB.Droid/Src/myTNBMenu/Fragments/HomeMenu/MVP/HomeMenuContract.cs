@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
             //void StopShimmerDiscoverMore();
-            void SetMyServicesResult(List<MyServiceModel> list);
+            void SetMyServicesResult(List<MyServiceModel> list, bool indicator);
             void SetNewFAQResult(List<NewFAQ> list);
             void SetDiscoverResult(bool IsAccountDBREligible);
             string GetDeviceId();
@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             List<MyServiceModel> GetCurrentQuickActionList();
 
-            void ListAfterRearrangeIcon();
+            void ListAfterRearrangeIcon(bool isfromPage);
 
             void ProcessMyServices();
 

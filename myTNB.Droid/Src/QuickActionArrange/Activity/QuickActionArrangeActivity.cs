@@ -12,6 +12,7 @@ using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
+using AndroidX.Core.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB.Mobile;
@@ -37,6 +38,9 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
     {
         [BindView(Resource.Id.rootView)]
         RelativeLayout rootView;
+
+        [BindView(Resource.Id.scrollLayout)]
+        NestedScrollView scrollLayout;
 
         [BindView(Resource.Id.btnSubmit)]
         Button btnSubmit;
@@ -139,7 +143,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                                     .Select(pair => pair.OriginalItem)
                                     .ToList();
 
-                if (currentIconList != null && currentIconList.Count > 0 && currentIconList.Count <= 8)
+                if (currentIconList != null && currentIconList.Count > 0)
                 {
                     foreach (var item in currentIconList)
                     {
@@ -148,7 +152,14 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                         {
                             if (iconModelLocked.isLocked)
                             {
-                                lockedListFeatureIcon.Add(iconModelLocked);
+                                var lockedIcon = new Feature
+                                {
+                                    isAvailable = iconModelLocked.isAvailable,
+                                    isLocked = iconModelLocked.isLocked,
+                                    ServiceName = item.ServiceName,
+                                    ServiceId = item.ServiceId
+                                };
+                                lockedListFeatureIcon.Add(lockedIcon);
                             }
                             else
                             {
@@ -189,41 +200,6 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                             .ToList();
 
                     currentIconList = updatedList;
-                }
-                else
-                {
-                    for (int i = 8; i <= currentIconList.Count; i++)
-                    {
-                        var iconModel = listIconNew?.Find(x => x.ServiceId == currentIconList[i].ServiceId);
-
-                        tempCurrentModel = new Feature
-                        {
-                            isAvailable = false,
-                            isLocked = iconModel.isLocked,
-                            ServiceName = iconModel.ServiceName,
-                            ServiceId = iconModel.ServiceId
-                        };
-
-                        extraListFeatureIcon.Add(tempCurrentModel);
-                        //extraListFeatureIcon.Add(currentIconList[i]);
-                        currentIconList.RemoveAt(i);
-                    }
-
-                    foreach (var item in currentIconList)
-                    {
-                        var iconModel = listIconNew?.Find(x => x.ServiceId == item.ServiceId);
-
-                        if (iconModel.isLocked)
-                        {
-                            lockedListFeatureIcon.Add(iconModel);
-                            //listLockedQuickAction.Add(item);
-                        }
-                        else
-                        {
-                            tempCurrentIconList.Add(item);
-                        }
-                    }
-                    currentIconList = tempCurrentIconList;
                 }
                 DisableSaveButton();
                 PopulateView();
@@ -340,19 +316,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
         {
             if (extraListFeatureIcon != null && extraListFeatureIcon.Count > 0)
             {
-                var iconModel = extraListFeatureIcon[0];
-                MyServiceModel item = masterDataListIcon?.Find(x => x.ServiceId == iconModel.ServiceId);
-                extraListFeatureIcon?.RemoveAt(0);
-                currentIconList.Add(item);
-
-                if (currentIconList.Count == 1)
-                {
-                    canRemoveOrRearrangeList();
-                }
-                RearrangeQuickActionListAdapter.NotifyDataSetChanged();
-                AddItemCardReset();
-                extraList();
-                ButtonEnableDisable();
+                DashboardCustomScrolling(0);
             }
         }
 
@@ -520,14 +484,28 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
                 List<Features> iconListFeature = new List<Features>();
                 foreach (var item in listFinal)
                 {
-                    Features features = new Features
+                    if (item.isLocked)
                     {
-                        serviceId = item.ServiceId,
-                        serviceName = item.ServiceName,
-                        isAvailable = item.isAvailable,
-                        isLocked = item.isLocked
-                    };
-                    iconListFeature.Add(features);
+                        Features items = new Features
+                        {
+                            serviceId = item.ServiceId,
+                            serviceName = item.ServiceName,
+                            isAvailable = item.isAvailable,
+                            isLocked = item.isLocked
+                        };
+                        iconListFeature.Add(items);
+                    }
+                    else
+                    {
+                        Features features = new Features
+                        {
+                            serviceId = item.ServiceId,
+                            serviceName = item.ServiceName,
+                            isAvailable = true,
+                            isLocked = item.isLocked
+                        };
+                        iconListFeature.Add(features);
+                    }
                 }
 
                 await GetMoreIconListAsync(iconListFeature, listFinal);
@@ -633,35 +611,36 @@ namespace myTNB_Android.Src.QuickActionArrange.Activity
         {
             SetResult(Result.Canceled);
             this.Finish();
+        }
 
-            //if (btnSubmit.Enabled)
-            //{
-            //    if (!this.GetIsClicked())
-            //    {
-            //        this.SetIsClicked(true);
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)scrollLayout.GetChildAt(0);
 
-            //        MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-            //            .SetTitle(GetLabelByLanguage("rearrangeTitle"))
-            //            .SetMessage(GetLabelByLanguage("rearrangeMsg"))
-            //            .SetCTALabel(GetLabelCommonByLanguage("no"))
-            //            .SetCTAaction(() =>
-            //            {
-            //                SetResult(Result.Canceled);
-            //                this.Finish();
-            //            })
-            //            .SetSecondaryCTAaction(() =>
-            //            {
-            //                OnSave();
-            //            })
-            //            .SetSecondaryCTALabel(GetLabelCommonByLanguage("yes"))
-            //            .Build().Show();
-            //    }
-            //}
-            //else
-            //{
-            //    SetResult(Result.Canceled);
-            //    this.Finish();
-            //}
+            return child.Height + scrollLayout.PaddingTop + scrollLayout.PaddingBottom;
+        }
+
+        public void DashboardCustomScrolling(int yPosition)
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        scrollLayout.ScrollTo(0, OnGetEndOfScrollView());
+                        scrollLayout.RequestLayout();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)

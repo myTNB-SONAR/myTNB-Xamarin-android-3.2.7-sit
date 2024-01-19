@@ -78,6 +78,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private bool isAccountRefreshNeeded = false;
 
+        private bool isFromQuickActionPage = false;
+
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
         private CancellationTokenSource FAQTokenSource = new CancellationTokenSource();
@@ -1639,7 +1641,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ServiceBannerUrl = myServicesList[i].ServiceBannerUrl
                 });
             }
-            this.mView.SetMyServicesResult(cachedList);
+            this.mView.SetMyServicesResult(cachedList, false);
         }
 
         public void ReadNewFAQFromCache()
@@ -2051,7 +2053,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
-            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+            if (UserSessions.GetQuickActionList() != null
+                && UserSessions.GetQuickActionList().Count > 0)
             {
                 myServicesListInitial = DeepClone(filteredServices);
                 List<Feature> listIconNew = new List<Feature>();
@@ -2088,6 +2091,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 UserSessions.SetQuickActionList(listIconNewUpdate);
             }
 
+            UserSessions.RemoveQuickActionDashboardList();
+            UserSessions.SetQuickActionDashboardList(filteredServices);
+
             if (filteredServices.Count > 6)
             {
                 for (int i = 0; i < 5; i++)
@@ -2120,7 +2126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             //myServicesList = filteredServices;
 
             this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-            this.mView.SetMyServicesResult(newfilteredServices);
+            this.mView.SetMyServicesResult(newfilteredServices, false);
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
@@ -2350,7 +2356,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServicesListInitial = DeepClone(myServicesList);
             List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
-            if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+            if (UserSessions.GetQuickActionDashboardList() != null
+                && UserSessions.GetQuickActionDashboardList().Count > 0
+                && !isFromQuickActionPage)
+            {
+                newIconListArrangge = UserSessions.GetQuickActionDashboardList();
+            }
+            else if (UserSessions.GetQuickActionList() != null
+                && UserSessions.GetQuickActionList().Count > 0)
             {
                 List<Feature> listIconNew = new List<Feature>();
                 List<Feature> listIconNewUpdate = new List<Feature>();
@@ -2390,6 +2403,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newIconListArrangge = myServicesList;
             }
 
+            UserSessions.RemoveQuickActionDashboardList();
+            UserSessions.SetQuickActionDashboardList(newIconListArrangge);
+
             if (newIconListArrangge.Count < 7)
             {
                 isMyServiceExpanded = true;
@@ -2401,7 +2417,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 fetchList = newIconListArrangge;
                 this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                this.mView.SetMyServicesResult(fetchList);
+                this.mView.SetMyServicesResult(fetchList, isFromQuickActionPage);
             }
             else
             {
@@ -2436,7 +2452,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 //    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 //}
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                this.mView.SetMyServicesResult(fetchList);
+                this.mView.SetMyServicesResult(fetchList, isFromQuickActionPage);
             }
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
@@ -2515,16 +2531,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void ListAfterRearrangeIcon()
+        public void ListAfterRearrangeIcon(bool isFromPage)
         {
-            try
-            {
-                ProcessMyServices();
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
+           try
+           {
+               isFromQuickActionPage = isFromPage;
+           }
+           catch (Exception e)
+           {
+               Utility.LoggingNonFatalError(e);
+           }
         }
 
         public void DoMySerivceLoadMoreAccount()
@@ -2532,35 +2548,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 List<MyServiceModel> fetchList = new List<MyServiceModel>();
-                isMyServiceExpanded = true;
-                HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                myServicesList.RemoveAll(item => item?.ServiceType == ServiceEnum.VIEWMORE);
-
+                //isMyServiceExpanded = true;
+                //HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
                 List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
-                if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+                if (UserSessions.GetQuickActionDashboardList() != null
+                    && UserSessions.GetQuickActionDashboardList().Count > 0)
                 {
-                    List<Feature> listIconNew = new List<Feature>();
-
-                    listIconNew = UserSessions.GetQuickActionList();
-
-                    var updatedList = myServicesList
-                                .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                                {
-                                    OriginalItem = item1,
-                                    Order = listIconNew.IndexOf(item2)
-                                })
-                                .OrderBy(pair => pair.Order)
-                                .Select(pair => pair.OriginalItem)
-                                .ToList();
-
-                    // Update myServicesList with the sorted order
-                    newIconListArrangge.AddRange(updatedList);
-                }
-                else
-                {
-                    newIconListArrangge = myServicesList;
+                    newIconListArrangge = UserSessions.GetQuickActionDashboardList();
                 }
 
+                newIconListArrangge.RemoveAll(item => item?.ServiceType == ServiceEnum.VIEWMORE);
                 var modelViewLess = new MyServiceModel()   //can remove after modelviewless have in API
                 {
                     ServiceId = "1112",
@@ -2579,9 +2576,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 newIconListArrangge.Add(modelViewLess);
 
                 fetchList = newIconListArrangge;
-                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                this.mView.SetMyServicesResult(fetchList);
+                //this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                //this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                this.mView.SetMyServicesResult(fetchList, true);
             }
             catch (Exception e)
             {
@@ -2594,35 +2591,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 List<MyServiceModel> fetchList = new List<MyServiceModel>();
-                isMyServiceExpanded = true;
-                HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                myServicesList.RemoveAll(item => item.ServiceType == ServiceEnum.VIEWLESS);
-
                 List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
-                if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+                if (UserSessions.GetQuickActionDashboardList() != null
+                    && UserSessions.GetQuickActionDashboardList().Count > 0)
                 {
-                    List<Feature> listIconNew = new List<Feature>();
-
-                    listIconNew = UserSessions.GetQuickActionList();
-
-                    var updatedList = myServicesList
-                                .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
-                                {
-                                    OriginalItem = item1,
-                                    Order = listIconNew.IndexOf(item2)
-                                })
-                                .OrderBy(pair => pair.Order)
-                                .Select(pair => pair.OriginalItem)
-                                .ToList();
-
-                    // Update myServicesList with the sorted order
-                    newIconListArrangge.AddRange(updatedList);
-                }
-                else
-                {
-                    newIconListArrangge = myServicesList;
+                    newIconListArrangge = UserSessions.GetQuickActionDashboardList();
                 }
 
+                newIconListArrangge.RemoveAll(item => item.ServiceType == ServiceEnum.VIEWLESS);
                 for (int i = 0; i < 5; i++)
                 {
                     fetchList.Add(newIconListArrangge[i]);
@@ -2645,9 +2621,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 };
                 fetchList.Add(modelViewMore);
 
-                //fetchList = myServicesList;
-                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                this.mView.SetMyServicesResult(fetchList);
+                this.mView.SetMyServicesResult(fetchList,true);
             }
             catch (Exception e)
             {
