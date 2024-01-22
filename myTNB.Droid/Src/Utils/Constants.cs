@@ -240,6 +240,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string CatchupRF = "CatchupRF";
         internal static readonly string CatchupPLC = "CatchupPLC";
         internal static readonly string BCRM_RS_SYSTEM = "BCRM_RS";
+        internal static readonly string PG_TNG_REMINDER = "PG_TNG_Reminder";
 
 
         internal static readonly string ACCOUNT_REMOVED_FLAG = "ACCOUNT_REMOVED";
