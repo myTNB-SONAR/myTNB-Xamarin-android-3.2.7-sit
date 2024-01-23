@@ -3633,7 +3633,8 @@
     "title": "Manage Quick Actions",
     "extraIconTitle": "Add a action to your Quick Action",
     "defaultIconTitle": "Simply hold and drag to rearrange the actions.",
-    "saveChangesBtn": "Save Changes"
+    "saveChangesBtn": "Save Changes",
+    "hide": "Hide"
   },
   "Feature": [
     {

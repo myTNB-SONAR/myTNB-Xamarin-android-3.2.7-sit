@@ -15,6 +15,7 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.QuickActionArrange.Adapter
 {
@@ -79,6 +80,12 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
 
             if (dX < 0)
             {
+                string copywriting = Utility.GetLocalizedLabel("RearrangeQuickAction", "hide");
+                if (string.IsNullOrEmpty(copywriting))
+                {
+                    copywriting = "HIDE";
+                }
+
                 // Swiping to the left (delete)
                 int itemHeight = itemView.Height;
 
@@ -102,7 +109,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
                 textPaint.TextSize = 35;
 
                 // Calculate the width and height of the text
-                float textWidth = textPaint.MeasureText("HIDE");
+                float textWidth = textPaint.MeasureText(copywriting);
                 float textHeight = textPaint.Descent() - textPaint.Ascent();
 
                 // Set a margin (you can adjust this based on your preference)
@@ -116,7 +123,7 @@ namespace myTNB_Android.Src.QuickActionArrange.Adapter
                 // Calculate the Y-coordinate to center the text vertically
                 float textY = itemView.Top + heightreal / 2 - textPaint.Ascent();
 
-                c.DrawText("HIDE", textX, textY, textPaint);
+                c.DrawText(copywriting, textX, textY, textPaint);
             }
             else
             {

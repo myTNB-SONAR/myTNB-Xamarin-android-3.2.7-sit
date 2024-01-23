@@ -3630,10 +3630,11 @@
     "paymentHistoryRefreshBtnText": "Cuba Lagi"
   },
   "RearrangeQuickAction": {
-    "title": "BM_Manage Quick Actions",
-    "extraIconTitle": "BM_Add a action to your Quick Action",
-    "defaultIconTitle": "BM_Simply hold and drag to rearrange the actions.",
-    "saveChangesBtn": "BM_Save Changes"
+    "title": "Urus Tindakan Pantas",
+    "extraIconTitle": "Tambah aplikasi ke ruangan tindakan pantas.",
+    "defaultIconTitle": "Hanya tekan dan seret untuk mengatur semula tindakan.",
+    "saveChangesBtn": "Simpan Perubahan",
+    "hide": "Sembunyi"
   },
   "Feature": [
     {
