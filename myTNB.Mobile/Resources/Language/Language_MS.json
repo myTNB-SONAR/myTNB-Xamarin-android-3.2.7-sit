@@ -261,7 +261,7 @@
     "DiscoverMore": "Terokai",
     "DiscoverMoreTitle": "Energy Budget kini telah tiba!",
     "DiscoverMoreDate": "07 May 2021",
-    "quickActionTitle": "BM_Quick Actions"
+    "quickActionTitle": "Akses Pantas"
   },
   "Tabbar": {
     "home": "Utama",
@@ -3630,11 +3630,11 @@
     "paymentHistoryRefreshBtnText": "Cuba Lagi"
   },
   "RearrangeQuickAction": {
-    "title": "Urus Tindakan Pantas",
-    "extraIconTitle": "Tambah aplikasi ke ruangan tindakan pantas.",
-    "defaultIconTitle": "Hanya tekan dan seret untuk mengatur semula tindakan.",
+    "title": "Urus Akses Pantas",
+    "extraIconTitle": "Tambah ciri ke pautan pantas.",
+    "defaultIconTitle": "Hanya tekan dan seret untuk aturan ciri.",
     "saveChangesBtn": "Simpan Perubahan",
-    "hide": "Sembunyi"
+    "hide": "Buang"
   },
   "Feature": [
     {

@@ -261,7 +261,7 @@
     "DiscoverMore": "Discover More",
     "DiscoverMoreTitle": "The new Energy Budget feature is here!",
     "DiscoverMoreDate": "07 May 2021",
-    "quickActionTitle": "Quick Actions"
+    "quickActionTitle": "Quick Access"
   },
   "Tabbar": {
     "home": "Home",
@@ -3630,11 +3630,11 @@
     "paymentHistoryRefreshBtnText": "Try Again"
   },
   "RearrangeQuickAction": {
-    "title": "Manage Quick Actions",
-    "extraIconTitle": "Add a action to your Quick Action",
-    "defaultIconTitle": "Simply hold and drag to rearrange the actions.",
+    "title": "Manage Quick Access",
+    "extraIconTitle": "Add feature to Quick access.",
+    "defaultIconTitle": "Simply hold and drag to rearrange features.",
     "saveChangesBtn": "Save Changes",
-    "hide": "Hide"
+    "hide": "Remove"
   },
   "Feature": [
     {
