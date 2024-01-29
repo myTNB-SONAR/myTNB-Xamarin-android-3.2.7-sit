@@ -1453,7 +1453,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         public void OnTNGReminderPopupMessage(DownTimeEntity TNGRemiderEntity)
         {
-            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+           .SetHeaderImage(Resource.Drawable.ic_TNGPopupReminder)
            .SetTitle(TNGRemiderEntity.DowntimeTextMessage)
            .SetMessage(TNGRemiderEntity.DowntimeMessage)
            .SetContentGravity(GravityFlags.Center)
