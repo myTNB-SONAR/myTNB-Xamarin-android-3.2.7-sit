@@ -282,6 +282,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 UserLoginCountEntity.RemoveAll();
                 UserSessions.SaveDBRPopUpFlag(mPref, false);
                 MarketingPopUpEntity.RemoveAll();
+                UserSessions.RemoveUserEmailQuickAction(mPref);
                 this.mView.ShowLogout();
             }
         }

@@ -1185,6 +1185,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             myServiceListRecycleView.Post(() =>
                             {
+                                GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
+                                layoutManager.Orientation = RecyclerView.Vertical;
+                                myServiceListRecycleView.SetLayoutManager(layoutManager);
+
                                 myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
                                 myServiceListRecycleView.SetAdapter(myServiceAdapter);
                                 myServiceAdapter.NotifyDataSetChanged();

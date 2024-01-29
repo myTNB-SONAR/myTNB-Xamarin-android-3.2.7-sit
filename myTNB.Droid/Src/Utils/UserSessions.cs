@@ -1488,5 +1488,12 @@ namespace myTNB_Android.Src.Utils
         {
             return prefs.GetString("emailSaveIcon", "");
         }
+
+        public static void RemoveUserEmailQuickAction(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.Remove("emailSaveIcon");
+            editor.Apply();
+        }
     }
 }
