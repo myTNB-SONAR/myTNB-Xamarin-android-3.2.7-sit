@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetMyServiceRecycleView();
             void SetNewFAQRecycleView();
             //void StopShimmerDiscoverMore();
-            void SetMyServicesResult(List<MyServiceModel> list, bool indicator);
+            void SetMyServicesResult(List<MyServiceModel> list);
             void SetNewFAQResult(List<NewFAQ> list);
             void SetDiscoverResult(bool IsAccountDBREligible);
             string GetDeviceId();
@@ -117,8 +117,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void NavigateToSSMRPage();
             
             void SetupMyHomeBanner();
-
-            void GetMoreIconAPI();
         }
 
         public interface IHomeMenuPresenter
@@ -200,8 +198,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void ListAfterRearrangeIcon(bool isfromPage);
 
             void ProcessMyServices();
-
-            void DataSortIconList();
 
             //void UserNotificationsCount();
         }

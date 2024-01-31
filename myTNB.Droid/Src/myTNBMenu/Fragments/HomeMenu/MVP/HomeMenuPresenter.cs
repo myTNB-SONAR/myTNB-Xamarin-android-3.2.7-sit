@@ -97,14 +97,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private SMRregistrationApi api;
 
+        private Context mContext;
+
         private static List<MyServiceModel> myServicesListNewArrange = new List<MyServiceModel>();
 
         private CancellationTokenSource normalTokenSource = new CancellationTokenSource();
 
-        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref)
+        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref, Context context)
         {
             this.mView = view;
             this.mPref = pref;
+            this.mContext = context;
             this.serviceApi = new HomeMenuServiceImpl();
             this.api = new SMRregistrationApiImpl();
         }
@@ -1641,7 +1644,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ServiceBannerUrl = myServicesList[i].ServiceBannerUrl
                 });
             }
-            this.mView.SetMyServicesResult(cachedList, false);
+            this.mView.SetMyServicesResult(cachedList);
         }
 
         public void ReadNewFAQFromCache()
@@ -2126,7 +2129,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             //myServicesList = filteredServices;
 
             this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-            this.mView.SetMyServicesResult(newfilteredServices, false);
+            this.mView.SetMyServicesResult(newfilteredServices);
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
@@ -2138,7 +2141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return JsonConvert.DeserializeObject<List<T>>(json);
         }
 
-        private void QuickActionRearrangeData()
+        private async void QuickActionRearrangeData()
         {
             try
             {
@@ -2170,7 +2173,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 if (needToCallAPI)
                 {
-                    this.mView.GetMoreIconAPI();
+                    await GetMoreIconListAsync();
                 }
                 else
                 {
@@ -2417,7 +2420,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 fetchList = newIconListArrangge;
                 this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                this.mView.SetMyServicesResult(fetchList, isFromQuickActionPage);
+                this.mView.SetMyServicesResult(fetchList);
             }
             else
             {
@@ -2452,7 +2455,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 //    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 //}
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                this.mView.SetMyServicesResult(fetchList, isFromQuickActionPage);
+                this.mView.SetMyServicesResult(fetchList);
             }
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
@@ -2537,7 +2540,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
            {
                isFromQuickActionPage = isFromPage;
            }
-           catch (Exception e)
+            catch (Exception e)
            {
                Utility.LoggingNonFatalError(e);
            }
@@ -2578,7 +2581,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 fetchList = newIconListArrangge;
                 //this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 //this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                this.mView.SetMyServicesResult(fetchList, true);
+                this.mView.SetMyServicesResult(fetchList);
             }
             catch (Exception e)
             {
@@ -2621,7 +2624,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 };
                 fetchList.Add(modelViewMore);
 
-                this.mView.SetMyServicesResult(fetchList,true);
+                this.mView.SetMyServicesResult(fetchList);
             }
             catch (Exception e)
             {
@@ -3822,6 +3825,86 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public List<MyServiceModel> GetCurrentQuickActionList()
         {
             return myServicesListInitial;
+        }
+
+        private async Task GetMoreIconListAsync()
+        {
+            try
+            {
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.mContext))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.mContext, accessToken);
+                }
+
+                UserInfoExtra usrinf = new UserInfoExtra();
+                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+                usrinf.DeviceID = this.mView.GetDeviceId();
+                usrinf.FCMToken = FirebaseTokenEntity.GetLatest().FBToken;
+                usrinf.Language = LanguageUtil.GetAppLanguage().ToUpper();
+                usrinf.sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
+                usrinf.UserID = UserEntity.GetActive().UserID;
+                usrinf.UserName = UserEntity.GetActive().Email;
+
+                DeviceInfoExtra currentDeviceInf = new DeviceInfoExtra()
+                {
+                    DeviceId = this.mView.GetDeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = Constants.DEVICE_PLATFORM,
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
+                };
+                MoreIconResponse moreiconResponse = await MoreIconManager.Instance.GetMoreIconList(currentDeviceInf, usrinf, AccessTokenCache.Instance.GetAccessToken(this.mContext));
+
+                if (moreiconResponse != null
+               && moreiconResponse.StatusDetail != null
+               && moreiconResponse.StatusDetail.IsSuccess
+               && moreiconResponse.Content != null
+               && moreiconResponse.Content.featureIcon != null)
+                {
+                    List<Feature> listIconNew = new List<Feature>();
+                    foreach (var item in moreiconResponse.Content.featureIcon)
+                    {
+                        var itemSort = new Feature
+                        {
+                            ServiceName = item.serviceName,
+                            ServiceId = item.serviceId,
+                            isAvailable = item.isAvailable,
+                            isLocked = item.isLocked
+                        };
+                        listIconNew.Add(itemSort);
+                    }
+
+                    UserSessions.RemoveQuickActionList();
+                    UserSessions.SetQuickActionList(listIconNew);
+
+                    try
+                    {
+                        // Format as string
+                        string formattedDateString = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        UserSessions.SaveTimeStampQuickAction(this.mPref, formattedDateString);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                    UserSessions.SaveUserEmailQuickAction(this.mPref, UserEntity.GetActive().Email);
+                    DataSortIconList();
+                }
+                else
+                {
+                    UserSessions.RemoveQuickActionList();
+                    DataSortIconList();
+                }
+                //HideProgressDialog();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                ProcessMyServices();
+            }
         }
     }
 }

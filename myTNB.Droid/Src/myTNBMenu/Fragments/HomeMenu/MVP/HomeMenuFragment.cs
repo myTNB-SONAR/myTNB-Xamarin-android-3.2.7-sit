@@ -390,7 +390,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             DynatraceHelper.OnTrack(DynatraceConstants.MyHome.Screens.Home.Dashboard);
-            presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+            presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.Context);
             this.presenter.GetDownTime();
         }
 
@@ -1148,7 +1148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             });
         }
 
-        public void SetMyServicesResult(List<MyServiceModel> list, bool indicator)
+        public void SetMyServicesResult(List<MyServiceModel> list)
         {
             try
             {
@@ -1156,64 +1156,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     try
                     {
-                        if (!indicator)
+                        myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
+                        myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                        myServiceAdapter.NotifyDataSetChanged();
+                        myServicesList.Clear();
+                        myServicesList.AddRange(list);
+                        myServiceAdapter.ClickChanged += OnClickChanged;
+                        this.SetIsClicked(false);
+                        try
                         {
-                            myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
-                            myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                            myServiceAdapter.NotifyDataSetChanged();
-                            myServicesList.Clear();
-                            myServicesList.AddRange(list);
-                            myServiceAdapter.ClickChanged += OnClickChanged;
-                            this.SetIsClicked(false);
-                            try
-                            {
-                                myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
-                                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
-                            }
-                            catch (System.Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
-                            myServiceShimmerView.Visibility = ViewStates.Gone;
-
-                            myServiceView.Visibility = ViewStates.Visible;
-                            containerQuickAction.Visibility = ViewStates.Visible;
-
-                            SetupMyHomeBanner();
+                            myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
+                            myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
                         }
-                        else
+                        catch (System.Exception e)
                         {
-                            myServiceListRecycleView.Post(() =>
-                            {
-                                GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
-                                layoutManager.Orientation = RecyclerView.Vertical;
-                                myServiceListRecycleView.SetLayoutManager(layoutManager);
-
-                                myServiceAdapter = new MyServiceAdapter(list, this.Activity, isRefreshShown);
-                                myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                                myServiceAdapter.NotifyDataSetChanged();
-                                myServiceAdapter.ClickChanged += OnClickChanged;
-                                myServicesList.Clear();
-                                myServicesList.AddRange(list);
-                            });
-
-                            this.SetIsClicked(false);
-                            try
-                            {
-                                myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
-                                myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
-                            }
-                            catch (System.Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
-                            myServiceShimmerView.Visibility = ViewStates.Gone;
-
-                            myServiceView.Visibility = ViewStates.Visible;
-                            containerQuickAction.Visibility = ViewStates.Visible;
-
-                            SetupMyHomeBanner();
+                            Utility.LoggingNonFatalError(e);
                         }
+                        myServiceShimmerView.Visibility = ViewStates.Gone;
+
+                        myServiceView.Visibility = ViewStates.Visible;
+                        containerQuickAction.Visibility = ViewStates.Visible;
+
+                        SetupMyHomeBanner();
                     }
                     catch (System.Exception ex)
                     {
@@ -4583,95 +4547,5 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             .Build()
             .Show();
         }
-
-        public void GetMoreIconAPI()
-        {
-            //ShowProgressDialog();
-            Task.Run(() =>
-            {
-                _ = GetMoreIconListAsync();
-            });
-        }
-
-        private async Task GetMoreIconListAsync()
-        {
-            try
-            {
-                if (!AccessTokenCache.Instance.HasTokenSaved(this.Activity))
-                {
-                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
-                    AccessTokenCache.Instance.SaveAccessToken(this.Activity, accessToken);
-                }
-
-                UserInfoExtra usrinf = new UserInfoExtra();
-                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
-                usrinf.DeviceID = GetDeviceId();
-                usrinf.FCMToken = FirebaseTokenEntity.GetLatest().FBToken;
-                usrinf.Language = LanguageUtil.GetAppLanguage().ToUpper();
-                usrinf.sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
-                usrinf.UserID = UserEntity.GetActive().UserID;
-                usrinf.UserName = UserEntity.GetActive().Email;
-
-                DeviceInfoExtra currentDeviceInf = new DeviceInfoExtra()
-                {
-                    DeviceId = GetDeviceId(),
-                    AppVersion = DeviceIdUtils.GetAppVersionName(),
-                    OsType = Constants.DEVICE_PLATFORM,
-                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
-                    DeviceDesc = Constants.DEFAULT_LANG,
-                    VersionCode = ""
-                };
-                MoreIconResponse moreiconResponse = await MoreIconManager.Instance.GetMoreIconList(currentDeviceInf, usrinf, AccessTokenCache.Instance.GetAccessToken(this.Activity));
-
-                if (moreiconResponse != null
-               && moreiconResponse.StatusDetail != null
-               && moreiconResponse.StatusDetail.IsSuccess
-               && moreiconResponse.Content != null
-               && moreiconResponse.Content.featureIcon != null)
-                {
-                    List<Feature> listIconNew = new List<Feature>();
-                    foreach (var item in moreiconResponse.Content.featureIcon)
-                    {
-                        var itemSort = new Feature
-                        {
-                            ServiceName = item.serviceName,
-                            ServiceId = item.serviceId,
-                            isAvailable = item.isAvailable,
-                            isLocked = item.isLocked
-                        };
-                        listIconNew.Add(itemSort);
-                    }
-
-                    UserSessions.RemoveQuickActionList();
-                    UserSessions.SetQuickActionList(listIconNew);
-
-                    try
-                    {
-                        // Format as string
-                        string formattedDateString = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
-                        UserSessions.SaveTimeStampQuickAction(PreferenceManager.GetDefaultSharedPreferences(this.Activity), formattedDateString);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
-
-                    UserSessions.SaveUserEmailQuickAction(PreferenceManager.GetDefaultSharedPreferences(this.Activity), UserEntity.GetActive().Email);
-                    this.presenter.DataSortIconList();
-                }
-                else
-                {
-                    UserSessions.RemoveQuickActionList();
-                    this.presenter.DataSortIconList();
-                }
-                //HideProgressDialog();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-                this.presenter.ProcessMyServices();
-            }
-        }
-
     }
 }
