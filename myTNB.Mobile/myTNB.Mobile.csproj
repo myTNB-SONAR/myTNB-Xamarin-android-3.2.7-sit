@@ -106,7 +106,6 @@
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
-    <EmbeddedResource Include="Resources\Keys\SKey.txt" />
     <EmbeddedResource Include="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +160,8 @@
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
+    <Compile Remove="MobileConstants.cs" />
+    <Compile Remove="AWSConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
