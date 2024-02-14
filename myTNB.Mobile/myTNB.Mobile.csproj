@@ -106,7 +106,7 @@
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
-    <EmbeddedResource Include="Resources\Keys\PKey.txt" />
+    <EmbeddedResource Include="Resources\Keys\SKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -154,14 +154,13 @@
     <None Remove="AWS\Models\DS\EKYCIdentification\" />
     <None Remove="Refit" />
     <None Remove="Resources\Keys\" />
-    <None Remove="Resources\Keys\SKey.txt" />
     <None Remove="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
-    <Compile Remove="MobileConstants.cs" />
-    <Compile Remove="AWSConstants.cs" />
+    <Compile Remove="AWSProductionConstants.cs" />
+    <Compile Remove="MobileProductionConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />
