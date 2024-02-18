@@ -116,7 +116,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void NavigateToSSMRPage();
             
-            void SetupMyHomeBanner();            
+            void SetupMyHomeBanner();
         }
 
         public interface IHomeMenuPresenter
@@ -190,6 +190,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnCheckSMRAccount(List<string> smrAccountListOwnerOnly, string r);
 
             Task GetIsSmrApplyAllowedService(List<string> smrAccountListOwnerOnly);
+            
+            void DoMyServiceLoadLessAccount();
+
+            List<MyServiceModel> GetCurrentQuickActionList();
+
+            void ListAfterRearrangeIcon(bool isfromPage);
+
+            void ProcessMyServices();
 
             //void UserNotificationsCount();
         }

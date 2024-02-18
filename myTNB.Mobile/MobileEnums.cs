@@ -36,7 +36,9 @@
             ENERGYBUDGET,
             MYHOME,
             CONNECTMYPREMISE,
-            HMO
+            HMO,
+            VIEWMORE,
+            VIEWLESS
         }
     }
 }

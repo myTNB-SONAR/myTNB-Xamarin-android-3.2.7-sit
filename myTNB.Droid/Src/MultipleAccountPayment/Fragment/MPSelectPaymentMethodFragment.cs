@@ -435,11 +435,16 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 btnTNGPayment.Click += delegate
                 {
                     DownTimeEntity pgTNGEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_SYSTEM);
+                    DownTimeEntity pgTNGReminderEntity = DownTimeEntity.GetByCode(Constants.PG_TNG_REMINDER);
                     if (pgTNGEntity != null && pgTNGEntity.IsDown)
                     {
                         Utility.ShowBCRMDOWNTooltip(this.Activity, pgTNGEntity, () =>
                         {
                         });
+                    }
+                    else if (pgTNGReminderEntity != null && pgTNGReminderEntity.IsDown)
+                    {
+                        OnTNGReminderPopupMessage(pgTNGReminderEntity);
                     }
                     else
                     {
@@ -1442,6 +1447,25 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
            .SetMessage(bcrmEntity.DowntimeMessage)
            .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
            //.SetCTAaction(() => { isBCMRDownDialogShow = false; })
+           .Build()
+           .Show();
+        }
+
+        public void OnTNGReminderPopupMessage(DownTimeEntity TNGRemiderEntity)
+        {
+            MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.MYTNB_DIALOG_ICON_ONE_BUTTON)
+           .SetHeaderImage(Resource.Drawable.ic_TNGPopupReminder)
+           .SetTitle(TNGRemiderEntity.DowntimeTextMessage)
+           .SetMessage(TNGRemiderEntity.DowntimeMessage)
+           .SetContentGravity(GravityFlags.Center)
+           .SetCTALabel(Utility.GetLocalizedCommonLabel(LanguageConstants.Common.GOT_IT))
+           .SetCTAaction(() => {
+               HideErrorMessageSnakebar();
+               selectedPaymentMethod = METHOD_TNG;
+               selectedCard = null;
+               InitiatePaymentRequest();
+               DynatraceHelper.OnTrack(DynatraceConstants.WEBVIEW_PAYMENT_TNG);
+           })
            .Build()
            .Show();
         }

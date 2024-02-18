@@ -153,13 +153,13 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             }
             else
             {
-                newWalkthroughList.Add(new NewWalkthroughModel()
-                {
-                    Title = Utility.GetLocalizedLabel("Onboarding", "title1"),
-                    Description = Utility.GetLocalizedLabel("Onboarding", "description1"),
-                    Image = "walkthrough_img_install_0",
-                    Background = GetBackgroundName(newWalkthroughList)
-                });
+                //newWalkthroughList.Add(new NewWalkthroughModel()
+                //{
+                //    Title = Utility.GetLocalizedLabel("Onboarding", "title1"),
+                //    Description = Utility.GetLocalizedLabel("Onboarding", "description1"),
+                //    Image = "walkthrough_img_install_0",
+                //    Background = GetBackgroundName(newWalkthroughList)
+                //});
 
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
@@ -204,17 +204,17 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     Image = "walkthrough_img_install_5",
                     Background = GetBackgroundName(newWalkthroughList)
                 });
-                if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
-                {
-                    newWalkthroughList.Add(new NewWalkthroughModel()
-                    {
-                        Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
-                        Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
-                        Image = "walkthrough_img_install_7",
-                        Background = GetBackgroundName(newWalkthroughList),
-                        Type = NewWalkthroughType.FontSize
-                    });
-                }
+                //if (!MyTNBAccountManagement.GetInstance().IsLargeFontDisabled())
+                //{
+                //    newWalkthroughList.Add(new NewWalkthroughModel()
+                //    {
+                //        Title = Utility.GetLocalizedLabel("Onboarding", "title9"),
+                //        Description = Utility.GetLocalizedLabel("Onboarding", "description9"),
+                //        Image = "walkthrough_img_install_7",
+                //        Background = GetBackgroundName(newWalkthroughList),
+                //        Type = NewWalkthroughType.FontSize
+                //    });
+                //}
                 if (!MyTNBAccountManagement.GetInstance().IsAppointmentDisabled)
                 {
                     newWalkthroughList.Add(new NewWalkthroughModel()

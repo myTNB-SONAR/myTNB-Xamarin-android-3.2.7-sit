@@ -86,6 +86,9 @@
             //DS
             internal const string GetEKYCStatus = "EKYCStatus";
             internal const string GetEKYCIdentification = "EKYCIdentification";
+
+            //MoreIcon
+            internal const string GetMoreIconStatus = "MoreIconList";
         }
     }
 }

@@ -87,6 +87,8 @@
     <Folder Include="AWS\Models\DS\" />
     <Folder Include="AWS\Models\DS\Status\" />
     <Folder Include="AWS\Models\DS\Identification\" />
+    <Folder Include="AWS\Managers\MoreIcon\" />
+    <Folder Include="AWS\Models\MoreIcon\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -106,7 +108,7 @@
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
-    <EmbeddedResource Include="Resources\Keys\SKey.txt" />
+    <EmbeddedResource Include="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -154,13 +156,16 @@
     <None Remove="AWS\Models\DS\EKYCIdentification\" />
     <None Remove="Refit" />
     <None Remove="Resources\Keys\" />
+    <None Remove="AWS\Managers\MoreIcon\" />
+    <None Remove="AWS\Models\MoreIcon\" />
+    <None Remove="Resources\Keys\SKey.txt" />
     <None Remove="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
-    <Compile Remove="AWSProductionConstants.cs" />
-    <Compile Remove="MobileProductionConstants.cs" />
+    <Compile Remove="MobileConstants.cs" />
+    <Compile Remove="AWSConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Refit" Version="4.6.58" />

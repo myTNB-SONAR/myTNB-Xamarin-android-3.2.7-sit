@@ -43,6 +43,10 @@ using myTNB_Android.Src.SSMRMeterHistory.Api;
 using Dynatrace.Xamarin;
 using myTNB.Mobile.Business;
 using Android.Nfc;
+using myTNB_Android.Src.QuickActionArrange.Model;
+using myTNB.Mobile.AWS.Managers.MoreIcon;
+using myTNB_Android.Src.DeviceCache;
+using myTNB.Mobile.AWS.Models.MoreIcon;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -56,6 +60,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static bool FirstTimeMyServiceInitiate = true;
         private static bool FirstTimeNewFAQInitiate = true;
         private static List<MyServiceModel> myServicesList = new List<MyServiceModel>();
+        private static List<MyServiceModel> myServicesListInitial = new List<MyServiceModel>();
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
         private static NewFAQParentEntity NewFAQParentManager;
         private static NewFAQEntity NewFAQManager;
@@ -72,6 +77,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private bool isMyServiceRefreshNeeded = false;
 
         private bool isAccountRefreshNeeded = false;
+
+        private bool isFromQuickActionPage = false;
 
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -90,12 +97,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private SMRregistrationApi api;
 
+        private Context mContext;
+
+        private static List<MyServiceModel> myServicesListNewArrange = new List<MyServiceModel>();
+
         private CancellationTokenSource normalTokenSource = new CancellationTokenSource();
 
-        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref)
+        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref, Context context)
         {
             this.mView = view;
             this.mPref = pref;
+            this.mContext = context;
             this.serviceApi = new HomeMenuServiceImpl();
             this.api = new SMRregistrationApiImpl();
         }
@@ -1957,7 +1969,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             myServicesList.Add(model);
                         }
 
-                        ProcessMyServices();
+                        //ProcessMyServices();
+                        QuickActionRearrangeData();
                         FirstTimeMyServiceInitiate = false;
                     }
                     else
@@ -2002,9 +2015,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private void ProcessMyServices()
+        public void ProcessMyServices()
         {
             List<MyServiceModel> filteredServices = new List<MyServiceModel>();
+            List<MyServiceModel> newfilteredServices = new List<MyServiceModel>();
             foreach (MyServiceModel model in myServicesList)
             {
                 if (model.ServiceType == ServiceEnum.SELFMETERREADING)
@@ -2042,13 +2056,212 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }
 
-            myServicesList = filteredServices;
+            if (UserSessions.GetQuickActionList() != null
+                && UserSessions.GetQuickActionList().Count > 0)
+            {
+                myServicesListInitial = DeepClone(filteredServices);
+                List<Feature> listIconNew = new List<Feature>();
+                List<Feature> listIconNewUpdate = new List<Feature>();
+                listIconNew = UserSessions.GetQuickActionList();
+
+                var updatedList = filteredServices
+                    .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                    {
+                        OriginalItem = item1,
+                        Order = listIconNew.IndexOf(item2)
+                    })
+                    .OrderBy(pair => pair.Order)
+                    .Select(pair => pair.OriginalItem)
+                    .ToList();
+
+                // Update myServicesList with the sorted order
+                filteredServices.Clear();
+                filteredServices.AddRange(updatedList);
+                // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
+                var updatedStoreList = listIconNew
+                    .Join(filteredServices, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                    {
+                        OriginalItem = item1,
+                        Order = filteredServices.IndexOf(item2)
+                    })
+                    .OrderBy(pair => pair.Order)
+                    .Select(pair => pair.OriginalItem)
+                    .ToList();
+
+                // Update myServicesList with the sorted order
+                listIconNewUpdate.AddRange(updatedStoreList);
+                UserSessions.RemoveQuickActionList();
+                UserSessions.SetQuickActionList(listIconNewUpdate);
+            }
+
+            UserSessions.RemoveQuickActionDashboardList();
+            UserSessions.SetQuickActionDashboardList(filteredServices);
+
+            if (filteredServices.Count > 6)
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    newfilteredServices.Add(filteredServices[i]);
+                }
+
+                var modelViewMore = new MyServiceModel()       //can remove after modelviewmore have in API
+                {
+                    ServiceId = "1111",
+                    ServiceName = "VIEWMORE",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWMORE,
+                    Children = new List<MyServiceModel>()
+                };
+                newfilteredServices.Add(modelViewMore);
+            }
+            else
+            {
+                newfilteredServices = filteredServices;
+            }
+
+            //myServicesList = filteredServices;
 
             this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-            this.mView.SetMyServicesResult(myServicesList);
+            this.mView.SetMyServicesResult(newfilteredServices);
 
             isMyServiceDone = true;
             OnCheckToCallHomeMenuTutorial();
+        }
+
+        static List<T> DeepClone<T>(List<T> original)
+        {
+            string json = JsonConvert.SerializeObject(original);
+            return JsonConvert.DeserializeObject<List<T>>(json);
+        }
+
+        private async void QuickActionRearrangeData()
+        {
+            try
+            {
+                DateTime localTimestamp = DateTime.Now;
+                bool needToCallAPI = false;
+                if (UserSessions.GetTimeStampQuickAction(this.mPref) != null && !string.IsNullOrEmpty(UserSessions.GetTimeStampQuickAction(this.mPref))
+                    && UserSessions.GetUserEmailQuickAction(this.mPref) != null && !string.IsNullOrEmpty(UserSessions.GetUserEmailQuickAction(this.mPref)))
+                {
+                    string timestamp = UserSessions.GetTimeStampQuickAction(this.mPref);
+                    string email = UserSessions.GetUserEmailQuickAction(this.mPref);
+
+                    DateTime.TryParseExact(timestamp, "dd/MM/yyyy HH:mm:ss", null, System.Globalization.DateTimeStyles.None, out DateTime sessionStartDateTime);
+                    bool within30Minutes = IsWithin30Minutes(sessionStartDateTime, localTimestamp);
+
+                    if (!within30Minutes && (email == UserEntity.GetActive().Email))
+                    {
+                        needToCallAPI = true;
+                    }
+                    else if (email != UserEntity.GetActive().Email)
+                    {
+                        needToCallAPI = true;
+                    }
+                }
+                else
+                {
+                    UserSessions.RemoveQuickActionList();
+                    needToCallAPI = true;
+                }
+
+                if (needToCallAPI)
+                {
+                    await GetMoreIconListAsync();
+                }
+                else
+                {
+                    DataSortIconList();
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        public void DataSortIconList()
+        {
+            try
+            {
+                List<Feature> listIconNew = new List<Feature>();
+                List<Feature> listIconSiteCore = new List<Feature>();
+                List<Feature> listIconSavedData = new List<Feature>();
+                var jTokenMasterList = myTNB.LanguageManager.Instance.GetReArrangeMasterValue();
+                listIconSiteCore = jTokenMasterList.ToObject<List<Feature>>();
+
+                if (listIconSiteCore != null && listIconSiteCore.Count > 0)
+                {
+                    if (UserSessions.GetQuickActionList() != null && UserSessions.GetQuickActionList().Count > 0)
+                    {
+                        listIconSavedData = UserSessions.GetQuickActionList();
+
+                        var updatedList = listIconSiteCore
+                            .Join(myServicesList, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = myServicesList.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                        var changedItems = updatedList
+                            .Join(listIconSavedData, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                SavedItem = item2
+                            })
+                            .Where(pair => !pair.OriginalItem.Equals(pair.SavedItem)) // You need to implement Equals in Feature class
+                            .ToList();
+
+                        // Update myServicesList with the sorted order
+                        listIconNew.AddRange(listIconSavedData);
+                        UserSessions.RemoveQuickActionList();
+                        UserSessions.SetQuickActionList(listIconNew);
+                    }
+                    else
+                    {
+                        UserSessions.SetQuickActionList(listIconSiteCore);
+                    }
+                }
+                ProcessMyServices();
+            }
+            catch (Exception e)
+            {
+                ProcessMyServices();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private bool IsWithin30Minutes(DateTime timestamp1, DateTime timestamp2)
+        {
+            int timeIntervalToCall = myTNB.LanguageManager.Instance.GetConfigIntValue(myTNB.LanguageManager.ConfigPropertyEnum.QuickActionTimeRangeInMin);
+            // Define the duration (30 minutes)
+            TimeSpan duration = TimeSpan.FromMinutes(timeIntervalToCall);
+
+            // Calculate the time difference
+            TimeSpan timeDifference = timestamp1 - timestamp2;
+
+            // Compare the absolute value of the time difference with the duration
+            return Math.Abs(timeDifference.TotalMinutes) <= duration.TotalMinutes;
         }
 
         public void RestoreCurrentAccountState()
@@ -2139,28 +2352,108 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServicesList = cachedList;
             isMyServiceExpanded = true;// HomeMenuUtils.GetIsMyServiceExpanded();
+            if (cachedList.Count > 6)
+            {
+                isMyServiceExpanded = false;
+            }
+
+            myServicesListInitial = DeepClone(myServicesList);
+            List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
+            if (UserSessions.GetQuickActionDashboardList() != null
+                && UserSessions.GetQuickActionDashboardList().Count > 0
+                && !isFromQuickActionPage)
+            {
+                newIconListArrangge = UserSessions.GetQuickActionDashboardList();
+            }
+            else if (UserSessions.GetQuickActionList() != null
+                && UserSessions.GetQuickActionList().Count > 0)
+            {
+                List<Feature> listIconNew = new List<Feature>();
+                List<Feature> listIconNewUpdate = new List<Feature>();
+                listIconNew = UserSessions.GetQuickActionList();
+
+                var updatedList = myServicesList
+                            .Join(listIconNew, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                            {
+                                OriginalItem = item1,
+                                Order = listIconNew.IndexOf(item2)
+                            })
+                            .OrderBy(pair => pair.Order)
+                            .Select(pair => pair.OriginalItem)
+                            .ToList();
+
+                // Update myServicesList with the sorted order
+                newIconListArrangge.AddRange(updatedList);
+
+                // Assuming myServicesList and listIconNew have a common property (e.g., ServiceId) for matching
+                var updatedStoreList = listIconNew
+                    .Join(newIconListArrangge, item1 => item1.ServiceId, item2 => item2.ServiceId, (item1, item2) => new
+                    {
+                        OriginalItem = item1,
+                        Order = newIconListArrangge.IndexOf(item2)
+                    })
+                    .OrderBy(pair => pair.Order)
+                    .Select(pair => pair.OriginalItem)
+                    .ToList();
+
+                // Update myServicesList with the sorted order
+                listIconNewUpdate.AddRange(updatedStoreList);
+                UserSessions.RemoveQuickActionList();
+                UserSessions.SetQuickActionList(listIconNewUpdate);
+            }
+            else
+            {
+                newIconListArrangge = myServicesList;
+            }
+
+            UserSessions.RemoveQuickActionDashboardList();
+            UserSessions.SetQuickActionDashboardList(newIconListArrangge);
+
+            if (newIconListArrangge.Count < 7)
+            {
+                isMyServiceExpanded = true;
+            }
+
             List<MyServiceModel> fetchList = new List<MyServiceModel>();
             if (isMyServiceExpanded)
             {
-                fetchList = myServicesList;
+                fetchList = newIconListArrangge;
                 this.mView.IsMyServiceLoadMoreButtonVisible(true, true);
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServicesResult(fetchList);
             }
             else
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < 5; i++)
                 {
-                    fetchList.Add(myServicesList[i]);
+                    fetchList.Add(newIconListArrangge[i]);
                 }
-                if (myServicesList.Count > 3)
+
+                var modelViewMore = new MyServiceModel()    //can remove after modelviewmore have in API
                 {
-                    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                }
-                else
-                {
-                    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                }
+                    ServiceId = "1111",
+                    ServiceName = "VIEWMORE",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWMORE,
+                    Children = new List<MyServiceModel>()
+                };
+                fetchList.Add(modelViewMore);
+
+                //if (myServicesList.Count > 3)
+                //{
+                //    this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                //}
+                //else
+                //{
+                //    this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                //}
                 this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
                 this.mView.SetMyServicesResult(fetchList);
             }
@@ -2241,16 +2534,96 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void ListAfterRearrangeIcon(bool isFromPage)
+        {
+           try
+           {
+               isFromQuickActionPage = isFromPage;
+           }
+            catch (Exception e)
+           {
+               Utility.LoggingNonFatalError(e);
+           }
+        }
+
         public void DoMySerivceLoadMoreAccount()
         {
             try
             {
                 List<MyServiceModel> fetchList = new List<MyServiceModel>();
-                isMyServiceExpanded = true;
-                HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
-                fetchList = myServicesList;
-                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                //isMyServiceExpanded = true;
+                //HomeMenuUtils.SetIsMyServiceExpanded(isMyServiceExpanded);
+                List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
+                if (UserSessions.GetQuickActionDashboardList() != null
+                    && UserSessions.GetQuickActionDashboardList().Count > 0)
+                {
+                    newIconListArrangge = UserSessions.GetQuickActionDashboardList();
+                }
+
+                newIconListArrangge.RemoveAll(item => item?.ServiceType == ServiceEnum.VIEWMORE);
+                var modelViewLess = new MyServiceModel()   //can remove after modelviewless have in API
+                {
+                    ServiceId = "1112",
+                    ServiceName = "VIEWLESS",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWLESS,
+                    Children = new List<MyServiceModel>()
+                };
+                newIconListArrangge.Add(modelViewLess);
+
+                fetchList = newIconListArrangge;
+                //this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                //this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                this.mView.SetMyServicesResult(fetchList);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void DoMyServiceLoadLessAccount()
+        {
+            try
+            {
+                List<MyServiceModel> fetchList = new List<MyServiceModel>();
+                List<MyServiceModel> newIconListArrangge = new List<MyServiceModel>();
+                if (UserSessions.GetQuickActionDashboardList() != null
+                    && UserSessions.GetQuickActionDashboardList().Count > 0)
+                {
+                    newIconListArrangge = UserSessions.GetQuickActionDashboardList();
+                }
+
+                newIconListArrangge.RemoveAll(item => item.ServiceType == ServiceEnum.VIEWLESS);
+                for (int i = 0; i < 5; i++)
+                {
+                    fetchList.Add(newIconListArrangge[i]);
+                }
+
+                var modelViewMore = new MyServiceModel()     //can remove after modelviewmore have in API
+                {
+                    ServiceId = "1111",
+                    ServiceName = "VIEWMORE",
+                    ServiceIconUrl = "",
+                    DisabledServiceIconUrl = "",
+                    ServiceBannerUrl = "",
+                    Enabled = true,
+                    SSODomain = "",
+                    OriginURL = "",
+                    RedirectURL = "",
+                    DisplayType = 0,
+                    ServiceType = ServiceEnum.VIEWMORE,
+                    Children = new List<MyServiceModel>()
+                };
+                fetchList.Add(modelViewMore);
+
                 this.mView.SetMyServicesResult(fetchList);
             }
             catch (Exception e)
@@ -2962,32 +3335,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         this.mView.RestartHomeMenu();
                     }
                 }
-                else if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
-                {
-                    if (MyHomeUtility.Instance.IsAccountEligible)
-                    {
-                        UserSessions.SetShownBeforeHomeDashboardTutorial(this.mPref);
-                        UserSessions.UpdateHomeTutorialShown(this.mPref);
-                        if (HomeMenuUtils.GetIsRestartHomeMenu())
-                        {
-                            this.mView.ResetNewFAQScroll();
-                            this.mView.OnShowHomeMenuFragmentTutorialDialog();
-                        }
-                        else
-                        {
-                            normalTokenSource.Cancel();
-                            trackCurrentLoadMoreCount = 0;
-                            HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
-                            isMyServiceExpanded = false;
-                            HomeMenuUtils.SetIsMyServiceExpanded(false);
-                            isQuery = false;
-                            HomeMenuUtils.SetIsQuery(false);
-                            HomeMenuUtils.SetQueryWord(string.Empty);
-                            HomeMenuUtils.SetIsRestartHomeMenu(true);
-                            this.mView.RestartHomeMenu();
-                        }
-                    }
-                }
+                //else if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
+                //{
+                //    if (MyHomeUtility.Instance.IsAccountEligible)
+                //    {
+                //        UserSessions.SetShownBeforeHomeDashboardTutorial(this.mPref);
+                //        UserSessions.UpdateHomeTutorialShown(this.mPref);
+                //        if (HomeMenuUtils.GetIsRestartHomeMenu())
+                //        {
+                //            this.mView.ResetNewFAQScroll();
+                //            this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                //        }
+                //        else
+                //        {
+                //            normalTokenSource.Cancel();
+                //            trackCurrentLoadMoreCount = 0;
+                //            HomeMenuUtils.SetTrackCurrentLoadMoreCount(0);
+                //            isMyServiceExpanded = false;
+                //            HomeMenuUtils.SetIsMyServiceExpanded(false);
+                //            isQuery = false;
+                //            HomeMenuUtils.SetIsQuery(false);
+                //            HomeMenuUtils.SetQueryWord(string.Empty);
+                //            HomeMenuUtils.SetIsRestartHomeMenu(true);
+                //            this.mView.RestartHomeMenu();
+                //        }
+                //    }
+                //}
             }
         }
 
@@ -3018,21 +3391,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Feature = FeatureType.AccountsNC
                 });
 
-                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
-                {
-                    newList.Add(new NewAppModel()
-                    {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false,
-                        Feature = FeatureType.MyHome,
-                        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                    });
-                }
+                //if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
+                //{
+                //    newList.Add(new NewAppModel()
+                //    {
+                //        ContentShowPosition = ContentType.TopRight,
+                //        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                //        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                //        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                //        NeedHelpHide = isNeedHelpHide,
+                //        IsButtonShow = false,
+                //        Feature = FeatureType.MyHome,
+                //        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                //        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                //    });
+                //}
 
                 return newList;
             }
@@ -3150,21 +3523,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Feature = FeatureType.QuickActions
                 });
 
-                if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
-                {
-                    newList.Add(new NewAppModel()
-                    {
-                        ContentShowPosition = ContentType.TopRight,
-                        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                        NeedHelpHide = isNeedHelpHide,
-                        IsButtonShow = false,
-                        Feature = FeatureType.MyHome,
-                        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                    });
-                }
+                //if (!UserSessions.MyHomeDashboardTutorialHasShown(this.mPref) && MyHomeUtility.Instance.IsAccountEligible)
+                //{
+                //    newList.Add(new NewAppModel()
+                //    {
+                //        ContentShowPosition = ContentType.TopRight,
+                //        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                //        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                //        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                //        NeedHelpHide = isNeedHelpHide,
+                //        IsButtonShow = false,
+                //        Feature = FeatureType.MyHome,
+                //        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                //        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                //    });
+                //}
 
                 if (!isNeedHelpHide)
                 {
@@ -3184,7 +3557,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             else
             {
-                if (UserSessions.HomeDashboardTutorialHasShownBefore(this.mPref) && !UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
+                bool bypassMyHome = false;
+                if (bypassMyHome)
+                //if (UserSessions.HomeDashboardTutorialHasShownBefore(this.mPref) && !UserSessions.MyHomeDashboardTutorialHasShown(this.mPref))
                 {
                     if (MyHomeUtility.Instance.IsAccountEligible)
                     {
@@ -3282,21 +3657,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         Feature = FeatureType.QuickActions
                     });
 
-                    if (MyHomeUtility.Instance.IsAccountEligible)
-                    {
-                        newList.Add(new NewAppModel()
-                        {
-                            ContentShowPosition = ContentType.TopRight,
-                            ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
-                            ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
-                            ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
-                            NeedHelpHide = isNeedHelpHide,
-                            IsButtonShow = false,
-                            Feature = FeatureType.MyHome,
-                            DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
-                            DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
-                        });
-                    }
+                    //if (MyHomeUtility.Instance.IsAccountEligible)
+                    //{
+                    //    newList.Add(new NewAppModel()
+                    //    {
+                    //        ContentShowPosition = ContentType.TopRight,
+                    //        ContentTitle = Utility.GetLocalizedLabel("Tutorial", "myHomeTitle"),//"Introducing myHome.",
+                    //        ContentMessage = Utility.GetLocalizedLabel("Tutorial", "myHomeMessage"),//"Manage your electricity connection accounts and applications by selecting the myHome feature.",
+                    //        ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    //        NeedHelpHide = isNeedHelpHide,
+                    //        IsButtonShow = false,
+                    //        Feature = FeatureType.MyHome,
+                    //        DynatraceVisitTag = DynatraceConstants.MyHome.Screens.Tutorial.Dashboard_QuickLinks_MyHome,
+                    //        DynatraceActionTag = DynatraceConstants.MyHome.CTAs.Tutorial.Dashboard_QuickLinks_MyHome_Skip
+                    //    });
+                    //}
 
                     if (!isNeedHelpHide)
                     {
@@ -3445,8 +3820,91 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(unknownException);
             }
-
+        }
             
+        public List<MyServiceModel> GetCurrentQuickActionList()
+        {
+            return myServicesListInitial;
+        }
+
+        private async Task GetMoreIconListAsync()
+        {
+            try
+            {
+                if (!AccessTokenCache.Instance.HasTokenSaved(this.mContext))
+                {
+                    string accessToken = await AccessTokenManager.Instance.GenerateAccessToken(UserEntity.GetActive().UserID ?? string.Empty);
+                    AccessTokenCache.Instance.SaveAccessToken(this.mContext, accessToken);
+                }
+
+                UserInfoExtra usrinf = new UserInfoExtra();
+                usrinf.ses_param1 = UserEntity.IsCurrentlyActive() ? UserEntity.GetActive().DisplayName : "";
+                usrinf.DeviceID = this.mView.GetDeviceId();
+                usrinf.FCMToken = FirebaseTokenEntity.GetLatest().FBToken;
+                usrinf.Language = LanguageUtil.GetAppLanguage().ToUpper();
+                usrinf.sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
+                usrinf.UserID = UserEntity.GetActive().UserID;
+                usrinf.UserName = UserEntity.GetActive().Email;
+
+                DeviceInfoExtra currentDeviceInf = new DeviceInfoExtra()
+                {
+                    DeviceId = this.mView.GetDeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = Constants.DEVICE_PLATFORM,
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG,
+                    VersionCode = ""
+                };
+                MoreIconResponse moreiconResponse = await MoreIconManager.Instance.GetMoreIconList(currentDeviceInf, usrinf, AccessTokenCache.Instance.GetAccessToken(this.mContext));
+
+                if (moreiconResponse != null
+               && moreiconResponse.StatusDetail != null
+               && moreiconResponse.StatusDetail.IsSuccess
+               && moreiconResponse.Content != null
+               && moreiconResponse.Content.featureIcon != null)
+                {
+                    List<Feature> listIconNew = new List<Feature>();
+                    foreach (var item in moreiconResponse.Content.featureIcon)
+                    {
+                        var itemSort = new Feature
+                        {
+                            ServiceName = item.serviceName,
+                            ServiceId = item.serviceId,
+                            isAvailable = item.isAvailable,
+                            isLocked = item.isLocked
+                        };
+                        listIconNew.Add(itemSort);
+                    }
+
+                    UserSessions.RemoveQuickActionList();
+                    UserSessions.SetQuickActionList(listIconNew);
+
+                    try
+                    {
+                        // Format as string
+                        string formattedDateString = DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss");
+                        UserSessions.SaveTimeStampQuickAction(this.mPref, formattedDateString);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                    UserSessions.SaveUserEmailQuickAction(this.mPref, UserEntity.GetActive().Email);
+                    DataSortIconList();
+                }
+                else
+                {
+                    UserSessions.RemoveQuickActionList();
+                    DataSortIconList();
+                }
+                //HideProgressDialog();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+                ProcessMyServices();
+            }
         }
     }
 }

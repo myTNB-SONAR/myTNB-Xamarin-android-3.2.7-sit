@@ -13,6 +13,8 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
 using myTNB_Android.Src.MyHome;
+using myTNB_Android.Src.QuickActionArrange.Model;
+using myTNB_Android.Src.MyHome.Model;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -1413,6 +1415,85 @@ namespace myTNB_Android.Src.Utils
                 selectAccountList = JsonConvert.DeserializeObject<List<string>>(accountList);
             }
             return selectAccountList;
+        }
+
+        public static void SetQuickActionDashboardList(List<MyServiceModel> iconlists)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string iconList = JsonConvert.SerializeObject(iconlists);
+            editor.PutString("QUICK_ACTION_DASHBOARD_REARRANGE", iconList);
+            editor.Apply();
+        }
+
+        public static void RemoveQuickActionDashboardList()
+        {
+            SetQuickActionDashboardList(new List<MyServiceModel>());
+        }
+
+        public static List<MyServiceModel> GetQuickActionDashboardList()
+        {
+            string iconList = mPreferences.GetString("QUICK_ACTION_DASHBOARD_REARRANGE", null);
+            List<MyServiceModel> iconListNew = new List<MyServiceModel>();
+            if (iconList != null)
+            {
+                iconListNew = JsonConvert.DeserializeObject<List<MyServiceModel>>(iconList);
+            }
+            return iconListNew;
+        }
+
+        public static void SetQuickActionList(List<Feature> iconlists)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string iconList = JsonConvert.SerializeObject(iconlists);
+            editor.PutString("QUICK_ACTION_REARRANGE", iconList);
+            editor.Apply();
+        }
+
+        public static void RemoveQuickActionList()
+        {
+            SetQuickActionList(new List<Feature>());
+        }
+
+        public static List<Feature> GetQuickActionList()
+        {
+            string iconList = mPreferences.GetString("QUICK_ACTION_REARRANGE", null);
+            List<Feature> iconListNew = new List<Feature>();
+            if (iconList != null)
+            {
+                iconListNew = JsonConvert.DeserializeObject<List<Feature>>(iconList);
+            }
+            return iconListNew;
+        }
+
+        public static void SaveTimeStampQuickAction(ISharedPreferences prefs, string timestamp)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("timeStampIcon", timestamp);
+            editor.Apply();
+        }
+
+        public static string GetTimeStampQuickAction(ISharedPreferences prefs)
+        {
+            return prefs.GetString("timeStampIcon", "");
+        }
+
+        public static void SaveUserEmailQuickAction(ISharedPreferences prefs, string email)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("emailSaveIcon", email);
+            editor.Apply();
+        }
+
+        public static string GetUserEmailQuickAction(ISharedPreferences prefs)
+        {
+            return prefs.GetString("emailSaveIcon", "");
+        }
+
+        public static void RemoveUserEmailQuickAction(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.Remove("emailSaveIcon");
+            editor.Apply();
         }
     }
 }

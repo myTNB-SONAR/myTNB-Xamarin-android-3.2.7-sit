@@ -5,6 +5,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
+using AndroidX.Fragment.App;
 using AndroidX.RecyclerView.Widget;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
@@ -428,6 +429,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
                             break;
+                        case ServiceEnum.VIEWMORE:
+                            DynamicIconHandling(vh, model, Resource.Drawable.ic_less_more);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showMore"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showMore"));
+                            }
+                            vh.newLabel.Visibility = ViewStates.Gone;
+                            break;
+                        case ServiceEnum.VIEWLESS:
+                            DynamicIconHandling(vh, model, Resource.Drawable.ic_less_more);
+
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showLess"), FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                vh.serviceTitle.TextFormatted = Html.FromHtml(Utility.GetLocalizedLabel("DashboardHome", "showLess"));
+                            }
+                            vh.newLabel.Visibility = ViewStates.Gone;
+                            break;
                     }
 
                     ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
@@ -546,39 +573,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                     }
                                 });
                             }
-                            else
-                            {
-                                Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
-                                if (convertedImage != null)
-                                {
-                                    vh.serviceImg.SetImageBitmap(convertedImage);
-                                }
-                                else
-                                {
-                                    vh.serviceImg.SetImageResource(fallbackImgRes);
-                                }
-                            }
+                            //else
+                            //{
+                            //    Bitmap convertedImage = ImageUtils.Base64ToBitmap(iconB64);
+                            //    if (convertedImage != null)
+                            //    {
+                            //        vh.serviceImg.SetImageBitmap(convertedImage);
+                            //    }
+                            //    else
+                            //    {
+                            //        vh.serviceImg.SetImageResource(fallbackImgRes);
+                            //    }
+                            //}
                         }
                         else
                         {
                             vh.serviceImg.SetImageResource(fallbackImgRes);
 
-                            Task.Run(() =>
+                            if (model.ServiceId == "1112")
                             {
-                                var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);
-                                if (bitmapImage != null)
+                                //do nothing
+                            }
+                            else if (model.ServiceId == "1111")
+                            {
+                                //do nothing
+                            }
+                            else
+                            {
+                                Task.Run(() =>
                                 {
-                                    vh.serviceImg.SetImageBitmap(bitmapImage);
-                                    string base64String = ImageUtils.GetBase64FromBitmapPNG(bitmapImage, 100);
-                                    iconEntity.ServiceIconB64 = base64String;
+                                    var bitmapImage = ImageUtils.GetImageBitmapFromUrlWithTimeOut(isDisabled ? model.DisabledServiceIconUrl : model.ServiceIconUrl);
+                                    if (bitmapImage != null)
+                                    {
+                                        //vh.serviceImg.SetImageBitmap(bitmapImage);
+                                        string base64String = ImageUtils.GetBase64FromBitmapPNG(bitmapImage, 100);
+                                        iconEntity.ServiceIconB64 = base64String;
 
-                                    iconManager.InsertItem(iconEntity);
-                                }
-                                else
-                                {
-                                    vh.serviceImg.SetImageResource(fallbackImgRes);
-                                }
-                            });
+                                        iconManager.InsertItem(iconEntity);
+                                    }
+                                });
+                            }
                         }
                     }
                     else
@@ -689,6 +723,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 outRect.Right = (int)(spacing - (column + 1) * spacing / spanCount); // spacing - (column + 1) * ((1f /    spanCount) * spacing)
             }
         }
-
+        
     }
 }
