@@ -110,6 +110,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
         [JsonProperty(PropertyName = "IsSMROpenToTenantV2")]
         public bool IsSMROpenToTenantV2 { get; set; }
 
+        [JsonProperty(PropertyName = "IsWalkthroughAppUpdate")]
+        public bool IsWalkthroughAppUpdate { get; set; }
+
+
         public class AppLaunchMasterDataModel : BaseResponseV2<AppLaunchMasterDataResponse.AppLaunchMasterDataModel>
         {
             [JsonProperty(PropertyName = "AppVersionList")]

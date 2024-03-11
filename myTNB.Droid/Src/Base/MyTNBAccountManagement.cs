@@ -348,6 +348,11 @@ namespace myTNB_Android.Src.Base
             return appMasterDataResponse.IsSMROpenToTenantV2;
         }
 
+        public bool IsWalkthroughAppUpdate()
+        {
+            return appMasterDataResponse.IsWalkthroughAppUpdate;
+        }
+
         public bool IsOCRDown()
         {
             return appMasterDataResponse.IsOCRDown;

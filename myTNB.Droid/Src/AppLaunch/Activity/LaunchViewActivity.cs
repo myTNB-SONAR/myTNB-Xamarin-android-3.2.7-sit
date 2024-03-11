@@ -347,7 +347,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
-                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)) || (!MyTNBAccountManagement.GetInstance().IsWalkthroughAppUpdate()))
                 {
                     Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                     DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);

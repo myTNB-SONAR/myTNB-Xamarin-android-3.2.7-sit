@@ -99,6 +99,7 @@
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10010.json" />
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10009.json" />
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10051.json" />
+    <EmbeddedResource Remove="Resources\Keys\SKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
@@ -159,7 +160,6 @@
     <None Remove="AWS\Managers\MoreIcon\" />
     <None Remove="AWS\Models\MoreIcon\" />
     <None Remove="Resources\Keys\SKey.txt" />
-    <None Remove="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />

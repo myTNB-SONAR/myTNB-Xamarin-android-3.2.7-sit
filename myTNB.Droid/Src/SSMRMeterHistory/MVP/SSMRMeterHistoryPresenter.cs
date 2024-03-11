@@ -426,7 +426,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                     else
                     {
-                        this.mView.RestartSMRActivity();
+                        //this.mView.RestartSMRActivity();
 
                         if (smrtypeBtn == "Stop")
                         {

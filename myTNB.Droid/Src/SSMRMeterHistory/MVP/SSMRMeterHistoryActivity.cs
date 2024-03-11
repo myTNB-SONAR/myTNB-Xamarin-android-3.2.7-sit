@@ -402,7 +402,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             }
             else
             {
-                btnEnableSubmitMeter.Enabled = false;
+                btnEnableSubmitMeter.Enabled = true;
                 btnEnableSubmitMeter.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
             }
            
@@ -742,7 +742,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnEnableSubmitMeter)]
         void OnEnableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            this.SetIsClicked(true);
+            //this.SetIsClicked(true);
             smrtypeBtn = "Start";
             this.mPresenter.GetDownTime(smrtypeBtn);
 
