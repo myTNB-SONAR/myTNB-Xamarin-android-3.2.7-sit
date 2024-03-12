@@ -99,7 +99,7 @@
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10010.json" />
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10009.json" />
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_10051.json" />
-    <EmbeddedResource Remove="Resources\Keys\SKey.txt" />
+    <EmbeddedResource Remove="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_MS.json" />
@@ -109,7 +109,9 @@
     <EmbeddedResource Include="Resources\TnC\TermsAndConditions_MS.txt" />
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
     <EmbeddedResource Include="Resources\Country\CountryList.json" />
-    <EmbeddedResource Include="Resources\Keys\PKey.txt" />
+    <EmbeddedResource Include="AWSConstants.cs" />
+    <EmbeddedResource Include="MobileConstants.cs" />
+    <EmbeddedResource Include="Resources\Keys\SKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Remove="Resources\FAQ\FAQ_MS.json" />
@@ -159,16 +161,15 @@
     <None Remove="Resources\Keys\" />
     <None Remove="AWS\Managers\MoreIcon\" />
     <None Remove="AWS\Models\MoreIcon\" />
-    <None Remove="Resources\Keys\SKey.txt" />
+    <None Remove="Resources\Keys\PKey.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Business\Managers\UserNotificationManager.cs" />
     <Compile Remove="Business\Managers\AccountUsageManager.cs" />
-    <Compile Remove="MobileConstants.cs" />
-    <Compile Remove="AWSConstants.cs" />
+    <Compile Remove="AWSProductionConstants.cs" />
+    <Compile Remove="MobileProductionConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Refit" Version="4.6.58" />
     <PackageReference Include="Xamarin.Essentials" Version="1.6.1" />
   </ItemGroup>
 </Project>
