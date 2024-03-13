@@ -47,7 +47,7 @@ namespace myTNB.Mobile.AWS.Managers.Home
                         ses_param1 = string.Empty,
                         ses_param2 = string.Empty
                     },
-                    DeviceInfo = new DeviceInfo
+                    DeviceInfo = new myTNB.Mobile.API.Models.Home.PostServices.DeviceInfo
                     {
                         DeviceId = AppInfoManager.Instance.ViewInfoHeader.DeviceToken,
                         AppVersion = AppInfoManager.Instance.ViewInfoHeader.AppVersion,
