@@ -15,6 +15,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
+using Microsoft.Maui.ApplicationModel;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
@@ -424,7 +425,7 @@ namespace myTNB_Android.Src.MyHome.Activity
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             try

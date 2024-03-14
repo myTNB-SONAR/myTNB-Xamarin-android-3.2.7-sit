@@ -27,7 +27,6 @@ using myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity;
 using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
-using Xamarin.Essentials;
 using myTNB_Android.Src.MyTNBService.Request;
 using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
 
@@ -36,6 +35,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Helper;
 using myTNB_Android.Src.OverVoltageFeedback.Model;
 using myTNB.Mobile;
+using Microsoft.Maui.ApplicationModel;
 
 namespace myTNB_Android.Src.OverVoltageFeedback.Activity
 {
@@ -239,7 +239,7 @@ namespace myTNB_Android.Src.OverVoltageFeedback.Activity
         //File upload
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);          
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);          
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
