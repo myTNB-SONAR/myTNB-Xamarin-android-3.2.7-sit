@@ -16,6 +16,7 @@ using Android.Widget;
 using CheeseBind;
 using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
+using Microsoft.Maui.ApplicationModel;
 using myTNB.Mobile;
 using myTNB.Android.Src.AppLaunch.Activity;
 using myTNB.Android.Src.Base.Activity;
@@ -27,7 +28,6 @@ using myTNB.Android.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Org.Json;
-using Xamarin.Essentials;
 
 
 namespace myTNB.Android.Src.OverVoltageClaim.Activity
@@ -97,7 +97,7 @@ namespace myTNB.Android.Src.OverVoltageClaim.Activity
 
                 SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "overVoltageClaimTitle"));
                 SetUI();
-                Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+                Platform.Init(this, savedInstanceState);
                 
                 //Enabled Javascript in Websettings  
 
@@ -242,7 +242,7 @@ namespace myTNB.Android.Src.OverVoltageClaim.Activity
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
