@@ -16,15 +16,15 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Java.Security.Acl;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyDrawer;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.Utils;
-using static myTNB_Android.Src.MyDrawer.MyDrawerAdapter;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyDrawer;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.Utils;
+using static myTNB.Android.Src.MyDrawer.MyDrawerAdapter;
 
 using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
 
-namespace myTNB_Android.Src.MyDrawer
+namespace myTNB.Android.Src.MyDrawer
 {
     public class MyDrawerAdapter : RecyclerView.Adapter
     {

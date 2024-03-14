@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
+namespace myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     public class AppointmentSelectContract
     {

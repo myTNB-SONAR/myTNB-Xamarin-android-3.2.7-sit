@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using myTNB.Mobile;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class UserNotificationResponse : BaseResponse<UserNotificationResponse.UserNotificationResponseData>
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
 {
     public class MeterValidationData
     {

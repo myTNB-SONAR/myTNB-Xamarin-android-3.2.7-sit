@@ -1,8 +1,8 @@
 ﻿
-using myTNB_Android.Src.MyHome.Model;
+using myTNB.Android.Src.MyHome.Model;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.MyDrawer
+namespace myTNB.Android.Src.MyDrawer
 {
     public class MyDrawerModel : MyServiceModel {  }
 }

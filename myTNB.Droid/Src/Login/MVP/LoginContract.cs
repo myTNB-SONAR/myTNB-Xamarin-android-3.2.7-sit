@@ -1,9 +1,9 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Login.Requests;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Login.Requests;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.Login.MVP
+namespace myTNB.Android.Src.Login.MVP
 {
     public class LoginContract
     {
@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.Login.MVP
             void ShowInvalidEmailPasswordError(string errorMessageTitle, string errorMessageDetails);
 
             /// <summary>
-            /// Clears email & password errors
+            /// Clears email and password errors
             /// </summary>
             void ClearErrors();
 
@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.Login.MVP
             /// Shows Add Account Activity
             /// </summary>
             void ShowAddAccount();
-            
+
 
             /// <summary>
             /// Shows Reset Password ACtivity provided there is a reset flag

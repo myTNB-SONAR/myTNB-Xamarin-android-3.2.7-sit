@@ -5,13 +5,13 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.SelectSubmittedFeedback.Adapter
+namespace myTNB.Android.Src.SelectSubmittedFeedback.Adapter
 {
     public class SelectSubmittedFeedbackAdapter : BaseCustomAdapter<SubmittedFeedback>
     {

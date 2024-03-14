@@ -1,13 +1,13 @@
 ﻿using Android.Util;
 using myTNB.Mobile.API.Managers.Payment;
 using myTNB.Mobile.API.Models.ApplicationStatus;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.MultipleAccountPayment.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -15,9 +15,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Threading.Tasks;
-using static myTNB_Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
+using static myTNB.Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.MVP
+namespace myTNB.Android.Src.MultipleAccountPayment.MVP
 {
     public class MPSelectPaymentMethodPresenter : MPSelectPaymentMethodContract.IUserActionsListener
     {

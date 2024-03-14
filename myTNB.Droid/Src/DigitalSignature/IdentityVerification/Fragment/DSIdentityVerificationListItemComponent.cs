@@ -4,9 +4,9 @@ using Android.OS;
 using Android.Text;
 using Android.Util;
 using Android.Widget;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment
+namespace myTNB.Android.Src.DigitalSignature.IdentityVerification.Fragment
 {
     public class DSIdentityVerificationListItemComponent : LinearLayout
     {

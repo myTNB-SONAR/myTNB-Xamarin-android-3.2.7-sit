@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.MyTNBService.Model;
-using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.MyTNBService.Model;
+using static myTNB.Android.Src.MyTNBService.Response.AccountChargesResponse;
 
-namespace myTNB_Android.Src.MyTNBService.Parser
+namespace myTNB.Android.Src.MyTNBService.Parser
 {
     public class BillingResponseParser
     {

@@ -2,17 +2,17 @@
 using Android.Text;
 using Castle.Core.Internal;
 using myTNB;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using static myTNB.LanguageManager;
-using static myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
+using static myTNB.Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
 
-namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
+namespace myTNB.Android.Src.Feedback_Prelogin_NewIC.MVP
 {
     public class FeedbackPreloginNewICPresenter : FeedbackPreloginNewICContract.IUserActionsListener
     {

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using myTNB.Mobile.API.Models.ApplicationStatus;
+﻿using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
 using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.Extensions;
 using myTNB.Mobile.SessionCache;
+using System.Diagnostics;
+using System.Globalization;
 
 namespace myTNB.Mobile
 {
@@ -460,7 +458,7 @@ namespace myTNB.Mobile
                                         {
                                             type = MyHomeDetails.IsOTPFailed ? DetailCTAType.DeleteApplication : DetailCTAType.ResumeApplication;
                                         }
-                                        else if (ApplicationRatingDetail?.SubmissionRating != null 
+                                        else if (ApplicationRatingDetail?.SubmissionRating != null
                                         && !ApplicationRatingDetail.SubmissionRating.IsSubmissionSurveyCompleted)
                                         {
                                             type = DetailCTAType.SubmitApplicationRating;
@@ -586,15 +584,20 @@ namespace myTNB.Mobile
                 {
                     switch (ApplicationTypeCode.ToUpper())
                     {
-                        case "ASR": supplyOffering = SupplyOfferingType.ASR;
+                        case "ASR":
+                            supplyOffering = SupplyOfferingType.ASR;
                             break;
-                        case "NC": supplyOffering = SupplyOfferingType.NC;
+                        case "NC":
+                            supplyOffering = SupplyOfferingType.NC;
                             break;
-                        case "COT": supplyOffering = SupplyOfferingType.COT;
+                        case "COT":
+                            supplyOffering = SupplyOfferingType.COT;
                             break;
-                        case "COA": supplyOffering = SupplyOfferingType.COA;
+                        case "COA":
+                            supplyOffering = SupplyOfferingType.COA;
                             break;
-                        default: supplyOffering = SupplyOfferingType.OTHERS;
+                        default:
+                            supplyOffering = SupplyOfferingType.OTHERS;
                             break;
                     }
                 }
@@ -923,7 +926,7 @@ namespace myTNB.Mobile
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = CreatedDate != null && CreatedDate.Value != null
+                string date = CreatedDate != null && CreatedDate.HasValue
                     ? CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 return date;
@@ -937,7 +940,7 @@ namespace myTNB.Mobile
         {
             get
             {
-                return StatusDate != null && StatusDate.Value != null;
+                return StatusDate != null && StatusDate.HasValue;
             }
         }
         /// <summary>
@@ -949,7 +952,7 @@ namespace myTNB.Mobile
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 string message = LanguageManager.Instance.GetPageValueByKey("ApplicationStatusDetails", "lastUpdatedDate");
-                string date = StatusDate != null && StatusDate.Value != null
+                string date = StatusDate != null && StatusDate.HasValue
                     ? StatusDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 string displayDate = string.Format(message, date);
@@ -992,7 +995,7 @@ namespace myTNB.Mobile
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 string date = string.Empty;
-                if (StatusDate != null && StatusDate.Value != null)
+                if (StatusDate != null && StatusDate.HasValue)
                 {
                     string dateString = StatusDate.Value.ToString("dd MMM yyyy", dateCultureInfo);
                     if (dateString.IsValid())
@@ -1092,7 +1095,7 @@ namespace myTNB.Mobile
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = CreatedDate != null && CreatedDate.Value != null
+                string date = CreatedDate != null && CreatedDate.HasValue
                     ? CreatedDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 return date;
@@ -1172,7 +1175,7 @@ namespace myTNB.Mobile
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
                 string date = string.Empty;
-                if (PaymentDoneDate != null && PaymentDoneDate.Value != null)
+                if (PaymentDoneDate != null && PaymentDoneDate.HasValue)
                 {
                     string dateString = PaymentDoneDate.Value.ToString("dd MMM", dateCultureInfo);
                     if (dateString.IsValid())

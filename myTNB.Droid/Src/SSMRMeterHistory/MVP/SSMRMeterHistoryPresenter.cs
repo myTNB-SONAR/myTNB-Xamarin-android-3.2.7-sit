@@ -3,34 +3,34 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.Api;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.SSMR.SMRApplication.Api;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.SSMRMeterHistory.Api;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Requests;
 using Refit;
-using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
-using myTNB_Android.Src.SSMRTerminate.Api;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using static myTNB.Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
+using myTNB.Android.Src.SSMRTerminate.Api;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
 using System.Linq;
 using System.Threading.Tasks;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Service;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.AppLaunch.Requests;
 
-namespace myTNB_Android.Src.SSMRMeterHistory.MVP
+namespace myTNB.Android.Src.SSMRMeterHistory.MVP
 {
     public class SSMRMeterHistoryPresenter : SSMRMeterHistoryContract.IPresenter
     {

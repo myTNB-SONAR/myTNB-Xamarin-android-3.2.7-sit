@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.MVP;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.SSMRMeterHistory.MVP;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.myTNBMenu.Models
+namespace myTNB.Android.Src.myTNBMenu.Models
 {
     public class SMRDashboardHistory
     {

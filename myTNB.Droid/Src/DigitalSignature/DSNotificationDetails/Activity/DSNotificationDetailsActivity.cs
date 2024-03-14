@@ -10,21 +10,21 @@ using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.Fragment;
-using myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.Fragment;
+using myTNB.Android.Src.DigitalSignature.DSNotificationDetails.MVP;
+using myTNB.Android.Src.Utils;
 using Refit;
 using myTNB.Mobile;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.NotificationDetails.Models;
 using Android.Text;
 using myTNB.Mobile.Constants.DS;
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.Activity
+namespace myTNB.Android.Src.DigitalSignature.DSNotificationDetails.Activity
 {
     [Activity(Label = "DS Notification Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class DSNotificationDetailsActivity : BaseActivityCustom, DSNotificationDetailsContract.IView

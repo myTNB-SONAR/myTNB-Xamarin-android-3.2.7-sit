@@ -4,11 +4,11 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Activity;
 using System;
 using System.Runtime;
 
-namespace myTNB_Android.Src.SelectNotification.Activity
+namespace myTNB.Android.Src.SelectNotification.Activity
 {
     [Activity(Label = "@string/select_notification_activity_title"
               , Icon = "@drawable/ic_launcher"

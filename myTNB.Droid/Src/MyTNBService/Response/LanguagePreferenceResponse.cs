@@ -1,8 +1,8 @@
 ﻿using System;
-using myTNB_Android.Src.Base.Response;
+using myTNB.Android.Src.Base.Response;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class LanguagePreferenceResponse
     {

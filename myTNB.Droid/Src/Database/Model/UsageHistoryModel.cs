@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     public class UsageHistoryModel
     {

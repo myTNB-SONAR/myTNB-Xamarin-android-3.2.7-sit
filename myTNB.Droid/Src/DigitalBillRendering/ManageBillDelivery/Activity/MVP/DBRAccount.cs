@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.DBR.DBRApplication.MVP
+namespace myTNB.Android.Src.DBR.DBRApplication.MVP
 {
     public class DBRAccount
     {

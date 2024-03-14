@@ -4,13 +4,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.NotificationFilter.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.NotificationFilter.Models;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.NotificationFilter.Adapter
+namespace myTNB.Android.Src.NotificationFilter.Adapter
 {
     public class NotificationFilterAdapter : BaseCustomAdapter<NotificationFilterData>
     {

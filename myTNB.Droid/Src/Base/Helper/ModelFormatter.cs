@@ -1,9 +1,9 @@
 ﻿using System;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Base.Helper
+namespace myTNB.Android.Src.Base.Helper
 {
     public class ModelFormatter
     {

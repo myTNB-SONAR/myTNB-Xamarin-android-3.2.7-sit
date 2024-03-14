@@ -4,25 +4,25 @@ using Android.OS;
 using Android.Runtime;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.myTNBMenu.Fragments;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.myTNBMenu.Fragments;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Requests;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,15 +32,15 @@ using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile;
 using System.Linq;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.Base.Activity;
 using Android.Graphics;
 using Android.Util;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SitecoreCMS.Model;
 using System.Diagnostics;
 using System.IO;
 
-namespace myTNB_Android.Src.myTNBMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.MVP
 {
     public class DashboardHomePresenter : DashboardHomeContract.IUserActionsListener
     {

@@ -3,10 +3,10 @@ using Android.OS;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.MVP;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.MVP;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -15,7 +15,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.myTNBMenu.Async
+namespace myTNB.Android.Src.myTNBMenu.Async
 {
 	public class SitecoreRewardAPI : AsyncTask
 	{

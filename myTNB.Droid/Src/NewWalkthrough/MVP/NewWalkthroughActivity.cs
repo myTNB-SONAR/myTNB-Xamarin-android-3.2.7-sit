@@ -12,17 +12,17 @@ using Android.Widget;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Maintenance.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.Profile.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Maintenance.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.PreLogin.Activity;
+using myTNB.Android.Src.Profile.Activity;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.NewWalkthrough.MVP
+namespace myTNB.Android.Src.NewWalkthrough.MVP
 {
     [Activity(Label = "@string/app_name"
         , ScreenOrientation = ScreenOrientation.Portrait

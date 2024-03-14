@@ -4,12 +4,12 @@ using Android.Runtime;
 using Firebase;
 using Firebase.Analytics;
 using Java.Lang;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Database.Model;
 using System;
 using Xamarin.Facebook;
 
-namespace myTNB_Android.Src
+namespace myTNB.Android.Src
 {
     //The Android Manifest contains the android:debuggable attribute, which controls whether or not the application may be debugged.
     //It is considered a good practice to set the android:debuggable attribute to false.

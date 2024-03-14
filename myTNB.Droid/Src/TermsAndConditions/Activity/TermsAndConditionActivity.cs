@@ -8,14 +8,14 @@ using Android.Widget;
 using CheeseBind;
 using myTNB;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.TermsAndConditions.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.TermsAndConditions.MVP;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.TermsAndConditions.Activity
+namespace myTNB.Android.Src.TermsAndConditions.Activity
 {
     [Activity(Label = "@string/terms_conditions_activity_title",
         ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.OwnerTenantBaseTheme")]

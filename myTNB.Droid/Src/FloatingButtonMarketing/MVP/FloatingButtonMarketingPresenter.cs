@@ -1,10 +1,10 @@
 ﻿using System;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Database.Model;
 using myTNB.SitecoreCMS.Model;
 using Android.Content;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SitecoreCMS.Model;
 using System.Collections.Generic;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Android.Graphics;
@@ -12,15 +12,15 @@ using System.Threading;
 using Android.Util;
 using System.IO;
 using System.Net;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.WhatsNewDetail.MVP;
-using myTNB_Android.Src.SiteCore;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.Android.Src.WhatsNewDetail.MVP;
+using myTNB.Android.Src.SiteCore;
 using myTNB.SitecoreCMS.Services;
 using System.Diagnostics;
 using Android.App;
-using myTNB_Android.Src.myTNBMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.MVP;
 
-namespace myTNB_Android.Src.FloatingButtonMarketing.MVP
+namespace myTNB.Android.Src.FloatingButtonMarketing.MVP
 {
 	public class FloatingButtonMarketingPresenter : FloatingButtonMarketingContract.IUserActionsListener
     {

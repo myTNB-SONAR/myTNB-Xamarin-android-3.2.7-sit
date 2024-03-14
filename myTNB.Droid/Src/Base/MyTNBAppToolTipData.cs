@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB_Android.Src.myTNBMenu.Models.SMRActivityInfoResponse;
-using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
-using myTNB_Android.Src.myTNBMenu.Models;
+using static myTNB.Android.Src.myTNBMenu.Models.SMRActivityInfoResponse;
+using static myTNB.Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
+using myTNB.Android.Src.myTNBMenu.Models;
 using Android.Graphics;
 using Android.Util;
-using myTNB_Android.Src.Feedback_Prelogin_NewIC.Model;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
-using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Model;
+using myTNB.Android.Src.Feedback_Prelogin_NewIC.Model;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.Android.Src.UpdatePersonalDetailStepTwo.Model;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.Base
+namespace myTNB.Android.Src.Base
 {
     public class MyTNBAppToolTipData
     {

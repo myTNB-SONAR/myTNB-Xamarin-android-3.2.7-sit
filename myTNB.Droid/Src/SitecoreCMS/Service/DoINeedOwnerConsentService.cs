@@ -8,8 +8,8 @@ using Android.Graphics;
 using Android.Util;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.Utils;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 

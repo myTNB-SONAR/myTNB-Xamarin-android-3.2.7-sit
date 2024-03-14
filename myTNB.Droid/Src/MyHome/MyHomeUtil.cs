@@ -1,9 +1,9 @@
 ﻿using System;
 using Android.Content.Res;
-using myTNB_Android.Src.Utils.Deeplink;
-using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.Android.Src.Utils.Deeplink;
+using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 
-namespace myTNB_Android.Src.MyHome
+namespace myTNB.Android.Src.MyHome
 {
 	public sealed class MyHomeUtil
 	{

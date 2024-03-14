@@ -21,19 +21,19 @@ using Castle.Core.Internal;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.Activity;
-using myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.MVP;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAcc_UpdateIdentification_StepFour.Activity;
+using myTNB.Android.Src.AddAcc_UpdateIdentification_StepThree.MVP;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
+using myTNB.Android.Src.UpdatePersonalDetailStepTwo.Adapter;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
+namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepThree.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.AdjustPan

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using myTNB_Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Models;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Requests
+namespace myTNB.Android.Src.myTNBMenu.Requests
 {
 	public class CheckPendingPaymentRequest
     {

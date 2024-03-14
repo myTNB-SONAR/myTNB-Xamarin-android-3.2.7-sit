@@ -1,7 +1,7 @@
 ﻿using System;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SitecoreCMS.Model;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
 	public class FloatingButtonUtils
 	{

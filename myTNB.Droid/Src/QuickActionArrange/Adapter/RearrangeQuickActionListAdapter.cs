@@ -14,11 +14,11 @@ using AndroidSwipeLayout;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Java.Util;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.Utils;
 using static myTNB.Mobile.MobileEnums;
 
-namespace myTNB_Android.Src.QuickActionArrange.Adapter
+namespace myTNB.Android.Src.QuickActionArrange.Adapter
 {
     public class RearrangeQuickActionListAdapter : RecyclerView.Adapter
     {

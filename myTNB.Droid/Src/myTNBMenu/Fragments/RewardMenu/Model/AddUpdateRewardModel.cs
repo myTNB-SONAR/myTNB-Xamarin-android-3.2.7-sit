@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model
 {
 	public class AddUpdateRewardModel
     {

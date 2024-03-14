@@ -4,13 +4,13 @@ using Android.Graphics;
 using Android.OS;
 using Android.Provider;
 using Android.Util;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Activity;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class FileUtils
     {

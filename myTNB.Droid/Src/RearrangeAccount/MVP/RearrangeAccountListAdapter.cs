@@ -11,11 +11,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.RearrangeAccount.MVP
+namespace myTNB.Android.Src.RearrangeAccount.MVP
 {
     public class RearrangeAccountListAdapter : BaseCustomAdapter<CustomerBillingAccount>, IRearrangeAccountListAdapter
     {

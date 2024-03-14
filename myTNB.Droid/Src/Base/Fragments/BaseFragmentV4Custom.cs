@@ -12,9 +12,9 @@ using AndroidX.AppCompat.App;
 using AndroidX.Core.Content;
 using AndroidX.Fragment.App;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Base.Fragments
+namespace myTNB.Android.Src.Base.Fragments
 {
     public abstract class BaseFragmentV4Custom : Fragment, IBaseFragmentCustomView
     {

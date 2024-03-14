@@ -1,8 +1,8 @@
 ﻿using System;
 using myTNB;
-using myTNB_Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.MVP;
 
-namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
+namespace myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP
 {
     public class DSIdentityVerificationContract
     {

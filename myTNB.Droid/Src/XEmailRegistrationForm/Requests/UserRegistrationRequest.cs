@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Base.Models;
+﻿using myTNB.Android.Src.Base.Models;
 using Refit;
 
-namespace myTNB_Android.Src.XEmailRegistrationForm.Requests
+namespace myTNB.Android.Src.XEmailRegistrationForm.Requests
 {
     public class UserRegistrationRequest : BaseRequest
     {

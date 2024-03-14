@@ -14,11 +14,11 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.QuickActionArrange.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.QuickActionArrange.Model;
+using myTNB.Android.Src.Utils;
 
 
-namespace myTNB_Android.Src.QuickActionArrange.Adapter
+namespace myTNB.Android.Src.QuickActionArrange.Adapter
 {
     public class AddIconAdapter : RecyclerView.Adapter
     {

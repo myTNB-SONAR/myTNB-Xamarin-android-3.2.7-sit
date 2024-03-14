@@ -11,21 +11,21 @@ using CheeseBind;
 using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Enquiry.GSL.Activity;
-using myTNB_Android.Src.FeedbackDetails.Activity;
-using myTNB_Android.Src.OverVoltageFeedback.Activity;
-using myTNB_Android.Src.SelectSubmittedFeedback.Adapter;
-using myTNB_Android.Src.SelectSubmittedFeedback.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Enquiry.GSL.Activity;
+using myTNB.Android.Src.FeedbackDetails.Activity;
+using myTNB.Android.Src.OverVoltageFeedback.Activity;
+using myTNB.Android.Src.SelectSubmittedFeedback.Adapter;
+using myTNB.Android.Src.SelectSubmittedFeedback.MVP;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
+namespace myTNB.Android.Src.SelectSubmittedFeedback.Activity
 {
     [Activity(Label = "@string/select_submitted_feedback_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

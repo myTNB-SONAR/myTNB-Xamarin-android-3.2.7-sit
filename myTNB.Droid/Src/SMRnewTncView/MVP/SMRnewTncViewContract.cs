@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.MVP;
 
-namespace myTNB_Android.Src.SMRnewTncView.MVP
+namespace myTNB.Android.Src.SMRnewTncView.MVP
 {
     public class SMRnewTncViewContract
     {

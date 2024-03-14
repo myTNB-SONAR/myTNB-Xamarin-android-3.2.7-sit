@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
+﻿namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 {
     public class ApplicationStatusFilterContract
     {

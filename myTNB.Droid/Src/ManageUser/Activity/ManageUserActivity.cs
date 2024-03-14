@@ -10,23 +10,23 @@ using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.UpdateNickname.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.UpdateNickname.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageUser.MVP;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ManageUser.MVP;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.Base;
 using AndroidX.CoordinatorLayout.Widget;
 using Android.Preferences;
 
-namespace myTNB_Android.Src.ManageUser.Activity
+namespace myTNB.Android.Src.ManageUser.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

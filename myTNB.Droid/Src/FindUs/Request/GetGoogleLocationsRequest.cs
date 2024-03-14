@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace myTNB_Android.Src.FindUs.Request
+namespace myTNB.Android.Src.FindUs.Request
 {
     public class GetGoogleLocationsRequest
     {

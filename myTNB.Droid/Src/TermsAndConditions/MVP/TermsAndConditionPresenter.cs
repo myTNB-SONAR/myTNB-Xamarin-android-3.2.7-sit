@@ -3,17 +3,17 @@ using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SitecoreCMS.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.TermsAndConditions.MVP
+namespace myTNB.Android.Src.TermsAndConditions.MVP
 {
     public class TermsAndConditionPresenter : TermsAndConditionContract.IUserActionsListener
     {

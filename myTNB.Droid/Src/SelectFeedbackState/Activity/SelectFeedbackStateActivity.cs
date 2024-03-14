@@ -5,17 +5,17 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.SelectFeedbackState.Adapter;
-using myTNB_Android.Src.SelectFeedbackState.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.SelectFeedbackState.Adapter;
+using myTNB.Android.Src.SelectFeedbackState.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.SelectFeedbackState.Activity
+namespace myTNB.Android.Src.SelectFeedbackState.Activity
 {
     [Activity(Label = "@string/select_feedback_state_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

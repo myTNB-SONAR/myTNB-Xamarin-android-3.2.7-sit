@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.Utils;
 using SQLite;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("MyServiceIconEntity")]
     public class MyServiceIconEntity

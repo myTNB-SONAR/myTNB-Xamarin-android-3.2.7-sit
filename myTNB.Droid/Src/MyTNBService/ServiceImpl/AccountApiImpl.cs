@@ -2,12 +2,12 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.MyTNBService.InterfaceAPI;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.MyTNBService.InterfaceAPI;
+using myTNB.Android.Src.Utils;
 using Refit;
 
-namespace myTNB_Android.Src.MyTNBService.ServiceImpl
+namespace myTNB.Android.Src.MyTNBService.ServiceImpl
 {
     public class AccountApiImpl : IAccountAPI
     {

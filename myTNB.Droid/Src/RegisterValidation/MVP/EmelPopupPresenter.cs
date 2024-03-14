@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Android.Util;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Models;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MultipleAccountPayment.Models;
+using myTNB.Android.Src.ManageCards.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 
-namespace myTNB_Android.Src.RegisterValidation.MVP
+namespace myTNB.Android.Src.RegisterValidation.MVP
 {
     public class EmelPopupPresenter : EmelPopupContract.IUserActionsListener
     {

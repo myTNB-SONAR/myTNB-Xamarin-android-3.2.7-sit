@@ -12,14 +12,14 @@ using CheeseBind;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DBR.DBRApplication.Adapter;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DBR.DBRApplication.Adapter;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.DBR.DBRApplication.MVP
+namespace myTNB.Android.Src.DBR.DBRApplication.MVP
 {
     [Activity(Label = "Select Electricity Account"
     , ScreenOrientation = ScreenOrientation.Portrait

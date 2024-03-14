@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Models
+namespace myTNB.Android.Src.myTNBMenu.Models
 {
     public class CheckPendingPaymentsResponse
     {

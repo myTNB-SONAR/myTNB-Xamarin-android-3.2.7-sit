@@ -1,9 +1,9 @@
-﻿using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.ServiceDistruptionRating.Model;
+﻿using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.ServiceDistruptionRating.Model;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.ServiceDistruptionRating.Request
+namespace myTNB.Android.Src.ServiceDistruptionRating.Request
 {
     public class SubmitRateUsRequest : BaseRequest
     {

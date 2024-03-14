@@ -5,16 +5,16 @@ using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.EnergyBudgetRating.Fargment;
-using myTNB_Android.Src.EnergyBudgetRating.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.EnergyBudgetRating.Fargment;
+using myTNB.Android.Src.EnergyBudgetRating.Model;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.Activity
+namespace myTNB.Android.Src.EnergyBudgetRating.Activity
 {
     [Activity(Label = "@string/app_name"
         , ScreenOrientation = ScreenOrientation.Portrait

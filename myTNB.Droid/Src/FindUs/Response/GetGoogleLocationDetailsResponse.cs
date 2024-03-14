@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.FindUs.Response
+namespace myTNB.Android.Src.FindUs.Response
 {
     public class GetGoogleLocationDetailsResponse
     {

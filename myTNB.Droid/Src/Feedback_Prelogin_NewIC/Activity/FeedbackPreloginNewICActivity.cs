@@ -21,25 +21,25 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB;
 using myTNB.Mobile;
-using myTNB_Android.Src.Barcode.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Enquiry.GSL.Activity;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
-using myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP;
-using myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.NotificationSettings.Activity;
-using myTNB_Android.Src.OverVoltageClaim.Activity;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Barcode.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Enquiry.GSL.Activity;
+using myTNB.Android.Src.Feedback_Login_BillRelated.Activity;
+using myTNB.Android.Src.Feedback_Prelogin_NewIC.MVP;
+using myTNB.Android.Src.FeedbackAboutBillEnquiryStepOne.Activity;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.FeedbackMenu;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.NotificationSettings.Activity;
+using myTNB.Android.Src.OverVoltageClaim.Activity;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Org.Json;
 using System;
@@ -50,7 +50,7 @@ using System.Runtime;
 using System.Threading.Tasks;
 using static myTNB.LanguageManager;
 
-namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity
+namespace myTNB.Android.Src.Feedback_Prelogin_NewIC.Activity
 {
     [Activity(Label = "Submit New Enquiry"
   , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.AddCard.MVP
+﻿namespace myTNB.Android.Src.AddCard.MVP
 {
     public class AddCardPresenter : AddCardContract.IUserActionsListener
     {

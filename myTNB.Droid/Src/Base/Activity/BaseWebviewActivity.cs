@@ -10,10 +10,10 @@ using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using System;
 
-namespace myTNB_Android.Src.Base.Activity
+namespace myTNB.Android.Src.Base.Activity
 {
     [Activity(Label = "In-App Browser"
         , ScreenOrientation = ScreenOrientation.Portrait

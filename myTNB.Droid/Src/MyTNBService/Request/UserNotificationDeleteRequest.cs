@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Notifications.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Notifications.Models;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class UserNotificationDeleteRequest : BaseRequest
     {

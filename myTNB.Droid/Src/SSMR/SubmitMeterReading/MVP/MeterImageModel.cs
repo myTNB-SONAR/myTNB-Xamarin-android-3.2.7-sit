@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Graphics;
 
-namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
 {
     public class MeterImageModel
     {

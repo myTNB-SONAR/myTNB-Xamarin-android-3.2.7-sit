@@ -1,10 +1,10 @@
 ﻿using Android.Content.PM;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.RegistrationForm.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.RegistrationForm.Models;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.RegistrationForm.MVP
+namespace myTNB.Android.Src.RegistrationForm.MVP
 {
     public class RegisterFormContract
     {
@@ -52,7 +52,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             /// </summary>
             void ShowInvalidEmailError();
 
-            
+
 
             void ClearInvalidEmailError();
 
@@ -117,7 +117,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
 
 
             /// <summary>
-            /// Shows terms & conditions activity/dialog
+            /// Shows terms and conditions activity/dialog
             /// </summary>
             void ShowTermsAndConditions();
 
@@ -232,7 +232,7 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             void CheckRequiredFields(string fullname, string icno, string mobile_no, string email, string confirm_email, string password, string confirm_password);
 
             /// <summary>
-            /// User actions to navigate to terms & condition screen
+            /// User actions to navigate to terms and condition screen
             /// </summary>
             void NavigateToTermsAndConditions();
 

@@ -11,10 +11,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
 {
     [Activity(Label = "ReadingMeterFailedActivity", Theme = "@style/Theme.BillRelated")]
     public class ReadingMeterFailedActivity : BaseAppCompatActivity

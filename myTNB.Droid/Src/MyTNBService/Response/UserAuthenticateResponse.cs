@@ -1,9 +1,9 @@
 ﻿using System;
-using myTNB_Android.Src.Login.Models;
-using myTNB_Android.Src.XEmailRegistrationForm.Models;
+using myTNB.Android.Src.Login.Models;
+using myTNB.Android.Src.XEmailRegistrationForm.Models;
 
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class UserAuthenticateResponse : BaseResponse<User>
     {

@@ -1,18 +1,18 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Rating.Request;
-using myTNB_Android.Src.Rating.Response;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Rating.Request;
 using System;
 using System.Collections.Generic;
-using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
+using static myTNB.Android.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB_Android.Src.Rating.MVP
+namespace myTNB.Android.Src.Rating.MVP
 {
     public class SubmitRatingContract
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
 
+            /// <summary>
             /// Show registration progress dialog
             /// </summary>
             void ShowProgressDialog();

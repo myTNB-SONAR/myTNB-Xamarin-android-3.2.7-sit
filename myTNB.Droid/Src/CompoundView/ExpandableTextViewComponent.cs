@@ -9,11 +9,11 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.CompoundView
+namespace myTNB.Android.Src.CompoundView
 {
     public class ExpandableTextViewComponent : LinearLayout
     {

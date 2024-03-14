@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.UpdateNickname.Models
+namespace myTNB.Android.Src.UpdateNickname.Models
 {
     public class UpdateLinkedAccountNickNameResponse
     {

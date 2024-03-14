@@ -3,7 +3,7 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     public class FullRTEPagesEntity : FullRTEPagesModel
     {

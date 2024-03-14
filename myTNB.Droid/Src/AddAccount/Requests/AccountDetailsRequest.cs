@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace myTNB_Android.Src.AddAccount.Requests
+namespace myTNB.Android.Src.AddAccount.Requests
 {
     public class AccountDetailsRequest
     {

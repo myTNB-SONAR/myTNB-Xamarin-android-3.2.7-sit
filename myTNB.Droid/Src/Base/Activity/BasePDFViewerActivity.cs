@@ -6,8 +6,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.PDFView;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
@@ -15,7 +15,7 @@ using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Base.Activity
+namespace myTNB.Android.Src.Base.Activity
 {
     [Activity(Label = "Base PDF Viewer"
           , ScreenOrientation = ScreenOrientation.Portrait

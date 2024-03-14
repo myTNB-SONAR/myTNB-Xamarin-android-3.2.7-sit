@@ -12,22 +12,22 @@ using AndroidSwipeLayout;
 using AndroidSwipeLayout.Util;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageSupplyAccount.Activity;
-using myTNB_Android.Src.MyAccount.Adapter;
-using myTNB_Android.Src.MyAccount.MVP;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ManageSupplyAccount.Activity;
+using myTNB.Android.Src.MyAccount.Adapter;
+using myTNB.Android.Src.MyAccount.MVP;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using static myTNB_Android.Src.MyAccount.Adapter.MyAccountAdapter;
+using static myTNB.Android.Src.MyAccount.Adapter.MyAccountAdapter;
 
-namespace myTNB_Android.Src.MyAccount.Activity
+namespace myTNB.Android.Src.MyAccount.Activity
 {
     [Activity(Label = "@string/my_account_activity_title_new"
         //, Icon = "@drawable/Logo"

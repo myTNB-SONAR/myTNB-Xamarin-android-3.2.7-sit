@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using SQLite;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("SSMRMeterReadingScreensOnePhaseOCROffParentEntity")]
     public class SSMRMeterReadingScreensOCROffParentEntity

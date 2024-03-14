@@ -1,14 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Base.Request;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Feedback_Login_Others.MVP
+namespace myTNB.Android.Src.Feedback_Login_Others.MVP
 {
     public class FeedbackLoginOthersContract
     {
@@ -206,7 +206,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
             /// <param name="deviceId">string</param>
             /// <param name="feedbackType">FeedbackType</param>
             /// <param name="feedback">string</param>
-            /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
+            /// <param name="attachedImages">List<paramref /></param>
             void OnSubmit(string deviceId, FeedbackType feedbackType, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
@@ -216,7 +216,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
             /// <param name="mobile_no">string</param>
             /// <param name="feedbackType">FeedbackType</param>
             /// <param name="feedback">string</param>
-            /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
+            /// <param name="attachedImages">List<paramref /></param>
             void OnSubmit(string deviceId, string mobile_no, FeedbackType feedbackType, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
@@ -226,7 +226,7 @@ namespace myTNB_Android.Src.Feedback_Login_Others.MVP
             void CheckRequiredFields(string feedback);
 
             /// <summary>
-            /// Action to check empty mobile no & feedback
+            /// Action to check empty mobile no and feedback
             /// </summary>
             /// <param name="mobile_no"></param>
             /// <param name="feedback"></param>

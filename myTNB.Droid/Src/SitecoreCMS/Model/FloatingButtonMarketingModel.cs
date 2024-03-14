@@ -4,7 +4,7 @@ using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.SitecoreCMS.Model
+namespace myTNB.Android.Src.SitecoreCMS.Model
 {
 
     public class FloatingButtonMarketingTimeStampResponseModel

@@ -6,17 +6,17 @@ using Android.Runtime;
 using Android.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Feedback_Login_BillRelated.Adapter;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
+namespace myTNB.Android.Src.Feedback_Login_BillRelated.Activity
 {
     [Activity(Label = "@string/bill_related_select_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

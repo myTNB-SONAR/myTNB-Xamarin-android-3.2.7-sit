@@ -5,12 +5,12 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.FindUs.Adapter
+namespace myTNB.Android.Src.FindUs.Adapter
 {
     public class PhoneListAdapter : RecyclerView.Adapter
     {

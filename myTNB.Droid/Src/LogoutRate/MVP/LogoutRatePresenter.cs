@@ -1,14 +1,14 @@
-﻿using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.LogoutRate.MVP
+namespace myTNB.Android.Src.LogoutRate.MVP
 {
     public class LogoutRatePresenter : LogoutRateContract.IUserActionsListener
     {

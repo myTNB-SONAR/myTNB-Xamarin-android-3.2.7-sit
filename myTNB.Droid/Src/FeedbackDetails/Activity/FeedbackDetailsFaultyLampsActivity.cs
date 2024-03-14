@@ -10,18 +10,18 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.FeedbackDetails.Adapter;
-using myTNB_Android.Src.FeedbackDetails.MVP;
-using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.FeedbackDetails.Adapter;
+using myTNB.Android.Src.FeedbackDetails.MVP;
+using myTNB.Android.Src.FeedbackFullScreenImage.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.FeedbackDetails.Activity
+namespace myTNB.Android.Src.FeedbackDetails.Activity
 {
     [Activity(Label = "@string/faulty_street_lamps_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait

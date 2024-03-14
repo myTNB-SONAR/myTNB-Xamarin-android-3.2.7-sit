@@ -6,23 +6,23 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.EnergyBudgetRating.Activity;
-using myTNB_Android.Src.EnergyBudgetRating.Adapter;
-using myTNB_Android.Src.EnergyBudgetRating.Model;
-using myTNB_Android.Src.EnergyBudgetRating.MVP;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Rating.Adapter;
-using myTNB_Android.Src.Rating.Model;
-using myTNB_Android.Src.Rating.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.EnergyBudgetRating.Activity;
+using myTNB.Android.Src.EnergyBudgetRating.Adapter;
+using myTNB.Android.Src.EnergyBudgetRating.Model;
+using myTNB.Android.Src.EnergyBudgetRating.MVP;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Rating.Adapter;
+using myTNB.Android.Src.Rating.Model;
+using myTNB.Android.Src.Rating.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using static myTNB_Android.Src.EnergyBudgetRating.Model.RateUsStar;
+using static myTNB.Android.Src.EnergyBudgetRating.Model.RateUsStar;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
+namespace myTNB.Android.Src.EnergyBudgetRating.Fargment
 {
     public class FeedbackOne : AndroidX.Fragment.App.Fragment, EnergyBudgetRatingContract.IView
     {

@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
    public class GetSearchForAccountRequest : BaseRequest
     {

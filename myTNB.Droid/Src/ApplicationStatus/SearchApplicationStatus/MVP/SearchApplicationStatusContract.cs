@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
+﻿namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
     public class SearchApplicationStatusContract
     {

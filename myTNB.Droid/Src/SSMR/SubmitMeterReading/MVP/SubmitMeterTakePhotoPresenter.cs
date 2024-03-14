@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Graphics;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.SSMR.SubmitMeterReading.Api;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
+using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
 
-namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
 {
     public class SubmitMeterTakePhotoPresenter : SubmitMeterTakePhotoContract.IPresenter
     {

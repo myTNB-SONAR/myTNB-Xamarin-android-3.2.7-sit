@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Database.Model;
+﻿using myTNB.Android.Src.Database.Model;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.NotificationFilter.Models
+namespace myTNB.Android.Src.NotificationFilter.Models
 {
     public class NotificationFilterData
     {

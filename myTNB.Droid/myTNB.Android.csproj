@@ -1,0 +1,551 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <!--<AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>-->
+	<!-- Used in .NET Android projects -->
+	<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <MandroidI18n />
+    <LangVersion>8.0</LangVersion>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <MandroidI18n>West</MandroidI18n>
+    <LangVersion>8.0</LangVersion>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+	<!--<AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>-->
+	<!-- Used in .NET Android projects -->
+	<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <AndroidPackageFormat>aab</AndroidPackageFormat>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <MandroidI18n>West</MandroidI18n>
+    <LangVersion>8.0</LangVersion>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+	<!--<AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>-->
+	<!-- Used in .NET Android projects -->
+	<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Develop|AnyCPU'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+	<!--<AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>-->
+	<!-- Used in .NET Android projects -->
+	<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <MandroidI18n>West</MandroidI18n>
+    <LangVersion>8.0</LangVersion>
+    <AndroidDexTool>d8</AndroidDexTool>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stub|AnyCPU'">
+    <LangVersion>8.0</LangVersion>
+    <ExternalConsole>false</ExternalConsole>
+    <RunWithWarnings>true</RunWithWarnings>
+    <AndroidFastDeploymentType>
+    </AndroidFastDeploymentType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|AnyCPU' ">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+	<!--<AndroidSupportedAbis>armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>-->
+	<!-- Used in .NET Android projects -->
+	<RuntimeIdentifiers>android-arm;android-arm64;android-x86;android-x64</RuntimeIdentifiers>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <MandroidI18n>West</MandroidI18n>
+    <LangVersion>8.0</LangVersion>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidManagedSymbols>false</AndroidManagedSymbols>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+    <MandroidExtraArgs>
+    </MandroidExtraArgs>
+    <MandroidExtraArgs>
+    </MandroidExtraArgs>
+    <BundleAssemblies>
+    </BundleAssemblies>
+    <AndroidHttpClientHandlerType>
+    </AndroidHttpClientHandlerType>
+    <JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
+    <AndroidKeyStore>
+    </AndroidKeyStore>
+    <AndroidKeyStore>
+    </AndroidKeyStore>
+    <AndroidSigningStorePass>
+    </AndroidSigningStorePass>
+    <JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
+    <AndroidSigningKeyStore>
+    </AndroidSigningKeyStore>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0-android</TargetFramework>
+	<SupportedOSPlatformVersion>21</SupportedOSPlatformVersion>
+	<UseMauiEssentials>true</UseMauiEssentials>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Java.Interop" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Json" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="MPAndroidChart">
+      <HintPath>Libs\MPAndroidChart.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Develop' " />
+    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'SIT' " />
+    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'Debug' " />
+    <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'Stub' " />
+    <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AFollestad.MaterialDialogs.Core" Version="0.9.6" />
+    <PackageReference Include="AndroidEasingFunctions" Version="1.0.2.0" />
+    <PackageReference Include="AndroidSegmentedControl.Droid.Binding" Version="1.0.8" />
+    <PackageReference Include="AndroidViewAnimations" Version="1.1.3.0" />
+    <PackageReference Include="Bolts" Version="1.4.0.1" />
+    <PackageReference Include="Castle.Core" Version="4.4.1" />
+    <PackageReference Include="Com.Airbnb.Android.Lottie" Version="3.0.3" />
+    <PackageReference Include="Dynatrace.OneAgent.Xamarin" Version="8.261.1" />
+    <PackageReference Include="FastAndroidCamera" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Bcl" Version="1.1.10" />
+    <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
+    <PackageReference Include="Microsoft.Bcl.Build" Version="1.0.21" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+	<PackageReference Include="Microsoft.Extensions.Primitives" Version="8.0.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Abstractions" Version="6.26.1" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="6.26.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.26.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.26.1" />
+    <PackageReference Include="Microsoft.Net.Http" Version="2.2.29" />
+    <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.1.2" />
+    <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+    <PackageReference Include="MisterJimson.Cheeseknife" Version="1.1.0" />
+    <PackageReference Include="MonkeyCache.FileStore" Version="2.0.1" />
+    <PackageReference Include="NETStandard.Library" Version="2.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="NineOldAndroids" Version="2.4.0" />
+    <PackageReference Include="NSubstitute" Version="4.2.2" />
+    <PackageReference Include="Plugin.CurrentActivity" Version="1.0.1" />
+    <PackageReference Include="Plugin.Permissions" Version="2.1.0" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.1.1" />
+    <PackageReference Include="Refit" Version="5.1.67" />
+    <PackageReference Include="SDP" Version="1.0.0" />
+    <PackageReference Include="Sitecore.MobileSDK.PasswordProvider" Version="1.3.0" />
+    <PackageReference Include="Sitecore.MobileSDK.Xamarin" Version="1.3.0" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.4.118" />
+    <PackageReference Include="SQLitePCLRaw.bundle_green" Version="1.1.5" />
+    <PackageReference Include="SQLitePCLRaw.core" Version="1.1.5" />
+    <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3.android" Version="1.1.5" />
+    <PackageReference Include="SQLitePCLRaw.provider.e_sqlite3.android" Version="1.1.5" />
+    <PackageReference Include="Square.OkHttp" Version="2.4.0.0" />
+    <PackageReference Include="Square.OkIO" Version="1.17.4" />
+    <PackageReference Include="Square.Picasso" Version="2.5.2.1" />
+    <PackageReference Include="System.AppContext" Version="4.3.0" />
+    <PackageReference Include="System.Buffers" Version="4.5.1" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Collections.Concurrent" Version="4.3.0" />
+    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
+    <PackageReference Include="System.Console" Version="4.3.1" />
+    <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Tools" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.TraceSource" Version="4.3.0" />
+    <PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
+    <PackageReference Include="System.Globalization" Version="4.3.0" />
+    <PackageReference Include="System.Globalization.Calendars" Version="4.3.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.1" />
+    <PackageReference Include="System.IO" Version="4.3.0" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
+    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
+    <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+    <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Json" Version="4.5.0" />
+    <PackageReference Include="System.Linq" Version="4.3.0" />
+    <PackageReference Include="System.Linq.Expressions" Version="4.3.0" />
+    <PackageReference Include="System.Linq.Queryable" Version="4.3.0" />
+    <PackageReference Include="System.Memory" Version="4.5.4" />
+    <PackageReference Include="System.Net.Primitives" Version="4.3.1" />
+    <PackageReference Include="System.Net.Sockets" Version="4.3.0" />
+    <PackageReference Include="System.ObjectModel" Version="4.3.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+    <PackageReference Include="System.Reflection.Extensions" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.7.0" />
+    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Formatters" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.Algorithms" Version="4.3.1" />
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.5.0" />
+    <PackageReference Include="System.Security.Cryptography.Encoding" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
+    <PackageReference Include="System.Security.Cryptography.X509Certificates" Version="4.3.2" />
+    <PackageReference Include="System.Text.Encoding" Version="4.3.0" />
+    <PackageReference Include="System.Text.Encoding.Extensions" Version="4.3.0" />
+    <PackageReference Include="System.Text.Encodings.Web" Version="4.7.2" />
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+    <PackageReference Include="System.Threading" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
+    <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Threading.Timer" Version="4.3.0" />
+    <PackageReference Include="System.Xml.ReaderWriter" Version="4.3.1" />
+    <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
+    <PackageReference Include="System.Xml.XmlDocument" Version="4.3.0" />
+    <PackageReference Include="WiyonoAten.SubsamplingScaleImageView.Xamarin.Android" Version="3.4.1" />
+    <PackageReference Include="Xam.iTextSharpLGPL" Version="0.1.0" />
+    <PackageReference Include="Xam.Plugin.Geolocator" Version="4.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Core.Common" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Core.Runtime" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.Common" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.LiveData" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.LiveData.Core" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.Runtime" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Arch.Lifecycle.ViewModel" Version="1.1.1.3" />
+    <PackageReference Include="Xamarin.Android.Binding.InstallReferrer" Version="2.2.0" />
+    <PackageReference Include="Xamarin.Android.CirclePageIndicator" Version="1.0.4" />
+    <PackageReference Include="Xamarin.Android.Crashlytics" Version="2.9.4.4" />
+    <PackageReference Include="Xamarin.Android.Crashlytics.Answers" Version="1.4.2.4" />
+    <PackageReference Include="Xamarin.Android.Crashlytics.Beta" Version="1.2.9.4" />
+    <PackageReference Include="Xamarin.Android.Crashlytics.Core" Version="2.6.3.4" />
+    <PackageReference Include="Xamarin.Android.Fabric" Version="1.4.3.4" />
+    <PackageReference Include="Xamarin.Android.ShortcutBadger" Version="1.1.982" />
+    <PackageReference Include="Xamarin.Android.Support.Animated.Vector.Drawable" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Annotations" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.AsyncLayoutInflater" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Collections" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Compat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Constraint.Layout" Version="1.1.2" />
+    <PackageReference Include="Xamarin.Android.Support.Constraint.Layout.Solver" Version="1.1.2" />
+    <PackageReference Include="Xamarin.Android.Support.CoordinaterLayout" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Core.UI" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Core.Utils" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.CursorAdapter" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.CustomTabs" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.CustomView" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.DocumentFile" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.DrawerLayout" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Exif" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Fragment" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Interpolator" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Loader" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.LocalBroadcastManager" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Media.Compat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Print" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.SlidingPaneLayout" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.SwipeRefreshLayout" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Transition" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v13" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v7.CardView" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v7.MediaRouter" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v7.Palette" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.Vector.Drawable" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.VersionedParcelable" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.Android.Support.ViewPager" Version="28.0.0.3" />
+    <PackageReference Include="Xamarin.AndroidSwipeLayout" Version="1.2.0.2" />
+    <PackageReference Include="Xamarin.AndroidX.Activity" Version="1.8.2.1" />
+    <PackageReference Include="Xamarin.AndroidX.Annotation" Version="1.7.1.1" />
+    <PackageReference Include="Xamarin.AndroidX.Annotation.Experimental" Version="1.4.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.7" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat.AppCompatResources" Version="1.6.1.8" />
+    <PackageReference Include="Xamarin.AndroidX.Arch.Core.Common" Version="2.2.0.7" />
+    <PackageReference Include="Xamarin.AndroidX.Arch.Core.Runtime" Version="2.2.0.7" />
+    <PackageReference Include="Xamarin.AndroidX.AsyncLayoutInflater" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.Browser" Version="1.7.0.2" />
+    <PackageReference Include="Xamarin.AndroidX.CardView" Version="1.0.0.25" />
+    <PackageReference Include="Xamarin.AndroidX.Collection" Version="1.4.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.ConstraintLayout" Version="2.1.4.10" />
+    <PackageReference Include="Xamarin.AndroidX.ConstraintLayout.Solver" Version="2.0.4.18" />
+    <PackageReference Include="Xamarin.AndroidX.CoordinatorLayout" Version="1.2.0.11" />
+    <PackageReference Include="Xamarin.AndroidX.Core" Version="1.12.0.4" />
+    <PackageReference Include="Xamarin.AndroidX.CursorAdapter" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.CustomView" Version="1.1.0.22" />
+    <PackageReference Include="Xamarin.AndroidX.DataBinding.ViewBinding" Version="8.3.0" />
+    <PackageReference Include="Xamarin.AndroidX.DocumentFile" Version="1.0.1.23" />
+    <PackageReference Include="Xamarin.AndroidX.DrawerLayout" Version="1.2.0.7" />
+    <PackageReference Include="Xamarin.AndroidX.DynamicAnimation" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.ExifInterface" Version="1.3.7.1" />
+    <PackageReference Include="Xamarin.AndroidX.Fragment" Version="1.6.2.2" />
+    <PackageReference Include="Xamarin.AndroidX.Interpolator" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.UI" Version="1.0.0.24" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.Core.Utils" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V13" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.Legacy.Support.V4" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Common" Version="2.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData" Version="2.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.LiveData.Core" Version="2.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Runtime" Version="2.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel" Version="2.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModelSavedState" Version="2.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.Loader" Version="1.1.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.LocalBroadcastManager" Version="1.1.0.11" />
+    <PackageReference Include="Xamarin.AndroidX.Media" Version="1.7.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.MediaRouter" Version="1.6.0.3" />
+    <PackageReference Include="Xamarin.AndroidX.Migration" Version="1.0.10" />
+    <PackageReference Include="Xamarin.AndroidX.MultiDex" Version="2.0.1.23" />
+    <PackageReference Include="Xamarin.AndroidX.Palette" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.Print" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.RecyclerView" Version="1.3.2.2" />
+    <PackageReference Include="Xamarin.AndroidX.SavedState" Version="1.2.1.7" />
+    <PackageReference Include="Xamarin.AndroidX.SlidingPaneLayout" Version="1.2.0.11" />
+    <PackageReference Include="Xamarin.AndroidX.SwipeRefreshLayout" Version="1.1.0.18" />
+    <PackageReference Include="Xamarin.AndroidX.Transition" Version="1.4.1.16" />
+    <PackageReference Include="Xamarin.AndroidX.VectorDrawable" Version="1.1.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.VectorDrawable.Animated" Version="1.1.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.VersionedParcelable" Version="1.2.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.ViewPager" Version="1.0.0.23" />
+    <PackageReference Include="Xamarin.AndroidX.ViewPager2" Version="1.0.0.25" />
+    <PackageReference Include="Xamarin.AndroidX.WebKit" Version="1.10.0.1" />
+    <PackageReference Include="Xamarin.Build.Download" Version="0.10.0" />
+    <PackageReference Include="Xamarin.CardIO.Android" Version="5.5.1" />
+    <!--<PackageReference Include="Xamarin.Essentials" Version="1.6.1" />-->
+    <PackageReference Include="Xamarin.Facebook.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.AppLinks.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.Common.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.Core.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.GamingServices.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.Login.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.Messenger.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.Share.Android" Version="11.2.0.1" />
+    <PackageReference Include="Xamarin.Facebook.Shimmer" Version="1.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Analytics" Version="119.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Annotations" Version="116.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Auth" Version="121.0.1" />
+    <PackageReference Include="Xamarin.Firebase.Auth.Interop" Version="120.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Common" Version="120.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Components" Version="117.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Core" Version="119.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Datatransport" Version="118.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Dynamic.Links" Version="120.1.0" />
+    <PackageReference Include="Xamarin.Firebase.Iid" Version="121.1.0" />
+    <PackageReference Include="Xamarin.Firebase.Iid.Interop" Version="117.1.0" />
+    <PackageReference Include="Xamarin.Firebase.Installations" Version="117.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Installations.InterOp" Version="117.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Measurement.Connector" Version="119.0.0" />
+    <PackageReference Include="Xamarin.Firebase.Messaging" Version="122.0.0" />
+    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportApi" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportBackendCct" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Google.Android.DataTransport.TransportRuntime" Version="3.0.0" />
+    <PackageReference Include="Xamarin.Google.Android.Material" Version="1.10.0.3" />
+    <PackageReference Include="Xamarin.Google.AutoValue.Annotations" Version="1.6.5" />
+    <PackageReference Include="Xamarin.Google.Dagger" Version="2.37.0" />
+	<PackageReference Include="Xamarin.Google.Guava.ListenableFuture" Version="1.0.0.18" />
+    <PackageReference Include="Xamarin.Google.ZXing.Core" Version="3.3.3" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Ads.Identifier" Version="117.0.1" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Auth" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Auth.Api.Phone" Version="117.5.1" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Auth.Base" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Base" Version="117.6.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Basement" Version="117.6.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.CloudMessaging" Version="116.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Flags" Version="71.1601.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Gcm" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Identity" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Iid" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Location" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Maps" Version="71.1610.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Measurement" Version="119.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Measurement.Api" Version="119.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Measurement.Base" Version="119.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Measurement.Impl" Version="119.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Measurement.Sdk" Version="119.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Measurement.Sdk.Api" Version="119.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Places.PlaceReport" Version="71.1600.4" />
+    <PackageReference Include="Xamarin.GooglePlayServices.SafetyNet" Version="117.0.0" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Stats" Version="117.0.1" />
+    <PackageReference Include="Xamarin.GooglePlayServices.Tasks" Version="117.2.1" />
+    <PackageReference Include="Xamarin.JavaX.Inject" Version="1.0.0" />
+    <PackageReference Include="Xamarin.Jetbrains.Annotations" Version="24.1.0.2" />
+    <PackageReference Include="Xamarin.Kotlin.StdLib" Version="1.9.23" />
+    <PackageReference Include="Xamarin.Kotlin.StdLib.Common" Version="1.9.23" />
+    <PackageReference Include="Xamarin.Kotlin.StdLib.Jdk7" Version="1.9.23" />
+    <PackageReference Include="Xamarin.Kotlin.StdLib.Jdk8" Version="1.9.23" />
+    <PackageReference Include="ZhangHai.Android.MaterialProgressBar" Version="1.4.2" />
+    <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
+	<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Src\Database\Model\PromotionsEntity.cs" />
+    <Compile Remove="Src\Database\Model\PromotionsEntityV2.cs" />
+    <Compile Remove="Src\Database\Model\PromotionsParentEntity.cs" />
+    <Compile Remove="Src\Database\Model\PromotionsParentEntityV2.cs" />
+    <Compile Remove="Src\FAQ\Activity\FAQActivity.cs" />
+    <Compile Remove="Src\GetAccessSuccess\Activity\GetAccessSuccessActivity.cs" />
+    <Compile Remove="Src\GetAccess\Activity\GetAccessFormActivity.cs" />
+    <Compile Remove="Src\GetAccess\MVP\GetAccessFormContract.cs" />
+    <Compile Remove="Src\GetAccess\MVP\GetAccessFormPresenter.cs" />
+    <Compile Remove="Src\MakePayment\Activity\MakePaymentActivity.cs" />
+    <Compile Remove="Src\MakePayment\Adapter\AddCardAdapter.cs" />
+    <Compile Remove="Src\MakePayment\Api\RequestPaymentApi.cs" />
+    <Compile Remove="Src\MakePayment\Api\SubmitPaymentApi.cs" />
+    <Compile Remove="Src\MakePayment\Fragment\PaymentSuccessFragment.cs" />
+    <Compile Remove="Src\MakePayment\Fragment\PaymentWebViewFragment.cs" />
+    <Compile Remove="Src\MakePayment\Fragment\SelectPaymentMethodFragment.cs" />
+    <Compile Remove="Src\MakePayment\Models\CardDetails.cs" />
+    <Compile Remove="Src\MakePayment\Models\CreditCard.cs" />
+    <Compile Remove="Src\MakePayment\Models\GetRegisteredCardsRequest.cs" />
+    <Compile Remove="Src\MakePayment\Models\GetRegisteredCardsResponse.cs" />
+    <Compile Remove="Src\MakePayment\Models\HtmlResponse.cs" />
+    <Compile Remove="Src\MakePayment\Models\InitiatePaymentRequest.cs" />
+    <Compile Remove="Src\MakePayment\Models\InitiatePaymentResponse.cs" />
+    <Compile Remove="Src\MakePayment\Models\InitiatePaymentResult.cs" />
+    <Compile Remove="Src\MakePayment\Models\SubmitPaymentRequest.cs" />
+    <Compile Remove="Src\MakePayment\Models\SubmitPaymentResponse.cs" />
+    <Compile Remove="Src\MakePayment\Models\SubmitPaymentResult.cs" />
+    <Compile Remove="Src\MakePayment\MVP\SelectPaymentMethodContract.cs" />
+    <Compile Remove="Src\MakePayment\MVP\SelectPaymentMethodPresenter.cs" />
+    <Compile Remove="Src\MakePayment\Requests\InitiatePaymentRequestV3.cs" />
+    <Compile Remove="Src\MakePayment\Requests\SubmitPaymentRequestPG.cs" />
+    <Compile Remove="Src\myTNBMenu\Activity\DashboardActivity.cs" />
+    <Compile Remove="Src\myTNBMenu\Adapter\BillsMenu\BillsListAdapter.cs" />
+    <Compile Remove="Src\myTNBMenu\Adapter\BillsMenu\ItemizedBillingDetailsAdapter.cs" />
+    <Compile Remove="Src\myTNBMenu\Adapter\BillsMenu\PaymentListAdapter.cs" />
+    <Compile Remove="Src\myTNBMenu\Adapter\BillsMenu\REPaymentListAdapter.cs" />
+    <Compile Remove="Src\myTNBMenu\Async\UserNotificationAPI.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\BillsMenu\BillingListFragment.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\BillsMenu\BillingMenuNoTNBAccount.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\BillsMenu\BillingPaymentNoInternetConnection.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\BillsMenu\BillsMenuFragment.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\BillsMenu\PaymentListFragment.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\DashboardChartNonOwnerNoAccess.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\DashboardChartNoTNBAccount.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\DashboardSmartMeterFragment.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewPromotionAdapter.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewPromotionShimmerAdapter.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\HomeMenu\Listener\AccountsRecyclerViewOnScrollListener.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
+    <Compile Remove="Src\myTNBMenu\Fragments\PromotionsMenu\PromotionsMenuFragment.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\DashboardContract.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\DashboardPresenter.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentContract.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentPresenter.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\DashboardChartNoTNBAccountContract.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\DashboardChartNoTNBAccountPresenter.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\DashboardNonOwnerContract.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\DashboardNonOwnerPresenter.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterContract.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterPresenter.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\MoreFragmentContract.cs" />
+    <Compile Remove="Src\myTNBMenu\MVP\Fragment\MoreFragmentPresenter.cs" />
+    <Compile Remove="Src\NotificationDetails\Activity\NotificationDetailActivity.cs" />
+    <Compile Remove="Src\NotificationDetails\Activity\NotificationDetailsNewBillActivity.cs" />
+    <Compile Remove="Src\NotificationDetails\MVP\NotificationDetailNewBillContract.cs" />
+    <Compile Remove="Src\NotificationDetails\MVP\NotificationDetailNewBillPresenter.cs" />
+    <Compile Remove="Src\NotificationDetails\MVP\NotificationDetailPayableViewableContract.cs" />
+    <Compile Remove="Src\NotificationDetails\MVP\NotificationDetailPayableViewablePresenter.cs" />
+    <Compile Remove="Src\Notifications\Adapter\NotificationAdapter.cs" />
+    <Compile Remove="Src\PaymentSuccessExperienceRating\Activity\PaymentSuccessExperienceRatingActivity.cs" />
+    <Compile Remove="Src\PaymentSuccessExperienceRating\Api\SubmitExperienceRatingApi.cs" />
+    <Compile Remove="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingContract.cs" />
+    <Compile Remove="Src\PaymentSuccessExperienceRating\MVP\PaymentSuccessExperienceRatingPresenter.cs" />
+    <Compile Remove="Src\PaymentSuccessExperienceRating\Request\SubmitExperienceRatingRequest.cs" />
+    <Compile Remove="Src\PaymentSuccessExperienceRating\Response\SubmitExperienceRatingResponse.cs" />
+    <Compile Remove="Src\PreLogin\Activity\PromotionWebActivity.cs" />
+    <Compile Remove="Src\Promotions\Activity\PromotionsActivity.cs" />
+    <Compile Remove="Src\Promotions\Adapter\PromotionListAdapter.cs" />
+    <Compile Remove="Src\Promotions\Adapter\PromotionPagerAdapter.cs" />
+    <Compile Remove="Src\Promotions\Fragments\PromotionDetailsFragment.cs" />
+    <Compile Remove="Src\Promotions\Fragments\PromotionDialogFragmnet.cs" />
+    <Compile Remove="Src\Promotions\Fragments\PromotionListFragment.cs" />
+    <Compile Remove="Src\Promotions\MVP\PromotionContract.cs" />
+    <Compile Remove="Src\Promotions\MVP\PromotionPresenter.cs" />
+    <Compile Remove="Src\SitecoreCMS\Model\PromotionsModel.cs" />
+    <Compile Remove="Src\SitecoreCMS\Model\PromotionsModelV2.cs" />
+    <Compile Remove="Src\SitecoreCMS\Model\PromotionsParentResponseModel.cs" />
+    <Compile Remove="Src\SitecoreCMS\Model\PromotionsParentV2ResponseModel.cs" />
+    <Compile Remove="Src\SitecoreCMS\Model\PromotionsResponseModel.cs" />
+    <Compile Remove="Src\SitecoreCMS\Model\PromotionsV2ResponseModel.cs" />
+    <Compile Remove="Src\SitecoreCMS\Service\PromotionsService.cs" />
+    <Compile Remove="Src\SitecoreCMS\Service\PromotionsV2Service.cs" />
+    <Compile Remove="Src\SmartMeterLearnMore\Activity\SmartMeterLearnMoreActivity.cs" />
+    <Compile Remove="Src\SSMR\SMRApplication\Adapter\OnBoardingSMRAdapter.cs" />
+    <Compile Remove="Src\SSMR\SMRApplication\MVP\OnBoardingActivity.cs" />
+    <Compile Remove="Src\SSMR\SMRApplication\MVP\OnBoardingDataModel.cs" />
+    <Compile Remove="Src\SSMR\SMRApplication\MVP\OnBoardingSMRContract.cs" />
+    <Compile Remove="Src\SSMR\SMRApplication\MVP\OnBoardingSMRFragment.cs" />
+    <Compile Remove="Src\SSMR\SMRApplication\MVP\OnBoardingSMRPresenter.cs" />
+    <Compile Remove="Src\SSMR\SubmitMeterReading\Listener\MeterInputTextWatcher.cs" />
+    <Compile Remove="Src\SSMR\SubmitMeterReading\MVP\CameraCropOverlay.cs" />
+    <Compile Remove="Src\SSMR\SubmitMeterReading\MVP\CameraTakePhotoFragment.cs" />
+    <Compile Remove="Src\SSMR\SubmitMeterReading\MVP\ManualMeterEditView.cs" />
+    <Compile Remove="Src\SSMR\SubmitMeterReading\MVP\OCRLoadingFragment.cs" />
+    <Compile Remove="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterAdjustPhotoFragment.cs" />
+    <Compile Remove="Src\SummaryDashBoard\MVP\SummaryDashboardContract.cs" />
+    <Compile Remove="Src\SummaryDashBoard\MVP\SummaryDashboardPresenter.cs" />
+    <Compile Remove="Src\SummaryDashBoard\SummaryDashBoardAdapter.cs" />
+    <Compile Remove="Src\SummaryDashBoard\SummaryDashBoardFragment.cs" />
+    <Compile Remove="Src\SummaryDashBoard\SummaryListener\ISummaryDashBoardActivtyListener.cs" />
+    <Compile Remove="Src\SummaryDashBoard\SummaryNormalAdapter.cs" />
+    <Compile Remove="Src\UpdateID\Activity\SelectIdTypeActivity.cs" />
+    <Compile Remove="Src\Utils\Custom\Charts\DayAxisValueFormatter.cs" />
+    <Compile Remove="Src\Utils\Custom\Charts\MyAxisValueFormatter.cs" />
+    <Compile Remove="Src\Utils\Custom\Charts\XYMarkerView.cs" />
+    <Compile Remove="Src\Utils\Custom\MarkerTextView\TitleView.cs" />
+    <Compile Remove="Src\Utils\Custom\PrefixEditText\CountryCodeEditText.cs" />
+    <Compile Remove="Src\Utils\Custom\ProgressDialog\LoadingOverlay.cs" />
+    <Compile Remove="Src\Utils\InnerDashboardAPICahceUtil.cs" />
+    <Compile Remove="Src\Utils\MoneyValueFilter.cs" />
+    <Compile Remove="Src\ViewReceipt\Activity\ViewReceiptActivity.cs" />
+    <Compile Remove="Src\ViewReceipt\Activity\ViewReceiptMultiAccountActivity.cs" />
+    <Compile Remove="Src\ViewReceipt\MVP\ViewReceiptContract.cs" />
+    <Compile Remove="Src\ViewReceipt\MVP\ViewReceiptPresenter.cs" />
+    <Compile Remove="Src\WalkThrough\Activity\WalkThroughActivity.cs" />
+    <Compile Remove="Src\WalkThrough\Adapter\WalkThroughAdapter.cs" />
+    <Compile Remove="Src\WalkThrough\Fragment\WalkThroughFragment.cs" />
+    <Compile Remove="Src\WalkThrough\Models\WalkThroughDeck.cs" />
+    <Compile Remove="Src\WalkThrough\MVP\WalkThroughContract.cs" />
+    <Compile Remove="Src\WalkThrough\MVP\WalkThroughPresenter.cs" />
+    <Compile Remove="Src\WebLink\Activity\WeblinkActivity.cs" />
+  </ItemGroup>
+  <Target Name="RemoveGoogleServicesJsonStampFiles" BeforeTargets="BeforeBuild">
+    <Delete Files="$(IntermediateOutputPath)\ProcessGoogleServicesJson.stamp" />
+  </Target>
+</Project>

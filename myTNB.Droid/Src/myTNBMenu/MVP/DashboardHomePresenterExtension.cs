@@ -7,16 +7,16 @@ using Android.Preferences;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.MVP
 {
     internal static class DashboardHomePresenterExtension
     {

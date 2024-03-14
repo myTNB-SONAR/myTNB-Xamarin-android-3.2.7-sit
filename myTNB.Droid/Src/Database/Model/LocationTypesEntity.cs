@@ -1,10 +1,10 @@
-﻿using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
+using static myTNB.Android.Src.FindUs.Response.GetLocationTypesResponse;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("LocationTypesEntity")]
     public class LocationTypesEntity
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static List<myTNB_Android.Src.FindUs.Models.LocationType> GetLocationTypes()
+        public static List<myTNB.Android.Src.FindUs.Models.LocationType> GetLocationTypes()
         {
             List<LocationTypesEntity> entityTypes = new List<LocationTypesEntity>();
             if (HasRecord())
@@ -115,10 +115,10 @@ namespace myTNB_Android.Src.Database.Model
                 //}
             }
 
-            List<myTNB_Android.Src.FindUs.Models.LocationType> types = new List<myTNB_Android.Src.FindUs.Models.LocationType>();
+            List<myTNB.Android.Src.FindUs.Models.LocationType> types = new List<myTNB.Android.Src.FindUs.Models.LocationType>();
             foreach (LocationTypesEntity item in entityTypes)
             {
-                types.Add(new myTNB_Android.Src.FindUs.Models.LocationType()
+                types.Add(new myTNB.Android.Src.FindUs.Models.LocationType()
                 {
                     Id = item.Id,
                     Title = item.Title,

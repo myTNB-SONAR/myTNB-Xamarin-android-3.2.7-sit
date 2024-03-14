@@ -1,17 +1,17 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
 using Org.BouncyCastle.Asn1.BC;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
+using static myTNB.Android.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
 
-namespace myTNB_Android.Src.Feedback_Prelogin_NewIC.MVP
+namespace myTNB.Android.Src.Feedback_Prelogin_NewIC.MVP
 {
     public class FeedbackPreloginNewICContract
     {

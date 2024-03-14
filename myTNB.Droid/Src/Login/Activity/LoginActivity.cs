@@ -12,28 +12,28 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ForgetPassword.Activity;
-using myTNB_Android.Src.Login.MVP;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.PreLogin.Activity;
-using myTNB_Android.Src.RegistrationForm.Activity;
-using myTNB_Android.Src.ResetPassword.Activity;
-using myTNB_Android.Src.UpdateMobileNo.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.XEmailRegistrationForm.Activity;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ForgetPassword.Activity;
+using myTNB.Android.Src.Login.MVP;
+using myTNB.Android.Src.Login.Requests;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.PreLogin.Activity;
+using myTNB.Android.Src.RegistrationForm.Activity;
+using myTNB.Android.Src.ResetPassword.Activity;
+using myTNB.Android.Src.UpdateMobileNo.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.XEmailRegistrationForm.Activity;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.IO;
 using System.Runtime;
 
-namespace myTNB_Android.Src.Login.Activity
+namespace myTNB.Android.Src.Login.Activity
 {
     [Activity(Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait

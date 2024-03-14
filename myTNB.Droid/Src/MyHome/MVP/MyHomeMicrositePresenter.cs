@@ -1,27 +1,27 @@
 ﻿using System;
 using System.IO;
 using Android.Content;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Bills.AccountStatement.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Bills.AccountStatement.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
 using myTNB.Mobile;
 using Android.Util;
 using System.Net;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB_Android.Src.MyHome.Model;
+using myTNB.Android.Src.MyHome.Model;
 using System.Collections.Generic;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.MyTNBService.Parser;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.MyTNBService.Parser;
 using Refit;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB.Android.Src.MultipleAccountPayment.Activity;
 using Android.Provider;
 using myTNB;
 using myTNB.Mobile.API.Managers.Payment;
@@ -30,13 +30,13 @@ using System.Linq;
 using System.Diagnostics;
 using static Android.Provider.Settings;
 using System.Reflection;
-using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Billing.MVP;
+using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Billing.MVP;
 using System.Web;
 
-namespace myTNB_Android.Src.MyHome.MVP
+namespace myTNB.Android.Src.MyHome.MVP
 {
     public class MyHomeMicrositePresenter : MyHomeMicrositeContract.IUserActionsListener
     {

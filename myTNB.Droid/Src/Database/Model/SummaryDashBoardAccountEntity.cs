@@ -1,11 +1,11 @@
-﻿using myTNB_Android.Src.SummaryDashBoard.Models;
-using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.SummaryDashBoard.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("SummaryDashBoardDetailsEntity")]
     public class SummaryDashBoardAccountEntity : AccountDataModel

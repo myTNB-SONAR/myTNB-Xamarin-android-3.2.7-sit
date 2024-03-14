@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Enquiry.GSL.MVP
+namespace myTNB.Android.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateModel
     {

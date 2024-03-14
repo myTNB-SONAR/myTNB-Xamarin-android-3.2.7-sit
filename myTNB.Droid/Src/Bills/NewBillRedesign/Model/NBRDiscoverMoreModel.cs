@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Bills.NewBillRedesign.Model
+namespace myTNB.Android.Src.Bills.NewBillRedesign.Model
 {
     public class NBRDiscoverMoreModel
     {

@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Database.Model;
+﻿using myTNB.Android.Src.Database.Model;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.AppLaunch.Models
+namespace myTNB.Android.Src.AppLaunch.Models
 {
     public class FeedbackState
     {

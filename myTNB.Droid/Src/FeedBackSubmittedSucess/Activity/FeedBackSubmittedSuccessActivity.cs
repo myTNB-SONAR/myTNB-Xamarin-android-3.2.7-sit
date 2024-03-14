@@ -12,16 +12,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.OverVoltageFeedback;
-using myTNB_Android.Src.OverVoltageFeedback.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.OverVoltageFeedback;
+using myTNB.Android.Src.OverVoltageFeedback.Activity;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.FeedBackSubmittedSucess.Activity
+namespace myTNB.Android.Src.FeedBackSubmittedSucess.Activity
 {
     [Activity(Label = "FeedBackSubmittedSuccessActivity", ScreenOrientation = ScreenOrientation.Portrait
                   , WindowSoftInputMode = SoftInput.AdjustPan

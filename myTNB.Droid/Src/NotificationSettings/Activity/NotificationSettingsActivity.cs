@@ -12,17 +12,17 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Maintenance.Activity;
-using myTNB_Android.Src.NotificationSettings.Adapter;
-using myTNB_Android.Src.NotificationSettings.MVP;
-using myTNB_Android.Src.Profile.Activity;
-using myTNB_Android.Src.SelectNotification.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Maintenance.Activity;
+using myTNB.Android.Src.NotificationSettings.Adapter;
+using myTNB.Android.Src.NotificationSettings.MVP;
+using myTNB.Android.Src.Profile.Activity;
+using myTNB.Android.Src.SelectNotification.Models;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ using System.Net;
 using System.Runtime;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.NotificationSettings.Activity
+namespace myTNB.Android.Src.NotificationSettings.Activity
 {
     [Activity(Label = "@string/notification_settings_activity_title"
       //, MainLauncher = true

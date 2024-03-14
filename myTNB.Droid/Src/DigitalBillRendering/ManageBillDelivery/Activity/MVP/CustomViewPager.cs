@@ -5,7 +5,7 @@ using Android.Util;
 using Android.Views;
 using AndroidX.ViewPager.Widget;
 
-namespace myTNB_Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP
+namespace myTNB.Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP
 {
     public class CustomViewPager : ViewPager
     {

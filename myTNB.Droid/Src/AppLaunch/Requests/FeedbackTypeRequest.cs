@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.AppLaunch.Requests
+namespace myTNB.Android.Src.AppLaunch.Requests
 {
     public class FeedbackTypeRequest
     {

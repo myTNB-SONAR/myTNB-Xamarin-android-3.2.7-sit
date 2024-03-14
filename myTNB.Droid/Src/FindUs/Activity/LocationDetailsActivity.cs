@@ -8,12 +8,12 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Java.Net;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.FindUs.Adapter;
-using myTNB_Android.Src.FindUs.Models;
-using myTNB_Android.Src.FindUs.MVP;
-using myTNB_Android.Src.FindUs.Response;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.FindUs.Adapter;
+using myTNB.Android.Src.FindUs.Models;
+using myTNB.Android.Src.FindUs.MVP;
+using myTNB.Android.Src.FindUs.Response;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -21,7 +21,7 @@ using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.FindUs.Activity
+namespace myTNB.Android.Src.FindUs.Activity
 {
     [Activity(Label = "Store Type"
         , ScreenOrientation = ScreenOrientation.Portrait

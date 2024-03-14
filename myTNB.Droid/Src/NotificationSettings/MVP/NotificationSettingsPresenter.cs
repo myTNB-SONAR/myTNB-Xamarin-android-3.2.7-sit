@@ -2,15 +2,15 @@
 using Android.Content;
 using Android.Text;
 using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.SelectNotification.Models;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SitecoreCMS.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.SelectNotification.Models;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.NotificationSettings.MVP
+namespace myTNB.Android.Src.NotificationSettings.MVP
 {
     public class NotificationSettingsPresenter : NotificationSettingsContract.IUserActionsListener
     {

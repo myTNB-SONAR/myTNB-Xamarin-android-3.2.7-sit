@@ -9,24 +9,24 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common;
-using myTNB_Android.Src.EnergyBudgetRating.Fargment;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.ServiceDistruptionRating.Adapter;
-using myTNB_Android.Src.ServiceDistruptionRating.Model;
-using myTNB_Android.Src.ServiceDistruptionRating.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common;
+using myTNB.Android.Src.EnergyBudgetRating.Fargment;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.ServiceDistruptionRating.Adapter;
+using myTNB.Android.Src.ServiceDistruptionRating.Model;
+using myTNB.Android.Src.ServiceDistruptionRating.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
-using static myTNB_Android.Src.ServiceDistruptionRating.Model.RateUsStar;
+using static myTNB.Android.Src.ServiceDistruptionRating.Model.RateUsStar;
 
-namespace myTNB_Android.Src.ServiceDistruptionRating.Activity
+namespace myTNB.Android.Src.ServiceDistruptionRating.Activity
 {
     [Activity(Label = "@string/app_name"
         , ScreenOrientation = ScreenOrientation.Portrait

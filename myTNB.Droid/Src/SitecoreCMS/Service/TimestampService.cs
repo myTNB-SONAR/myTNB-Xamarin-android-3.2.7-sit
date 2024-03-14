@@ -1,6 +1,6 @@
 ﻿using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.SiteCore;
+using myTNB.Android.Src.SiteCore;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Collections.Generic;

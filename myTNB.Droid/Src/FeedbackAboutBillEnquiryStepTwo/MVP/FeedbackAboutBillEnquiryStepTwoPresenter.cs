@@ -9,22 +9,22 @@ using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using Android.Util;
-using myTNB_Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Models;
 using Android.Telephony;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
 using Java.Text;
 using Android.Gms.Common.Apis;
 using Newtonsoft.Json;
-using myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Model;
+using myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.Model;
 using Castle.Core.Internal;
-using static myTNB_Android.Src.MyTNBService.Request.SubmitEnquiryTypeRequest;
+using static myTNB.Android.Src.MyTNBService.Request.SubmitEnquiryTypeRequest;
 
-namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
+namespace myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP
 {
     public class FeedbackAboutBillEnquiryStepTwoPresenter : FeedbackAboutBillEnquiryStepTwoContract.IUserActionsListener
     {

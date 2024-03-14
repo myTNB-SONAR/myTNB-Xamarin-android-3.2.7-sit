@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Refit;
 
-namespace myTNB_Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.Android.Src.SSMR.SMRApplication.Api
 {
     public interface CARegisteredContactInfoApi
 {

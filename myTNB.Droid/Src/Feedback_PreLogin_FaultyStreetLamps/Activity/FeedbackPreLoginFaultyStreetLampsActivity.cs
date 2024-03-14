@@ -17,23 +17,23 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Adapter;
-using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP;
-using myTNB_Android.Src.FeedbackFail.Activity;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.SelectFeedbackState.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.Adapter;
+using myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP;
+using myTNB.Android.Src.FeedbackFail.Activity;
+using myTNB.Android.Src.FeedbackSuccess.Activity;
+using myTNB.Android.Src.SelectFeedbackState.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
+namespace myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 {
     [Activity(Label = "@string/faulty_street_lamps_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait

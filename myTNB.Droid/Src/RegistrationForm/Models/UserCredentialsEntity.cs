@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.RegistrationForm.Models
+namespace myTNB.Android.Src.RegistrationForm.Models
 {
     public class UserCredentialsEntity
     {

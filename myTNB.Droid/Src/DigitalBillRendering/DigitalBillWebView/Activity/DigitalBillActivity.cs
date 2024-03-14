@@ -12,16 +12,16 @@ using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.DigitalBill.MVP;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.DigitalBill.MVP;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.DigitalBill.Activity
+namespace myTNB.Android.Src.DigitalBill.Activity
 {
     [Activity(Label = "@string/terms_conditions_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

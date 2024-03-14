@@ -7,14 +7,14 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Google.Android.Material.AppBar;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.Rating.Fargment;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.Rating.Fargment;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Runtime;
 
-namespace myTNB_Android.Src.Rating.Activity
+namespace myTNB.Android.Src.Rating.Activity
 {
     [Activity(Label = "Rating"
         , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.SitecoreCMS.Model
+namespace myTNB.Android.Src.SitecoreCMS.Model
 {
     public class NewBillDesignTimeStampResponseModel
     {

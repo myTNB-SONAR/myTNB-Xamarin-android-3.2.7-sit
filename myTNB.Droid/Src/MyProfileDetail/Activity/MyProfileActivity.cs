@@ -12,22 +12,22 @@ using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.AWS.Managers.DS;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageSupplyAccount.Activity;
-using myTNB_Android.Src.MyProfileDetail.Adapter;
-using myTNB_Android.Src.MyProfileDetail.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.NotificationSettings.Activity;
-using myTNB_Android.Src.UpdateID.Activity;
-using myTNB_Android.Src.UpdateMobileNo.Activity;
-using myTNB_Android.Src.UpdateNameFull.Activity;
-using myTNB_Android.Src.UpdatePassword.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ManageSupplyAccount.Activity;
+using myTNB.Android.Src.MyProfileDetail.Adapter;
+using myTNB.Android.Src.MyProfileDetail.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.ProfileMenu;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.NotificationSettings.Activity;
+using myTNB.Android.Src.UpdateID.Activity;
+using myTNB.Android.Src.UpdateMobileNo.Activity;
+using myTNB.Android.Src.UpdateNameFull.Activity;
+using myTNB.Android.Src.UpdatePassword.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -35,7 +35,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.MyAccount.Activity
+namespace myTNB.Android.Src.MyAccount.Activity
 {
     [Activity(Label = "MyTNB Profile"
       //, NoHistory = false

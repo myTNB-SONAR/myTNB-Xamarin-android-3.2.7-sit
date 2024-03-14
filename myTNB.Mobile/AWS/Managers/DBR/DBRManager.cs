@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
-using myTNB.Mobile.AWS;
+﻿using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
 using myTNB.Mobile.AWS.Services.DBR;
@@ -11,6 +6,7 @@ using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Refit;
+using System.Diagnostics;
 
 namespace myTNB.Mobile
 {
@@ -185,7 +181,7 @@ namespace myTNB.Mobile
         /// <summary>
         /// Post BR Eligibility Indicators
         /// </summary>
-        /// <param name="CaNos">Electricity Account Number</param>
+        /// <param name="caList">Electricity Account Number</param>
         /// <param name="userId">User ID Login</param>
         /// <param name="accessToken">Generated Access Token</param>
         /// <returns>BR Eligibility Indicators of CA</returns>

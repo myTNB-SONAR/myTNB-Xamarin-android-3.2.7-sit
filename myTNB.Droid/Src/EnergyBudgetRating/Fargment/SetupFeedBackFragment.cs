@@ -7,13 +7,13 @@ using Android.Text;
 using Android.Graphics;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.EnergyBudgetRating.Model;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.EnergyBudgetRating.Model;
 using System.Collections.Generic;
-using myTNB_Android.Src.EnergyBudgetRating.Adapter;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.EnergyBudgetRating.Adapter;
+using myTNB.Android.Src.Base;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.Fargment
+namespace myTNB.Android.Src.EnergyBudgetRating.Fargment
 {
     public class SetupFeedBackFragment
     {

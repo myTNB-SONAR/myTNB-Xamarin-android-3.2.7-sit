@@ -1,10 +1,10 @@
 ﻿using Android.OS;
-using Constant = myTNB_Android.Src.Utils.Notification.Notification.Constants;
-using Type = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
+using Constant = myTNB.Android.Src.Utils.Notification.Notification.Constants;
+using Type = myTNB.Android.Src.Utils.Notification.Notification.TypeEnum;
 using NotificationTypes = myTNB.Mobile.Constants.NotificationTypes;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.Utils.Notification
+namespace myTNB.Android.Src.Utils.Notification
 {
     public sealed class NotificationUtil
     {

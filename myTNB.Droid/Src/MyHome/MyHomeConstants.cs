@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.MyHome
+namespace myTNB.Android.Src.MyHome
 {
     public class MyHomeConstants
     {

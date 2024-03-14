@@ -10,13 +10,13 @@ using System.IO;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.AppLaunch.Async;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Async;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.AppLaunch.Requests;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -25,27 +25,27 @@ using System.Diagnostics;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.Request;
-using static myTNB_Android.Src.MyTNBService.Response.AppLaunchMasterDataResponseAWS;
+using myTNB.Android.Src.AppLaunch.Api;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.Request;
+using static myTNB.Android.Src.MyTNBService.Response.AppLaunchMasterDataResponseAWS;
 using myTNB;
-using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.myTNBMenu.Async;
 using fbm = Firebase.Messaging;
 using Android.Gms.Extensions;
-using myTNB_Android.Src.Utils.Deeplink;
+using myTNB.Android.Src.Utils.Deeplink;
 using myTNB.Mobile;
-using myTNB_Android.Src.Utils.Notification;
+using myTNB.Android.Src.Utils.Notification;
 using System.Net.Http;
-using NotificationType = myTNB_Android.Src.Utils.Notification.Notification.TypeEnum;
-using myTNB_Android.Src.Base.Response;
+using NotificationType = myTNB.Android.Src.Utils.Notification.Notification.TypeEnum;
+using myTNB.Android.Src.Base.Response;
 using System.Linq;
 using Android.Preferences;
-using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
 using myTNB.Mobile.Business;
 
-namespace myTNB_Android.Src.AppLaunch.MVP
+namespace myTNB.Android.Src.AppLaunch.MVP
 {
     public class AppLaunchPresenter : AppLaunchContract.IUserActionsListener
     {
@@ -211,7 +211,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         FirebaseTokenEntity.RemoveLatest();
                         FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
                         UserEntity userEntity = UserEntity.GetActive();
-                        myTNB_Android.Src.MyTNBService.Request.BaseRequest baseRequest = new myTNB_Android.Src.MyTNBService.Request.BaseRequest();
+                        myTNB.Android.Src.MyTNBService.Request.BaseRequest baseRequest = new myTNB.Android.Src.MyTNBService.Request.BaseRequest();
                         baseRequest.usrInf.ft = newfcmToken;
                         //string ts = JsonConvert.SerializeObject(baseRequest);
                         APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);
@@ -772,7 +772,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private async Task OnGetNotificationsV2()
         {
-            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
+            UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB.Android.Src.MyTNBService.Request.BaseRequest());
             if (response.IsSuccessResponse())
             {
                 if (response.GetData() != null)
@@ -848,7 +848,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceCompleted(false);
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceFailed(false);
                     MyTNBAccountManagement.GetInstance().SetIsNotificationServiceMaintenance(false);
-                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB_Android.Src.MyTNBService.Request.BaseRequest());
+                    UserNotificationResponse response = await ServiceApiImpl.Instance.GetUserNotificationsV2(new myTNB.Android.Src.MyTNBService.Request.BaseRequest());
                     if (response.IsSuccessResponse())
                     {
                         if (response.GetData() != null)

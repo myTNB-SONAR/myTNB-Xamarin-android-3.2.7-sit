@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public sealed class Constants
     {

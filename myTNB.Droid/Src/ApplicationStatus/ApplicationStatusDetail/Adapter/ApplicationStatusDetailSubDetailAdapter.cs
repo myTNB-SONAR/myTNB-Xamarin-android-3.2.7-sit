@@ -6,11 +6,11 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter
 {
     public class ApplicationStatusDetailSubDetailAdapter : RecyclerView.Adapter
     {

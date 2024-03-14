@@ -17,19 +17,19 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Adapter;
-using myTNB_Android.Src.Feedback_Login_BillRelated.MVP;
-using myTNB_Android.Src.FeedbackFail.Activity;
-using myTNB_Android.Src.FeedbackSuccess.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Common.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Feedback_Login_BillRelated.Adapter;
+using myTNB.Android.Src.Feedback_Login_BillRelated.MVP;
+using myTNB.Android.Src.FeedbackFail.Activity;
+using myTNB.Android.Src.FeedbackSuccess.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Runtime;
@@ -37,7 +37,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
+namespace myTNB.Android.Src.Feedback_Login_BillRelated.Activity
 {
     [Activity(Label = "@string/bill_related_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait

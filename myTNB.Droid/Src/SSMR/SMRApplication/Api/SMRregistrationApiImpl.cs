@@ -2,11 +2,11 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB_Android.Src.SSMRMeterHistory.Api;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.SSMRMeterHistory.Api;
+using myTNB.Android.Src.Utils;
 using Refit;
 
-namespace myTNB_Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.Android.Src.SSMR.SMRApplication.Api
 {
     public class SMRregistrationApiImpl : SMRregistrationApi
     {

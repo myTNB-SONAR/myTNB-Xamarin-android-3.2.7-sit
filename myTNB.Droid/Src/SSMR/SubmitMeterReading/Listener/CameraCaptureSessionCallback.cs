@@ -1,8 +1,8 @@
 ﻿using System;
 using Android.Hardware.Camera2;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
 
-namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Listener
+namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Listener
 {
     public class CameraCaptureSessionCallback : CameraCaptureSession.StateCallback
     {

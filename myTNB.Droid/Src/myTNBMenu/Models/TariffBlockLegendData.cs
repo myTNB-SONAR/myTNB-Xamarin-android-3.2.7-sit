@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.myTNBMenu.Models
+namespace myTNB.Android.Src.myTNBMenu.Models
 {
     public class TariffBlocksLegendData
     {

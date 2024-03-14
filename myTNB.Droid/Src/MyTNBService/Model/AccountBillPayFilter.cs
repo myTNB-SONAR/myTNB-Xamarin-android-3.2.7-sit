@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.MyTNBService.Model
+namespace myTNB.Android.Src.MyTNBService.Model
 {
     public class AccountBillPayFilter
     {

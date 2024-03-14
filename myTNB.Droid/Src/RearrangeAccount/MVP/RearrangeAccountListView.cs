@@ -6,10 +6,10 @@ using Android.Graphics;
 using Android.Content;
 using Android.Util;
 using System;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using Android.OS;
 
-namespace myTNB_Android.Src.RearrangeAccount.MVP
+namespace myTNB.Android.Src.RearrangeAccount.MVP
 {
     public class RearrangeAccountListView : ListView, ITypeEvaluator, GestureDetector.IOnGestureListener, AbsListView.IOnScrollListener
     {

@@ -14,13 +14,13 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 {
     [Activity(Label = "Select Filter", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.RegisterForm")]
     public class ApplicationStatusFilterActivity : BaseActivityCustom, ApplicationStatusFilterContract.IView

@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
 {
     public class SSMRWalkthroughData
     {

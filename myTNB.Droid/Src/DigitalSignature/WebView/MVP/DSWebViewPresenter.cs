@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.DigitalSignature.WebView.MVP
+namespace myTNB.Android.Src.DigitalSignature.WebView.MVP
 {
     public class DSWebViewPresenter : DSWebViewContract.IUserActionsListener
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
 
-namespace myTNB_Android.Src.SSMRMeterHistory.MVP
+namespace myTNB.Android.Src.SSMRMeterHistory.MVP
 {
     public class SSMRMeterHistoryContract
     {

@@ -4,10 +4,10 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Android.Content;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
 	public class WhatsNewItemPresenter : WhatsNewItemContract.IWhatsNewItemPresenter
     {

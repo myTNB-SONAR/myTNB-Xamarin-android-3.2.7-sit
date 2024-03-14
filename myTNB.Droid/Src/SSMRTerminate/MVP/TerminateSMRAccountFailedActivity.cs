@@ -12,15 +12,15 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.SSMR.SMRApplication.Api;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.SSMRTerminate.MVP
+namespace myTNB.Android.Src.SSMRTerminate.MVP
 {
     [Activity(Label = "TerminateSMRAccountFailedActivity",
         ScreenOrientation = ScreenOrientation.Portrait,

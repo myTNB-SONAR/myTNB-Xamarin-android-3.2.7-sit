@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.Model
+namespace myTNB.Android.Src.MultipleAccountPayment.Model
 {
     public class MPGetRegisteredCardsResponse
     {

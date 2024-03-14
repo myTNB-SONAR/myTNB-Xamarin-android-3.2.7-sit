@@ -1,16 +1,16 @@
-﻿using myTNB_Android.Src.AddAccount.Models;
+﻿using myTNB.Android.Src.AddAccount.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using myTNB_Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.Response;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile;
 using Android.Preferences;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("CustomerBillingAccountEntity")]
     public class CustomerBillingAccount

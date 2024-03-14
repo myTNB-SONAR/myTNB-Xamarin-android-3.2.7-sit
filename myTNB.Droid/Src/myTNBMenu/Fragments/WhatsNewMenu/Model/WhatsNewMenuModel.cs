@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
-using static myTNB_Android.Src.Utils.Constants;
+﻿using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
+using static myTNB.Android.Src.Utils.Constants;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Model
+namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Model
 {
 	public class WhatsNewMenuModel
     {

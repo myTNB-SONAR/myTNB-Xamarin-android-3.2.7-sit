@@ -1,7 +1,7 @@
 ﻿using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.SitecoreCMS.Model
+namespace myTNB.Android.Src.SitecoreCMS.Model
 {
     public class FullRTEPagesResponseModel
     {

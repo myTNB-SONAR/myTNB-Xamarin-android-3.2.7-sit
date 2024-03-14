@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Rating.Model;
+using myTNB.Android.Src.Rating.Model;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class GetRateUsQuestionResponse : BaseResponse<List<RateUsQuestion>>
     {

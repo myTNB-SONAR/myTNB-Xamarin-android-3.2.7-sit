@@ -1,9 +1,9 @@
-﻿using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
+﻿using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.AppLaunch.Requests;
 using Refit;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Base.Api
+namespace myTNB.Android.Src.Base.Api
 {
     public interface GetAccounts
     {

@@ -4,15 +4,15 @@ using Android.Locations;
 using Android.Runtime;
 using Android.Text;
 using Java.Text;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Api;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.Api;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.Api;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
@@ -25,7 +25,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP
+namespace myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.MVP
 {
     public class FeedbackPreLoginFaultyStreetLampsPresenter : FeedbackPreLoginFaultyStreetLampsContract.IUserActionsListener
     {

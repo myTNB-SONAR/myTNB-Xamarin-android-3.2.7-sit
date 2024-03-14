@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading.Tasks;
-using myTNB.Mobile.API.Models.ApplicationStatus;
+﻿using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.API.Models.Payment.GetTaxInvoice;
 using myTNB.Mobile.API.Models.Payment.PostApplicationPayment;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
@@ -11,6 +7,7 @@ using myTNB.Mobile.Business;
 using myTNB.Mobile.Extensions;
 using Newtonsoft.Json;
 using Refit;
+using System.Diagnostics;
 
 namespace myTNB.Mobile.API.Managers.Payment
 {
@@ -155,7 +152,7 @@ namespace myTNB.Mobile.API.Managers.Payment
                     }
                     return response;
                 }
-                catch (ApiException apiEx)
+                catch (ApiException)
                 {
 #if MASTER
                     Debug.WriteLine("[DEBUG][GetApplicationsPaidDetails]Refit Exception: " + apiEx.Message);
@@ -182,7 +179,7 @@ namespace myTNB.Mobile.API.Managers.Payment
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="accountNumber">CA Number</param>
+        /// <param name="srNumber">CA Number</param>
         /// <returns></returns>
         public async Task<byte[]> GetTaxInvoice(string srNumber)
         {

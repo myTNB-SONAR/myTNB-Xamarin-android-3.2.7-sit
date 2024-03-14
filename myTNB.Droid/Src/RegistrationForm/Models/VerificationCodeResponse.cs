@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.RegistrationForm.Activity.Models
+namespace myTNB.Android.Src.RegistrationForm.Activity.Models
 {
     public class VerificationCodeResponse
     {

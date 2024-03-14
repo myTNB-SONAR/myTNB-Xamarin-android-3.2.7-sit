@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Android.Nfc;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.Utils;
 using SQLite;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("MyServiceEntity")]
     public class MyServiceEntity

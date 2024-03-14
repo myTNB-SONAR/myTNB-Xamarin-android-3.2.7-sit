@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.Model
+namespace myTNB.Android.Src.EnergyBudgetRating.Model
 {
     public class QuestionModel
     {

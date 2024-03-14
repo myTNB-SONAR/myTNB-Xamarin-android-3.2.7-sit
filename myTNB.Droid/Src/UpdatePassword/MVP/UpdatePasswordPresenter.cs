@@ -1,8 +1,8 @@
 ﻿using Android.Text;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Net;
@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace myTNB_Android.Src.UpdatePassword.MVP
+namespace myTNB.Android.Src.UpdatePassword.MVP
 {
     public class UpdatePasswordPresenter : UpdatePasswordContract.IUserActionsListener
     {

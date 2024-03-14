@@ -150,7 +150,7 @@
 								android:textColor="#49494a"
 								android:textSize="14dp"/>
 						</LinearLayout>
-						<myTNB_Android.Src.CompoundView.ExpandableTextViewComponent
+						<myTNB.Android.Src.CompoundView.ExpandableTextViewComponent
 							android:id="@+id/myHomePaymentDetailsOtherChargesExpandableView"
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"

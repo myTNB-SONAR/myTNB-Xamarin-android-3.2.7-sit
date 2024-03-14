@@ -3,20 +3,20 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.AddAccount.Adapter;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.RegistrationForm.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.XDetailRegistrationForm.Adapter;
-using myTNB_Android.Src.XDetailRegistrationForm.Models;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.AddAccount.Adapter;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.RegistrationForm.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.XDetailRegistrationForm.Adapter;
+using myTNB.Android.Src.XDetailRegistrationForm.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.XDetailRegistrationForm.Activity
+namespace myTNB.Android.Src.XDetailRegistrationForm.Activity
 {
     [Activity(Label = "Select Account Type"
               , Icon = "@drawable/ic_launcher"

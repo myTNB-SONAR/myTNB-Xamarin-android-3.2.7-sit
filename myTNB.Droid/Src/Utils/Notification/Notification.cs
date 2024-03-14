@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.Utils.Notification
+﻿namespace myTNB.Android.Src.Utils.Notification
 {
     public class Notification
     {

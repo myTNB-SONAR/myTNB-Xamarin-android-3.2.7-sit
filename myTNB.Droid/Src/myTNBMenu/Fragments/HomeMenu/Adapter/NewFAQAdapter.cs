@@ -7,12 +7,12 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CardView.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
+namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
     public class NewFAQAdapter : RecyclerView.Adapter
     {

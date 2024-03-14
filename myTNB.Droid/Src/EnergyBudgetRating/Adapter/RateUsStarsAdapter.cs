@@ -6,14 +6,14 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.EnergyBudgetRating.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.EnergyBudgetRating.Model;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
+using static myTNB.Android.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.Adapter
+namespace myTNB.Android.Src.EnergyBudgetRating.Adapter
 {
     public class RateUsStarsAdapter : RecyclerView.Adapter
     {

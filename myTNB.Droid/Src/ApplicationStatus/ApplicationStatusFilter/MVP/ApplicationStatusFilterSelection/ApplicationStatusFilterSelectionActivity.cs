@@ -1,21 +1,21 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
 using Android.Views;
 using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
 using System.Collections.Generic;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
 {
     [Activity(Label = "Select", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationStatusFilterSelectionActivity : BaseActivityCustom

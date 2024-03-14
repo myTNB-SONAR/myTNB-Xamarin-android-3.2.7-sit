@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ManageCards.Request
+namespace myTNB.Android.Src.ManageCards.Request
 {
     public class RemoveRegisteredCardRequest
     {

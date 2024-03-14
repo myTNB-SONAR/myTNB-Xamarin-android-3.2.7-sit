@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.SSMRTerminate.MVP
+namespace myTNB.Android.Src.SSMRTerminate.MVP
 {
     public class SSMRTerminationReasonModel
     {

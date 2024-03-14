@@ -1,6 +1,6 @@
-﻿using myTNB_Android.Src.Base.MVP;
+﻿using myTNB.Android.Src.Base.MVP;
 
-namespace myTNB_Android.Src.ResetPasswordSuccess.MVP
+namespace myTNB.Android.Src.ResetPasswordSuccess.MVP
 {
     public class ResetPasswordSuccessContract
     {

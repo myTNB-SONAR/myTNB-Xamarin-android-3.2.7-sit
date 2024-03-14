@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class SubmitRateUsRequest : BaseRequest
     {

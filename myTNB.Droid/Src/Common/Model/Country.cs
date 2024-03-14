@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.Common.Model
+namespace myTNB.Android.Src.Common.Model
 {
     public class Country
     {

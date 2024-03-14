@@ -1,10 +1,10 @@
 ﻿using Android.Content.PM;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.XDetailRegistrationForm.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.XDetailRegistrationForm.Models;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
+namespace myTNB.Android.Src.XDetailRegistrationForm.MVP
 {
     public class RegisterFormContract
     {
@@ -62,7 +62,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
 
 
             /// <summary>
-            /// Shows terms & conditions activity/dialog
+            /// Shows terms and conditions activity/dialog
             /// </summary>
             void ShowTermsAndConditions();
 
@@ -177,9 +177,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             /// <param name="icno">string icno</param>
             /// <param name="mobile_no">string mobile_no</param>
             /// <param name="email">string email</param>
-            /// <param name="confirm_email">string confirm email</param>
             /// <param name="password">string password</param>
-            /// <param name="confirm_password">string confirm password</param>
             void OnAcquireToken(string fullname, string icno, string mobile_no, string email, string password, string idtype);
 
             void OnCheckID(string icno, string idtype);
@@ -189,7 +187,7 @@ namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
             void CheckRequiredFields(string fullname, string icno, string mobile_no, string idtype, bool checkbox);
 
             /// <summary>
-            /// User actions to navigate to terms & condition screen
+            /// User actions to navigate to terms and condition screen
             /// </summary>
             void NavigateToTermsAndConditions();
 

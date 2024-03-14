@@ -13,15 +13,15 @@ using AndroidX.AppCompat.App;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using Google.Android.Material.Tabs;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.SavedRewards.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Fragments;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.Android.Src.SavedRewards.MVP;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
     public class RewardMenuFragment : BaseFragment, RewardMenuContract.IRewardMenuView, ViewPager.IOnPageChangeListener
     {

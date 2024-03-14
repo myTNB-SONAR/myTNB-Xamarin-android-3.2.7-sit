@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.AppLaunch.Models
+namespace myTNB.Android.Src.AppLaunch.Models
 {
     public class AccountSMRStatus : SMREligibilityModel
     {

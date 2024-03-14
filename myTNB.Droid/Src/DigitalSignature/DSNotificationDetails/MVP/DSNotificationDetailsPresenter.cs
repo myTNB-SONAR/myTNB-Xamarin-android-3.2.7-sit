@@ -1,17 +1,17 @@
 ﻿
 using System;
 using Android.Content;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 using System.Collections.Generic;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.NotificationDetails.Models;
-using myTNB_Android.Src.SSMRTerminate.Api;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.NotificationDetails.Models;
+using myTNB.Android.Src.SSMRTerminate.Api;
 using Refit;
 
-namespace myTNB_Android.Src.DigitalSignature.DSNotificationDetails.MVP
+namespace myTNB.Android.Src.DigitalSignature.DSNotificationDetails.MVP
 {
     public class DSNotificationDetailsPresenter
     {

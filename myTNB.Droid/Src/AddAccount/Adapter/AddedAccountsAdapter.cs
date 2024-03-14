@@ -1,14 +1,14 @@
 ﻿using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB_Android.Src.AddAccount.Adapter
+namespace myTNB.Android.Src.AddAccount.Adapter
 {
     public class AddedAccountsAdapter : RecyclerView.Adapter
     {

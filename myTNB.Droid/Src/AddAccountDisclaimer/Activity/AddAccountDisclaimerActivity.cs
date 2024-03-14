@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.TermsAndConditions.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
+using System;
 
-namespace myTNB_Android.Src.AddAccountDisclaimer.Activity
+namespace myTNB.Android.Src.AddAccountDisclaimer.Activity
 {
     [Activity(Label = "DisclaimerAddAccount", ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.OwnerTenantBaseTheme")]

@@ -6,16 +6,16 @@ using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.SSMR.SSMRMeterReadingTooltip.MVP;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class EnergyTipsUtils
     {

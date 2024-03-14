@@ -1,22 +1,21 @@
-﻿using System;
+﻿using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.AppLaunch.Requests;
+using myTNB.Android.Src.Base.Response;
+using myTNB.Android.Src.Login.Models;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB.Android.Src.MyTNBService.InterfaceAPI;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.ViewBill.Model;
+using myTNB.Mobile.Business;
+using Refit;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Mobile.Business;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Response;
-using myTNB_Android.Src.Login.Models;
-using myTNB_Android.Src.MyTNBService.InterfaceAPI;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Utils;
-using Org.Json;
-using Refit;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
-using myTNB_Android.Src.ViewBill.Model;
 
-namespace myTNB_Android.Src.MyTNBService.ServiceImpl
+namespace myTNB.Android.Src.MyTNBService.ServiceImpl
 {
     public class ServiceApiImpl
     {
@@ -80,7 +79,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// Call GetAppLaunchMasterDataAWS with timeout set.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="token"></param>
         /// <returns></returns>
         public Task<AppLaunchMasterDataResponseAWS> GetAppLaunchMasterDataAWS([Body] Request.BaseRequest request)
         {
@@ -112,8 +110,8 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// <summary>
         /// Call GetAccounts with default timeout.
         /// </summary>
-        /// <param name = "request" ></ param >
-        /// < returns ></ returns >
+        /// <param name = "request" ></param >
+        /// <returns></returns>
         public Task<CustomerAccountListResponseAppLaunch> GetCustomerAccountListAppLaunch([Body] Request.BaseRequestV4 request)
         {
             //Console.WriteLine("APIWAS call :" + apiAws.GetCustomerAccountListAppLaunch<CustomerAccountListResponseAppLaunch>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken()).ToString());
@@ -926,7 +924,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// Call FcmTokenUpdate with timeout set.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="token"></param>
         /// <returns></returns>
         public Task<APIBaseResponse> UpdateUserInfoDevice([Body] Request.BaseRequest request)
         {
@@ -938,7 +935,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// Call GetIdentificationNo with timeout set.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="token"></param>
         /// <returns></returns>
         public Task<GetIdentificationNoResponse> GetIdentificationNo([Body] Request.BaseRequestV4 request)
         {
@@ -954,11 +950,11 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         {
             return api.GetDSSTableData<DSSTableResponse>(EncryptRequest(request), CancellationTokenSourceWrapper.GetToken());
         }
-        
+
+        /// <summary>
         /// Call GetAccountsSMRIcon with timeout set.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="token"></param>
         /// <returns></returns>
         public Task<AccountSMRStatusResponse> GetAccountsSMRIcon([Body] AccountSMRStatusRequestV2 request)
         {
@@ -969,7 +965,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// Call GetIsSmrApplyAllowed with timeout set.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="token"></param>
         /// <returns></returns>
         public Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed([Body] GetIsSmrApplyAllowedRequest request)
         {
@@ -996,7 +991,6 @@ namespace myTNB_Android.Src.MyTNBService.ServiceImpl
         /// Call GetBillMaskingPDF with timeout set.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="token"></param>
         /// <returns></returns>
         public Task<GetBillMaskingResponse> GetBillMaskingPDFV2([Body] GetBillMaskingRequest request)
         {

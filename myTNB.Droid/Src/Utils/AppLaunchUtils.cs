@@ -1,7 +1,7 @@
 ﻿using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class AppLaunchUtils
     {

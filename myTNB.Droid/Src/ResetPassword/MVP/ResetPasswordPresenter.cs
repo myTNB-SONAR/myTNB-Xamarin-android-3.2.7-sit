@@ -1,17 +1,17 @@
 ﻿using Android.Content;
 using Android.Text;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AppLaunch.Api;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.ResetPassword.Request;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.AppLaunch.Api;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.AppLaunch.Requests;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Login.Requests;
+using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.ResetPassword.Request;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -21,7 +21,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace myTNB_Android.Src.ResetPassword.MVP
+namespace myTNB.Android.Src.ResetPassword.MVP
 {
     public class ResetPasswordPresenter : ResetPasswordContract.IUserActionsListener
     {

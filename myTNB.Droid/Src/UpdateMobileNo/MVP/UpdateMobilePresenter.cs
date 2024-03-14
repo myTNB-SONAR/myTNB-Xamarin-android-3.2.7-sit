@@ -1,9 +1,9 @@
 ﻿using Android.Telephony;
 using Android.Text;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Login.Requests;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -11,7 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.UpdateMobileNo.MVP
+namespace myTNB.Android.Src.UpdateMobileNo.MVP
 {
     public class UpdateMobilePresenter : UpdateMobileContract.IUserActionsListener
     {

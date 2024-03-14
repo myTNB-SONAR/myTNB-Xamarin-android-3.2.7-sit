@@ -1,13 +1,13 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.ManageUser.MVP
+namespace myTNB.Android.Src.ManageUser.MVP
 {
     public class ManageUserPresenter : ManageUserContract.IUserActionsListener
     {

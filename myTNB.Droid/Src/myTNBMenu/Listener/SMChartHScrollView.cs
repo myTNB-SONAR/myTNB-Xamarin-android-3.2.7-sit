@@ -2,7 +2,7 @@
 using Android.Util;
 using Android.Widget;
 
-namespace myTNB_Android.Src.myTNBMenu.Listener
+namespace myTNB.Android.Src.myTNBMenu.Listener
 {
     public class SMChartHScrollView : HorizontalScrollView
     {

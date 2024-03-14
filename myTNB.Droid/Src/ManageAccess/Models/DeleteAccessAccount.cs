@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using myTNB_Android.Src.Database;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Database;
+using myTNB.Android.Src.Database.Model;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.ManageAccess.Models
+namespace myTNB.Android.Src.ManageAccess.Models
 {
     public class DeleteAccessAccount
     {

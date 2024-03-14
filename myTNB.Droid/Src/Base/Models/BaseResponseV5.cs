@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Base.Models
+namespace myTNB.Android.Src.Base.Models
 {
     public abstract class BaseResponseV5<T>
     {

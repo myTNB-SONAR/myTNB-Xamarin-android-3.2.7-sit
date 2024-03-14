@@ -1,9 +1,9 @@
 ﻿using System;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Base.Models;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class UserNotificationDetailsRequestNew : BaseRequest
     {

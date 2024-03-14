@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB_Android.Src.SMRnewTncView.MVP
+namespace myTNB.Android.Src.SMRnewTncView.MVP
 {
    public  class SMRnewTncViewPresenter : SMRnewTncViewContract.IUserActionsListener
     {

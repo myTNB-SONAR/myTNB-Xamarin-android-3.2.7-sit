@@ -7,14 +7,14 @@ using myTNB.Mobile;
 using myTNB.Mobile.AWS;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.SessionCache;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.SessionCache;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Async
+namespace myTNB.Android.Src.myTNBMenu.Async
 {
     public class CustomEligibility
     {

@@ -7,16 +7,16 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.LogUserAccess.Adapter;
-using myTNB_Android.Src.LogUserAccess.Models;
-using myTNB_Android.Src.LogUserAccess.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.LogUserAccess.Adapter;
+using myTNB.Android.Src.LogUserAccess.Models;
+using myTNB.Android.Src.LogUserAccess.MVP;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.LogUserAccess.Activity
+namespace myTNB.Android.Src.LogUserAccess.Activity
 {
     [Activity(Label = "@string/notification_filter_activity_title"
               , Icon = "@drawable/ic_launcher"

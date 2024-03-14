@@ -3,13 +3,13 @@ using Android.Graphics;
 using Android.Text;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
+using static myTNB.Android.Src.Base.Models.SubmittedFeedbackDetails;
 
-namespace myTNB_Android.Src.FeedbackDetails.MVP
+namespace myTNB.Android.Src.FeedbackDetails.MVP
 {
     public class FeedbackDetailsFaultyLampsPresenter : FeedbackDetailsContract.FaultyLamps.IUserActionsListener
     {

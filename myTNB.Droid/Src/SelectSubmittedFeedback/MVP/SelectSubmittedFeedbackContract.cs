@@ -1,10 +1,10 @@
-﻿using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.SelectSubmittedFeedback.MVP
+namespace myTNB.Android.Src.SelectSubmittedFeedback.MVP
 {
     public class SelectSubmittedFeedbackContract
     {

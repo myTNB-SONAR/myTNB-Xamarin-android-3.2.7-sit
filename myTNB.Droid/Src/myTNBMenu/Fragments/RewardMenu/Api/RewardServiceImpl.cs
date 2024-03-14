@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB.Android.Src.Utils;
 using Refit;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api
 {
 	public class RewardServiceImpl
     {

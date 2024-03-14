@@ -13,21 +13,21 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
 using Java.Util;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.PDFView;
 using myTNB.Mobile.API.Managers.Payment;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
-using FileUtils = myTNB_Android.Src.Utils.FileUtils;
+using FileUtils = myTNB.Android.Src.Utils.FileUtils;
 
-namespace myTNB_Android.Src.ViewBill.Activity
+namespace myTNB.Android.Src.ViewBill.Activity
 {
     [Activity(Label = "@string/viewbill_activity_title"
           , ScreenOrientation = ScreenOrientation.Portrait
@@ -597,7 +597,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             try
             {
-                bool isWhiteList = UserSessions.GetWhiteList(PreferenceManager.GetDefaultSharedPreferences(this));
+                bool isWhiteList = UserSessions.GetWhiteList(preferences: PreferenceManager.GetDefaultSharedPreferences(this));
                 if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
                 {
 
@@ -612,7 +612,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     });
                     //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                    ///getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
+                    //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                 }
                 else
@@ -628,7 +628,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     });
                     //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper(), "utf-8");
-                    ///getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
+                    //getPDFUrl = Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill" + selectedAccount.IsOwner.ToString();
                     //pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v7/mytnbws.asmx/GetBillMaskingPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&contractAccount=" + selectedAccount.AccountNum + "&lang=" + LanguageUtil.GetAppLanguage().ToUpper() + "&isOwnerBill=" + selectedAccount.IsOwner.ToString(), "utf-8");
                 }
 

@@ -1,19 +1,15 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Rating.Request;
-using myTNB_Android.Src.Rating.Response;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.MyTNBService.Response;
 using Refit;
 using System;
-using System.Collections.Generic;
-using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
+namespace myTNB.Android.Src.ServiceDistruptionRating.MVP
 {
     public class ServiceDistruptionRatingContract
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
-
+            /// <summary>
             /// Show registration progress dialog
             /// </summary>
             void ShowProgressDialog();

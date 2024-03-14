@@ -54,7 +54,7 @@
 					android:padding="16dp"
 					android:id="@+id/detailLayout"
 					android:orientation="vertical">
-					<myTNB_Android.Src.CompoundView.ExpandableTextViewComponent
+					<myTNB.Android.Src.CompoundView.ExpandableTextViewComponent
 						android:id="@+id/otherChargesExpandableView"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"

@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:background="@color/white">
 
-        <myTNB_Android.Src.Utils.ZoomImageView.ZoomImageView
+        <myTNB.Android.Src.Utils.ZoomImageView.ZoomImageView
             android:id="@+id/imgFullView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

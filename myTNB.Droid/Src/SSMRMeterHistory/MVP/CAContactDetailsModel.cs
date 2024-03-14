@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.SSMRMeterHistory.MVP
+namespace myTNB.Android.Src.SSMRMeterHistory.MVP
 {
     public class CAContactDetailsModel
     {

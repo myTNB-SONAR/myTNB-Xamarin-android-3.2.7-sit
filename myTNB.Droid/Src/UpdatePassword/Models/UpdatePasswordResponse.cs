@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.UpdatePassword.Models
+namespace myTNB.Android.Src.UpdatePassword.Models
 {
     public class UpdatePasswordResponse
     {

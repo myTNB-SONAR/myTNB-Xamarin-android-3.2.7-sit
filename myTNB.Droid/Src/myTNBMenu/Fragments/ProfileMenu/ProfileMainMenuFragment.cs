@@ -18,33 +18,33 @@ using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Lang;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.AddAccountDisclaimer.Activity;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.LogoutEnd.Activity;
-using myTNB_Android.Src.ManageCards.Activity;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.MyAccount.Activity;
-using myTNB_Android.Src.MyLearnMoreAboutTnb.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
-using myTNB_Android.Src.NotificationAddAccount.Activity;
-using myTNB_Android.Src.NotificationSettings.Activity;
-using myTNB_Android.Src.Profile.Activity;
-using myTNB_Android.Src.SSMR.Util;
-using myTNB_Android.Src.TermsAndConditions.Activity;
-using myTNB_Android.Src.UpdateMobileNo.Activity;
-using myTNB_Android.Src.UpdatePassword.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.AddAccountDisclaimer.Activity;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Fragments;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FAQ.Activity;
+using myTNB.Android.Src.FindUs.Activity;
+using myTNB.Android.Src.LogoutEnd.Activity;
+using myTNB.Android.Src.ManageCards.Activity;
+using myTNB.Android.Src.ManageCards.Models;
+using myTNB.Android.Src.MyAccount.Activity;
+using myTNB.Android.Src.MyLearnMoreAboutTnb.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.MVP.Fragment;
+using myTNB.Android.Src.NotificationAddAccount.Activity;
+using myTNB.Android.Src.NotificationSettings.Activity;
+using myTNB.Android.Src.Profile.Activity;
+using myTNB.Android.Src.SSMR.Util;
+using myTNB.Android.Src.TermsAndConditions.Activity;
+using myTNB.Android.Src.UpdateMobileNo.Activity;
+using myTNB.Android.Src.UpdatePassword.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ProfileMenu
+namespace myTNB.Android.Src.myTNBMenu.Fragments.ProfileMenu
 {
     [Activity(Label = "@string/dashboard_activity_title"
               , Icon = "@drawable/ic_launcher"

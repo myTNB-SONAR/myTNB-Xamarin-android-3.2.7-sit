@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.NotificationDetails.Models
+namespace myTNB.Android.Src.NotificationDetails.Models
 {
     public class NotificationDetailModel
     {

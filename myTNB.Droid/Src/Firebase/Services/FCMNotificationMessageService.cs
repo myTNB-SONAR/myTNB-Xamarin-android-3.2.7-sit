@@ -6,20 +6,20 @@ using Android.Media;
 using Android.Util;
 using AndroidX.Core.App;
 using Firebase.Messaging;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.NotificationDetails.Activity;
-using myTNB_Android.Src.Notifications.Activity;
-using myTNB_Android.Src.OverVoltageFeedback.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.NotificationDetails.Activity;
+using myTNB.Android.Src.Notifications.Activity;
+using myTNB.Android.Src.OverVoltageFeedback.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace myTNB_Android.Src.Firebase.Services
+namespace myTNB.Android.Src.Firebase.Services
 {
     //[Service]
     //[IntentFilter(new[] { "com.google.firebase.MESSAGING_EVENT" })]

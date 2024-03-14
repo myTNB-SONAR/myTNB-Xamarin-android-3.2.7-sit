@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using myTNB.Mobile.AWS.Models.DBR;
 
-namespace myTNB_Android.Src.myTNBMenu.Async
+namespace myTNB.Android.Src.myTNBMenu.Async
 {
     public sealed class TenantDBRCache
     {

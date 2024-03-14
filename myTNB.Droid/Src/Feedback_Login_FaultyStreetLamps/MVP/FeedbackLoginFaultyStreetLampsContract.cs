@@ -2,14 +2,14 @@
 using Android.Content;
 using Android.Locations;
 using Android.Runtime;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Base.Request;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
+namespace myTNB.Android.Src.Feedback_Login_FaultyStreetLamps.MVP
 {
     public class FeedbackLoginFaultyStreetLampsContract
     {
@@ -245,7 +245,7 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             /// <param name="location">string</param>
             /// <param name="pole_no">string</param>
             /// <param name="feedback">string</param>
-            /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
+            /// <param name="attachedImages">List<paramref></paramref></param>
             void OnSubmit(string deviceId, FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
@@ -257,11 +257,11 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.MVP
             /// <param name="location">string</param>
             /// <param name="pole_no">string</param>
             /// <param name="feedback">string</param>
-            /// <param name="attachedImages">List<paramref name="AttachedImage"/></param>
+            /// <param name="attachedImages">List<paramref></paramref></param>
             void OnSubmit(string deviceId, string mobile_no, FeedbackState feedbackState, string location, string pole_no, string feedback, List<AttachedImage> attachedImages);
 
             /// <summary>
-            /// Action to check empty location & feedback
+            /// Action to check empty location and feedback
             /// </summary>
             /// <param name="location">string</param>
             /// <param name="feedback">string</param>

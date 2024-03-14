@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.ServiceDistruptionRating.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.ServiceDistruptionRating.Model;
 using Newtonsoft.Json;
 using static myTNB.Mobile.FeatureInfoClass;
 
-namespace myTNB_Android.Src.ServiceDistruptionRating.Request
+namespace myTNB.Android.Src.ServiceDistruptionRating.Request
 {
     public class UserServiceDistruptionSetSubRequest : BaseRequest
     {

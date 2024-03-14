@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 using System.Collections.Generic;
-using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
+using static myTNB.Android.Src.FindUs.Response.GetLocationTypesResponse;
 
-namespace myTNB_Android.Src.AppLaunch.Models
+namespace myTNB.Android.Src.AppLaunch.Models
 {
     public class MasterData
     {

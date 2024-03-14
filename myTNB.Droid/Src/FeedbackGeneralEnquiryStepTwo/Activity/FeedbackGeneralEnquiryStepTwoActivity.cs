@@ -22,21 +22,21 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.MVP;
-using myTNB_Android.Src.SubmitEnquirySuccess.Activity;
-using myTNB_Android.Src.UpdatePersonalDetailTnC.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Common.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.MVP;
+using myTNB.Android.Src.SubmitEnquirySuccess.Activity;
+using myTNB.Android.Src.UpdatePersonalDetailTnC.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
+namespace myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Activity
 {
 
     [Activity(Label = "@string/GeneralEnquiry2of2_app_bar"

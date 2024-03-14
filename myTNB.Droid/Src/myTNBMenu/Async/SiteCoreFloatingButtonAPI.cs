@@ -11,14 +11,14 @@ using Android.OS;
 using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.MVP;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SitecoreCMS.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.MVP;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.Utils;
 using Refit;
 
-namespace myTNB_Android.Src.myTNBMenu.Async
+namespace myTNB.Android.Src.myTNBMenu.Async
 {
 	public class SiteCoreFloatingButtonAPI : AsyncTask
     {

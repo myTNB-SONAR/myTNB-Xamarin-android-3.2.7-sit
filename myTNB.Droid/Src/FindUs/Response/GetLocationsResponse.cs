@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.FindUs.Models;
+﻿using myTNB.Android.Src.FindUs.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.FindUs.Response
+namespace myTNB.Android.Src.FindUs.Response
 {
     public class GetLocationsResponse
     {

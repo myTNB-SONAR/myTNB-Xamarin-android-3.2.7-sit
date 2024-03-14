@@ -3,11 +3,11 @@ using Android.Util;
 using Android.Widget;
 using Google.Android.Material.TextField;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Common;
-using myTNB_Android.Src.Database;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Common;
+using myTNB.Android.Src.Database;
+using myTNB.Android.Src.Database.Model;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public sealed class TextViewUtils
     {

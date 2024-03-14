@@ -3,7 +3,7 @@ using myTNB;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models
+namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.Models
 {
     public class SearchByModel : SearchType
     {

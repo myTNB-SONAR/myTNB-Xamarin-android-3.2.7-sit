@@ -16,28 +16,28 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.AppointmentDetailSet.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FeedbackDetails.MVP;
-using myTNB_Android.Src.FeedBackSubmittedSucess.Activity;
-using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
-using myTNB_Android.Src.PaymentInfoSunmittedSuccess.Activity;
-using myTNB_Android.Src.SelectSubmittedFeedback.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppointmentDetailSet.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FeedbackDetails.MVP;
+using myTNB.Android.Src.FeedBackSubmittedSucess.Activity;
+using myTNB.Android.Src.OverVoltageClaimSuccessPage.Activity;
+using myTNB.Android.Src.PaymentInfoSunmittedSuccess.Activity;
+using myTNB.Android.Src.SelectSubmittedFeedback.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Xamarin.Essentials;
-using myTNB_Android.Src.MyTNBService.Request;
-using BaseRequest = myTNB_Android.Src.MyTNBService.Request.BaseRequest;
+using myTNB.Android.Src.MyTNBService.Request;
+using BaseRequest = myTNB.Android.Src.MyTNBService.Request.BaseRequest;
 
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.Helper;
-using myTNB_Android.Src.OverVoltageFeedback.Model;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.Helper;
+using myTNB.Android.Src.OverVoltageFeedback.Model;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.OverVoltageFeedback.Activity
+namespace myTNB.Android.Src.OverVoltageFeedback.Activity
 {
     [Activity(Label = "OverVoltageFeedbackDetailActivity"
           , ScreenOrientation = ScreenOrientation.Portrait

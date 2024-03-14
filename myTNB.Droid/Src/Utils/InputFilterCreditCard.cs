@@ -2,7 +2,7 @@
 using Android.Widget;
 using Java.Lang;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
 
     public class InputFilterCreditCard : Java.Lang.Object, ITextWatcher

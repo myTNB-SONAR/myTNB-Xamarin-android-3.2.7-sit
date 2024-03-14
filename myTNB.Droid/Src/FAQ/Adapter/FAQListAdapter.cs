@@ -12,11 +12,11 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Java.Lang;
 using myTNB.SitecoreCMS.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.FAQ.Adapter
+namespace myTNB.Android.Src.FAQ.Adapter
 {
     public class FAQListAdapter : RecyclerView.Adapter
     {

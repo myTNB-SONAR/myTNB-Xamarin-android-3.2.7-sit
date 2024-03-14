@@ -1,10 +1,10 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Database.Model;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Database.Model;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Feedback_PreLogin_Menu.MVP
+namespace myTNB.Android.Src.Feedback_PreLogin_Menu.MVP
 {
     public class FeedbackPreLoginMenuContract
     {

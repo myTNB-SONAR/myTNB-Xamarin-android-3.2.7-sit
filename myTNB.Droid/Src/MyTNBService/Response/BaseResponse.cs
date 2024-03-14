@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.MyTNBService.InterfaceAPI;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.MyTNBService.InterfaceAPI;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class BaseResponse<T>
     {

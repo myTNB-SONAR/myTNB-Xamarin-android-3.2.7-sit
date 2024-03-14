@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
-using myTNB_Android.Src.Utils;
-namespace myTNB_Android.Src.MyTNBService.Response
+using myTNB.Android.Src.Utils;
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class NCAutoAddAccountsResponse
     {

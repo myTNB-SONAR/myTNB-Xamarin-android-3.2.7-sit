@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.Android.Src.NewAppTutorial.MVP;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
 	public class RewardMenuContract
     {

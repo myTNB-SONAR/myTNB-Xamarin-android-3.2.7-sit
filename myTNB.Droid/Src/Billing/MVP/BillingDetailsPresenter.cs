@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Requests;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System.Linq;
 using System.Collections.Generic;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
 using Newtonsoft.Json;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.Parser;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.Parser;
+using myTNB.Android.Src.Base;
 using System.Net;
-using myTNB_Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Models;
 using Java.Util.Regex;
 
-namespace myTNB_Android.Src.Billing.MVP
+namespace myTNB.Android.Src.Billing.MVP
 {
     public class BillingDetailsPresenter : BillingDetailsContract.IPresenter
     {

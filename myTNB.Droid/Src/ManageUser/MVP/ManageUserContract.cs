@@ -1,13 +1,13 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.ManageUser.MVP
+namespace myTNB.Android.Src.ManageUser.MVP
 {
     public class ManageUserContract
     {

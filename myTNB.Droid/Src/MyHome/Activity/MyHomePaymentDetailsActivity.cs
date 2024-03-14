@@ -19,23 +19,23 @@ using CheeseBind;
 using Java.Text;
 using myTNB.Mobile;
 using myTNB.Mobile.API.Models.Payment.PostApplicationsPaidDetails;
-using myTNB_Android.Src.AddCard.Activity;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Adapter;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Models;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.MyHome.MVP;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddCard.Activity;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MultipleAccountPayment.Adapter;
+using myTNB.Android.Src.MultipleAccountPayment.Model;
+using myTNB.Android.Src.MultipleAccountPayment.Models;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.MyHome.MVP;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
-using static myTNB_Android.Src.Utils.LanguageConstants;
+using static myTNB.Android.Src.CompoundView.ExpandableTextViewComponent;
+using static myTNB.Android.Src.Utils.LanguageConstants;
 
-namespace myTNB_Android.Src.MyHome.Activity
+namespace myTNB.Android.Src.MyHome.Activity
 {
 	[Activity(Label = "MyHomePaymentDetailsActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class MyHomePaymentDetailsActivity : BaseActivityCustom, MyHomePaymentDetailsContract.IView

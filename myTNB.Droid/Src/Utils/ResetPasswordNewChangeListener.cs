@@ -4,7 +4,7 @@ using Google.Android.Material.TextField;
 using Java.Lang;
 using Java.Util.Regex;
 using static Android.Views.View;
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class ResetPasswordNewChangeListener : Java.Lang.Object, ITextWatcher
     {

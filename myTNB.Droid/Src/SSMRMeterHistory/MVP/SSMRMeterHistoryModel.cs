@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.SSMRMeterHistory.MVP
+namespace myTNB.Android.Src.SSMRMeterHistory.MVP
 {
     public class SSMRMeterHistoryModel
     {

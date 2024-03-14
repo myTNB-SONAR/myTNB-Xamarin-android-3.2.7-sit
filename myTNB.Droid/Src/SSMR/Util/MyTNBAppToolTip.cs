@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.SSMR.Util
+namespace myTNB.Android.Src.SSMR.Util
 {
     public class MyTNBAppToolTip
     {

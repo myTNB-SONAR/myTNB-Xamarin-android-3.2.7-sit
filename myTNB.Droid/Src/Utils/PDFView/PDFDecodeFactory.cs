@@ -3,7 +3,7 @@ using Android.Runtime;
 using Com.Davemorrissey.Labs.Subscaleview.Decoder;
 using Java.IO;
 
-namespace myTNB_Android.Src.Utils.PDFView
+namespace myTNB.Android.Src.Utils.PDFView
 {
     public class PDFDecodeFactory : PDFRegionDecoder, IDecoderFactory
     {

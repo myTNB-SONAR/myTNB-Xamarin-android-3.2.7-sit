@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.NewAppTutorial.MVP;
 
-namespace myTNB_Android.Src.Billing.MVP
+namespace myTNB.Android.Src.Billing.MVP
 {
     public class BillingDetailsContract
     {

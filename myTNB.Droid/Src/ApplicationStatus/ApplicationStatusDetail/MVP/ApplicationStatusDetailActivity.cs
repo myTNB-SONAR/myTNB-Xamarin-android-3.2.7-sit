@@ -1,61 +1,61 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 using CheeseBind;
 using Android.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
 using AndroidX.RecyclerView.Widget;
 using System;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Database.Model;
 using AndroidX.Core.Content;
 using Android.Views;
-using myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
+using myTNB.Android.Src.MultipleAccountPayment.Activity;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.ViewReceipt.Activity;
-using myTNB_Android.Src.ViewBill.Activity;
+using myTNB.Android.Src.ViewReceipt.Activity;
+using myTNB.Android.Src.ViewBill.Activity;
 using Android.Preferences;
 using Android.Graphics;
-using myTNB_Android.Src.Login.Activity;
+using myTNB.Android.Src.Login.Activity;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatusRating.Activity;
+using myTNB.Android.Src.ApplicationStatusRating.Activity;
 using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB;
 using Android.Runtime;
-using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
-using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using Android.Text;
 using Android.Content.PM;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.NotificationDetails.Models;
 
-using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.MyHome.Activity;
+using MyHomeModel = myTNB.Android.Src.MyHome.Model.MyHomeModel;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.MyHome.Activity;
 using static Android.Graphics.ColorSpace;
-using myTNB_Android.Src.DeviceCache;
+using myTNB.Android.Src.DeviceCache;
 using System.Threading.Tasks;
 using System.Reflection;
 using myTNB.Mobile.Constants;
 using Xamarin.Facebook;
-using static myTNB_Android.Src.myTNBMenu.Models.SMUsageHistoryData;
+using static myTNB.Android.Src.myTNBMenu.Models.SMUsageHistoryData;
 using Android;
-using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
+using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.Activity;
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
-using myTNB_Android.Src.DigitalSignature;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB.Android.Src.DigitalSignature;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
     [Activity(Label = "Application Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusDetailActivity : BaseActivityCustom, ApplicationStatusDetailContract.IView

@@ -2,17 +2,9 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
-using Android.Graphics.Drawables;
-using Android.Icu.Text;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
-
-
-using Android.Text;
-using Android.Text.Method;
-using Android.Text.Style;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
@@ -21,20 +13,15 @@ using CheeseBind;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using Google.Android.Material.Snackbar;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.SSMR.Util;
-using myTNB_Android.Src.Utils;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime;
-using System.Threading.Tasks;
 using System.Timers;
 
-namespace myTNB_Android.Src.RewardDetail.MVP
+namespace myTNB.Android.Src.RewardDetail.MVP
 {
     [Activity(Label = "Rewards"
               , Icon = "@drawable/ic_launcher"

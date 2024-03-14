@@ -1,10 +1,10 @@
 ﻿using Android.Content.PM;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Login.Requests;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Login.Requests;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.RegisterValidation.MVP
+namespace myTNB.Android.Src.RegisterValidation.MVP
 {
     public class MobileTokenValidationContract
     {

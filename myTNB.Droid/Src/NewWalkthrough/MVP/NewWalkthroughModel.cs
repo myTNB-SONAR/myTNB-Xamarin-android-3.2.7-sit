@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.NewWalkthrough.MVP
+﻿namespace myTNB.Android.Src.NewWalkthrough.MVP
 {
     public class NewWalkthroughModel
     {

@@ -12,7 +12,7 @@ using Android.Widget;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class GetSearchForAccountResponse 
     {

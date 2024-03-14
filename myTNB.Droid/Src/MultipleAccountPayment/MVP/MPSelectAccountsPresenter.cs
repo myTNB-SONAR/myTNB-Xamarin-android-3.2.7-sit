@@ -1,17 +1,17 @@
 ﻿using Android.Util;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Requests;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Parser;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MultipleAccountPayment.Model;
+using myTNB.Android.Src.MultipleAccountPayment.Requests;
+using myTNB.Android.Src.myTNBMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.MyTNBService.Parser;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -19,9 +19,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
+using static myTNB.Android.Src.MyTNBService.Response.AccountChargesResponse;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.MVP
+namespace myTNB.Android.Src.MultipleAccountPayment.MVP
 {
     public class MPSelectAccountsPresenter : MPSelectAccountsContract.IUserActionsListener
     {

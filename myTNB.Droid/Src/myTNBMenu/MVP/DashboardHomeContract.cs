@@ -2,18 +2,18 @@
 using Android.Content;
 using Android.Runtime;
 using myTNB.Mobile.AWS;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.myTNBMenu.Requests;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Requests;
+using myTNB.Android.Src.SitecoreCMS.Model;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.myTNBMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.MVP
 {
     public class DashboardHomeContract
     {

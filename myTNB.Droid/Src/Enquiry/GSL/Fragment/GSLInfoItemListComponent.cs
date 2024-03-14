@@ -3,10 +3,10 @@ using Android.OS;
 using Android.Text;
 using Android.Util;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Enquiry.GSL.Fragment
+namespace myTNB.Android.Src.Enquiry.GSL.Fragment
 {
     public class GSLInfoItemListComponent : LinearLayout
     {

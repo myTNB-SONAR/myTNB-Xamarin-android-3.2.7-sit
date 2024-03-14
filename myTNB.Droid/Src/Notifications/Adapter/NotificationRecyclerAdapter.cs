@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using Android.Content;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.Base.Adapter;
+using myTNB.Android.Src.Notifications.Models;
+using myTNB.Android.Src.Base.Adapter;
 using CheeseBind;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Notifications.MVP;
+using myTNB.Android.Src.Notifications.MVP;
 using static Android.Widget.CompoundButton;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.Base;
 using System.Text.RegularExpressions;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Database.Model;
 using System.Linq;
 
-namespace myTNB_Android.Src.Notifications.Adapter
+namespace myTNB.Android.Src.Notifications.Adapter
 {
     public class NotificationRecyclerAdapter : BaseRecyclerAdapter<UserNotificationData>
     {

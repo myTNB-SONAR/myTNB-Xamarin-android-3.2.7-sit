@@ -1,6 +1,6 @@
-﻿using myTNB_Android.Src.MyTNBService.Request;
+﻿using myTNB.Android.Src.MyTNBService.Request;
 using System;
-namespace myTNB_Android.Src.EnergyBudgetRating.Request
+namespace myTNB.Android.Src.EnergyBudgetRating.Request
 {
     public class GetFeedbackTwoQuestionRequest : BaseRequest
     {

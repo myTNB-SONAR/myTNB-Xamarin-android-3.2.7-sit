@@ -2,12 +2,12 @@
 using Android.Telephony;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.XDetailRegistrationForm.Models;
-using myTNB_Android.Src.XDetailRegistrationForm.Requests;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.XDetailRegistrationForm.Models;
+using myTNB.Android.Src.XDetailRegistrationForm.Requests;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Net;
@@ -16,10 +16,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using Firebase.Iid;
 using Newtonsoft.Json;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.Base;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.XDetailRegistrationForm.MVP
+namespace myTNB.Android.Src.XDetailRegistrationForm.MVP
 {
     public class RegisterFormPresenter : RegisterFormContract.IUserActionsListener
     {

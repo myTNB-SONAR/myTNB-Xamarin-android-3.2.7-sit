@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.NotificationSettings.Models
+namespace myTNB.Android.Src.NotificationSettings.Models
 {
     public class UserPreferenceData
     {

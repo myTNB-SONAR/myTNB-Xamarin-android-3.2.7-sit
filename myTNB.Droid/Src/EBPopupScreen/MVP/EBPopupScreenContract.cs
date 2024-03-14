@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Database.Model;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Database.Model;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.EBPopupScreen.MVP
+namespace myTNB.Android.Src.EBPopupScreen.MVP
 {
     public class EBPopupScreenContract
     {

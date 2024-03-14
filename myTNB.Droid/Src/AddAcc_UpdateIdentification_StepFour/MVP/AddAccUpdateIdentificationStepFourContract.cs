@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using myTNB_Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.MVP;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
 using System.Threading.Tasks;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
 
-namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepFour.MVP
+namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepFour.MVP
 {
     public class AddAccUpdateIdentificationStepFourContract
     {

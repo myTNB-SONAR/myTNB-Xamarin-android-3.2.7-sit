@@ -168,7 +168,7 @@
                         android:paddingStart="@dimen/_12sdp"
                         android:background="@drawable/resend_active_background"
                         android:gravity="center_horizontal|center_vertical" />
-                    <myTNB_Android.Src.Utils.Custom.ProgressButton.ResendButton
+                    <myTNB.Android.Src.Utils.Custom.ProgressButton.ResendButton
                         android:id="@+id/btnResend"
                         android:layout_height="wrap_content"
                         android:text="@string/registration_validation_btn_resend"

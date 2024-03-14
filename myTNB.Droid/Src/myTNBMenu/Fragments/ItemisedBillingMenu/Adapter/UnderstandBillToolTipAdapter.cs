@@ -6,11 +6,11 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
+namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
 {
     public class UnderstandBillToolTipAdapter : RecyclerView.Adapter
     {

@@ -1,10 +1,10 @@
 ﻿using Android.Content.PM;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.XDetailRegistrationForm.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.XDetailRegistrationForm.Models;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.UpdateID.MVP
+namespace myTNB.Android.Src.UpdateID.MVP
 {
     public class UpdateIDContract
     {

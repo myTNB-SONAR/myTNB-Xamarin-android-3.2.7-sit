@@ -15,19 +15,19 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.RegisterValidation.MVP;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressButton;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Login.Requests;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.RegisterValidation.MVP;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.Custom.ProgressButton;
 using Refit;
 using System;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB_Android.Src.UpdateMobileNo
+namespace myTNB.Android.Src.UpdateMobileNo
 {
     [Activity(Label = "@string/registration_validation_activity_title"
               , Icon = "@drawable/ic_launcher"

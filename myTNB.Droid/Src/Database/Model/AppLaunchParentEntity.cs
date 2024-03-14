@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using SQLite;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
 	[Table("AppLaunchParentEntity")]
 	public class AppLaunchParentEntity

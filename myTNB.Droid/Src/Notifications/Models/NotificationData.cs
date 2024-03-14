@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.Notifications.Models
+namespace myTNB.Android.Src.Notifications.Models
 {
     public class NotificationData
     {

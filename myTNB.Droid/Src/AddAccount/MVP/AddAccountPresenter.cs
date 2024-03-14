@@ -1,11 +1,11 @@
 ﻿using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AddAccount.Requests;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.AddAccount.Requests;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using ValidateManualAccountRequest = myTNB_Android.Src.MyTNBService.Request.ValidateManualAccountRequest;
+using ValidateManualAccountRequest = myTNB.Android.Src.MyTNBService.Request.ValidateManualAccountRequest;
 
-namespace myTNB_Android.Src.AddAccount.MVP
+namespace myTNB.Android.Src.AddAccount.MVP
 {
     public class AddAccountPresenter : AddAccountContract.IUserActionsListener
     {

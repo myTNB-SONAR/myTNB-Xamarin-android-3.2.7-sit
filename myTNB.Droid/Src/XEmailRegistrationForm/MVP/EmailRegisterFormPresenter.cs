@@ -2,21 +2,21 @@
 using Android.Telephony;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.XEmailRegistrationForm.Models;
-using myTNB_Android.Src.XEmailRegistrationForm.Requests;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.XEmailRegistrationForm.Models;
+using myTNB.Android.Src.XEmailRegistrationForm.Requests;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Database.Model;
 using Firebase.Iid;
 
-namespace myTNB_Android.Src.XEmailRegistrationForm.MVP
+namespace myTNB.Android.Src.XEmailRegistrationForm.MVP
 {
     public class EmailRegisterFormPresenter : EmailRegisterFormContract.IUserActionsListener
     {

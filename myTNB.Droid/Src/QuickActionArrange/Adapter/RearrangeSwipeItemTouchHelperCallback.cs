@@ -15,9 +15,9 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.QuickActionArrange.Adapter
+namespace myTNB.Android.Src.QuickActionArrange.Adapter
 {
     enum ButtonState
     {

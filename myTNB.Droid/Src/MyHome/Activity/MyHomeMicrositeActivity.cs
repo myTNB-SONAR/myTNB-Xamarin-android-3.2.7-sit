@@ -18,33 +18,33 @@ using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Billing.MVP;
-using myTNB_Android.Src.Bills.AccountStatement.Activity;
-using myTNB_Android.Src.Bills.AccountStatement.MVP;
-using myTNB_Android.Src.Bills.NewBillRedesign.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.Login.Models;
-using myTNB_Android.Src.MyAccount.Activity;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.MyHome.MVP;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Deeplink;
-using myTNB_Android.Src.ViewBill.Activity;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Billing.MVP;
+using myTNB.Android.Src.Bills.AccountStatement.Activity;
+using myTNB.Android.Src.Bills.AccountStatement.MVP;
+using myTNB.Android.Src.Bills.NewBillRedesign.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.FindUs.Activity;
+using myTNB.Android.Src.Login.Models;
+using myTNB.Android.Src.MyAccount.Activity;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.MyHome.MVP;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.Deeplink;
+using myTNB.Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Org.BouncyCastle.Asn1.Crmf;
 using Xamarin.Facebook;
-using static myTNB_Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
-using MyHomeModel = myTNB_Android.Src.MyHome.Model.MyHomeModel;
+using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using MyHomeModel = myTNB.Android.Src.MyHome.Model.MyHomeModel;
 
-namespace myTNB_Android.Src.MyHome.Activity
+namespace myTNB.Android.Src.MyHome.Activity
 {
     [Activity(Label = "MyHomeMicrositeActivity"
       , ScreenOrientation = ScreenOrientation.Portrait

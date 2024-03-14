@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Enquiry.GSL.Fragment;
-using myTNB_Android.Src.Enquiry.GSL.MVP;
-using myTNB_Android.Src.Feedback_Prelogin_NewIC.Activity;
-using myTNB_Android.Src.Utils;
-using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using System;
+using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Enquiry.GSL.Activity
+namespace myTNB.Android.Src.Enquiry.GSL.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait,
         WindowSoftInputMode = SoftInput.AdjustPan,

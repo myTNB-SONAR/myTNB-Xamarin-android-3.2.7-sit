@@ -3,13 +3,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.Adapter
 {
     public class ApplicationStatusFilterAdapter : RecyclerView.Adapter
     {

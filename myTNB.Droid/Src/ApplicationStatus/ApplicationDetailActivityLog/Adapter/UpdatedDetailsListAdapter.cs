@@ -2,11 +2,11 @@
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
-using static myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter.ApplicationDetailActivityAdapter;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using static myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter.ApplicationDetailActivityAdapter;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter
 {
     public class UpdatedDetailsListAdapter : RecyclerView.Adapter
     {

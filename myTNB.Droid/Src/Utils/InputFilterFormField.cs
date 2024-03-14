@@ -6,7 +6,7 @@ using Java.Lang;
 using System;
 using static Android.Views.View;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
 
     public class InputFilterFormField : Java.Lang.Object, ITextWatcher

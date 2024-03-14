@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
 
-namespace myTNB_Android.Src.Bills.AccountStatement.MVP
+namespace myTNB.Android.Src.Bills.AccountStatement.MVP
 {
     public class AccountStatementLoadingContract
     {

@@ -1,20 +1,20 @@
 ﻿using Android.App;
 using Android.Content.PM;
 using Android.OS;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.DigitalSignature.WebView.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.DigitalSignature.WebView.MVP;
+using myTNB.Android.Src.Utils;
 using Android.Webkit;
 using myTNB.Mobile;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
 using myTNB;
 using myTNB.Mobile.AWS.Models.DS.Identification;
 using Newtonsoft.Json;
 using Android.Widget;
 using Android.Util;
 using Android.Net.Http;
-using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
 using Android.Content;
 using Google.Android.Material.Snackbar;
 using Android.Views;
@@ -23,9 +23,9 @@ using Android;
 using System;
 using AndroidX.AppCompat.App;
 using myTNB.Mobile.Constants.DS;
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP;
 
-namespace myTNB_Android.Src.DigitalSignature.WebView.Activity
+namespace myTNB.Android.Src.DigitalSignature.WebView.Activity
 {
     [Activity(Label = "DS WebView", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class DSWebViewActivity : BaseActivityCustom, DSWebViewContract.IView

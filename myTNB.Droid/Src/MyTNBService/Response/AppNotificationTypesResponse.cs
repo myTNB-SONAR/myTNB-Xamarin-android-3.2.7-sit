@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class AppNotificationTypesResponse : BaseResponse<List<AppNotificationTypesResponse.ResponseData>>
     {

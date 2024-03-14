@@ -1,18 +1,14 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Rating.Request;
-using myTNB_Android.Src.Rating.Response;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.MyTNBService.Response;
 using System;
-using System.Collections.Generic;
-using static myTNB_Android.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.MVP
+namespace myTNB.Android.Src.EnergyBudgetRating.MVP
 {
     public class EnergyBudgetRatingContract
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
-
+            /// <summary>
             /// Show registration progress dialog
             /// </summary>
             void ShowProgressDialog();

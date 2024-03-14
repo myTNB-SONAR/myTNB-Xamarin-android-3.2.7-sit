@@ -1,14 +1,14 @@
 ﻿using Android.Content;
 using Android.OS;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Utils;
 using System;
-using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
+using static myTNB.Android.Src.FindUs.Response.GetLocationTypesResponse;
 
-namespace myTNB_Android.Src.AppLaunch.Async
+namespace myTNB.Android.Src.AppLaunch.Async
 {
     public class MasterApiDBOperation : AsyncTask
     {

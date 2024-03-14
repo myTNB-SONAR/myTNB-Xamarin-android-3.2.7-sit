@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.Model
+namespace myTNB.Android.Src.MultipleAccountPayment.Model
 {
     public class MPCreditCard
     {

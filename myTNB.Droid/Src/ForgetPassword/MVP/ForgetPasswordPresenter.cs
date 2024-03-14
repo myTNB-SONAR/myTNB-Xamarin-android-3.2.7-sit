@@ -1,11 +1,11 @@
 ﻿using Android.Content;
 using Android.Text;
 using Android.Util;
-using myTNB_Android.Src.ForgetPassword.MVP;
-using myTNB_Android.Src.ForgetPassword.Requests;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.ForgetPassword.MVP;
+using myTNB.Android.Src.ForgetPassword.Requests;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -13,7 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.ForgetPassword.Activity
+namespace myTNB.Android.Src.ForgetPassword.Activity
 {
     public class ForgetPasswordPresenter : ForgetPasswordContract.IUserActionsListener
     {

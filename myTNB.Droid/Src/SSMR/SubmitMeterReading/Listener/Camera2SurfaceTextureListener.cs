@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Android.Graphics;
 using Android.Views;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using System;
 
-namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Listener
+namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Listener
 {
     public class Camera2SurfaceTextureListener : Java.Lang.Object, TextureView.ISurfaceTextureListener
     {
@@ -15,9 +16,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Listener
             this.owner = owner;
         }
 
-        public void OnSurfaceTextureAvailable(Android.Graphics.SurfaceTexture surface, int width, int height)
+        public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
         {
             owner.OpenCamera(width, height);
+        }
+
+        public void OnSurfaceTextureAvailable(SurfaceTexture surface, int width, int height)
+        {
+            throw new NotImplementedException();
         }
 
         public bool OnSurfaceTextureDestroyed(Android.Graphics.SurfaceTexture surface)
@@ -25,14 +31,29 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Listener
             return true;
         }
 
+        public bool OnSurfaceTextureDestroyed(SurfaceTexture surface)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnSurfaceTextureSizeChanged(Android.Graphics.SurfaceTexture surface, int width, int height)
         {
             owner.ConfigureTransform(width, height);
         }
 
+        public void OnSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnSurfaceTextureUpdated(Android.Graphics.SurfaceTexture surface)
         {
 
+        }
+
+        public void OnSurfaceTextureUpdated(SurfaceTexture surface)
+        {
+            throw new NotImplementedException();
         }
     }
 }

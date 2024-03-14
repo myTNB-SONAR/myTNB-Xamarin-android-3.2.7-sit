@@ -1,9 +1,8 @@
-﻿using System;
+﻿using myTNB.Mobile.Extensions;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using myTNB.Mobile.Extensions;
-using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
 {
@@ -56,7 +55,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = createdDate != null && createdDate.Value != null
+                string date = createdDate != null && createdDate.HasValue
                     ? createdDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 return date;
@@ -119,7 +118,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = electricityStartDate != null && electricityStartDate.Value != null
+                string date = electricityStartDate != null && electricityStartDate.HasValue
                     ? electricityStartDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 return date;
@@ -324,7 +323,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
+                return AppointmentDate != null && AppointmentDate.HasValue
                     ? AppointmentDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
             }
@@ -339,7 +338,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDeadline != null && AppointmentDeadline.Value != null
+                return AppointmentDeadline != null && AppointmentDeadline.HasValue
                     ? AppointmentDeadline.Value.ToString("dd MMM yyyy, h tt", dateCultureInfo) ?? string.Empty
                     : string.Empty;
             }
@@ -354,7 +353,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDeadline != null && AppointmentDeadline.Value != null
+                return AppointmentDeadline != null && AppointmentDeadline.HasValue
                     ? AppointmentDeadline.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
             }
@@ -371,12 +370,12 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus.ApplicationDetails
                     string start = string.Empty;
                     string end = string.Empty;
                     string display = string.Empty;
-                    if (AppointmentStartTime != null && AppointmentStartTime.Value != null)
+                    if (AppointmentStartTime != null && AppointmentStartTime.HasValue)
                     {
                         start = AppointmentStartTime.Value.ToString("hh:mm tt", dateCultureInfo);
                     }
 
-                    if (AppointmentEndTime != null && AppointmentEndTime.Value != null)
+                    if (AppointmentEndTime != null && AppointmentEndTime.HasValue)
                     {
                         end = AppointmentEndTime.Value.ToString("hh:mm tt", dateCultureInfo);
                     }

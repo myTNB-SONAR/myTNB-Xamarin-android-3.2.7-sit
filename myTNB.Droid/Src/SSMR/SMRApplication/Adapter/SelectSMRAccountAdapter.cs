@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
+namespace myTNB.Android.Src.SSMR.SMRApplication.Adapter
 {
     public class SelectSMRAccountAdapter : RecyclerView.Adapter
     {

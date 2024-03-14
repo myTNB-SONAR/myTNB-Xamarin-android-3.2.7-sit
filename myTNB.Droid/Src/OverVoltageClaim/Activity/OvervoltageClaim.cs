@@ -17,20 +17,20 @@ using CheeseBind;
 using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
 using myTNB.Mobile;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Helper;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.OverVoltageClaim.Model;
-using myTNB_Android.Src.OverVoltageClaimSuccessPage.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Helper;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.OverVoltageClaim.Model;
+using myTNB.Android.Src.OverVoltageClaimSuccessPage.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Org.Json;
 using Xamarin.Essentials;
 
 
-namespace myTNB_Android.Src.OverVoltageClaim.Activity
+namespace myTNB.Android.Src.OverVoltageClaim.Activity
 {
     [Activity(Label = "@string/submitICFeedback_OverVoltageClaimTitle"
           , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,19 +1,19 @@
 ﻿using Android.Util;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ServiceDistruptionRating.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ServiceDistruptionRating.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using myTNB_Android.Src.ServiceDistruptionRating.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.ServiceDistruptionRating.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Base;
 
-namespace myTNB_Android.Src.ServiceDistruptionRating.MVP
+namespace myTNB.Android.Src.ServiceDistruptionRating.MVP
 {
     public class ServiceDistruptionRatingPresenter : ServiceDistruptionRatingContract.IUserActionsListener
     {

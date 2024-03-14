@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
 	public class JavaHolder : Java.Lang.Object
 	{

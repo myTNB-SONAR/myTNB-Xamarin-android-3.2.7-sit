@@ -14,14 +14,14 @@ using Google.Android.Material.Snackbar;
 using Java.Util;
 using myTNB;
 using myTNB.Mobile;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using myTNB_Android.Src.AppointmentScheduler.AppointmentSetLanding.MVP;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.Android.Src.AppointmentScheduler.AppointmentSetLanding.MVP;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
+namespace myTNB.Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP
 {
     [Activity(Label = "Application Set", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class AppointmentSetLandingActivity : BaseAppCompatActivity, AppointmentSetLandingContract.IView

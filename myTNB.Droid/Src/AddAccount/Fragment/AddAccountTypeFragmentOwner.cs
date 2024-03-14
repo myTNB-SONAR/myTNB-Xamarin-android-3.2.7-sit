@@ -1,11 +1,11 @@
 ﻿using Android.OS;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 
-namespace myTNB_Android.Src.AddAccount.Fragment
+namespace myTNB.Android.Src.AddAccount.Fragment
 {
     public class AddAccountTypeFragmentOwner : AndroidX.Fragment.App.Fragment 
     {

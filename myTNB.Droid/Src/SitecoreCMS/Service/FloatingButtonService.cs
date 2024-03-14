@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 using myTNB.SitecoreCMS;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Services;
-using myTNB_Android.Src.SiteCore;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SiteCore;
+using myTNB.Android.Src.SitecoreCMS.Model;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 
 
-namespace myTNB_Android.Src.SitecoreCMS.Service
+namespace myTNB.Android.Src.SitecoreCMS.Service
 {
 	public class FloatingButtonService
 	{

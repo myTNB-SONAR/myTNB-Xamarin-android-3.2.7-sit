@@ -7,18 +7,18 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.AddAccount
+namespace myTNB.Android.Src.AddAccount
 {
     public class AdditionalAccountListAdapter : RecyclerView.Adapter
     {

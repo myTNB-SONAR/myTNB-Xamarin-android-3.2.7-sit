@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.LogUserAccess.Models;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.LogUserAccess.Models;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.LogUserAccess.MVP
+namespace myTNB.Android.Src.LogUserAccess.MVP
 {
     public class LogUserAccessContract
     {

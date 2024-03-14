@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace myTNB_Android.Src.LogUserAccess.Models
+namespace myTNB.Android.Src.LogUserAccess.Models
 {
     public class LogUserAccessNewData
     {

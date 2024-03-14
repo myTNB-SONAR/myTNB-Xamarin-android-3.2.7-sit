@@ -15,12 +15,12 @@ using CheeseBind;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Adapter;
-using myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.MVP;
-using myTNB_Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.FeedbackAboutBillEnquiryStepOne.Adapter;
+using myTNB.Android.Src.FeedbackAboutBillEnquiryStepOne.MVP;
+using myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Runtime;
@@ -28,13 +28,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Android.Support.Design.Widget;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Feedback_Login_BillRelated.Activity;
-using myTNB_Android.Src.Common;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Feedback_Login_BillRelated.Activity;
+using myTNB.Android.Src.Common;
 using System.Collections.Generic;
 using myTNB;
 
-namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
+namespace myTNB.Android.Src.FeedbackAboutBillEnquiryStepOne.Activity
 {
 
     [Activity(Label = "AboutBill Enquiry"

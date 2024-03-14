@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ManageCards.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.ManageCards.MVP
+namespace myTNB.Android.Src.ManageCards.MVP
 {
     public class ManageCardsPresenter : ManageCardsContract.IUserActionsListener
     {

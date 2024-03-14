@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static myTNB.Mobile.FeatureInfoClass;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class SaveUserNotificationChannelPreferenceRequest : BaseRequest
     {

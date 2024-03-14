@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using Android.Content;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
     public class ApplicationStatusLandingPresenter : ApplicationStatusLandingContract.IPresenter
     {

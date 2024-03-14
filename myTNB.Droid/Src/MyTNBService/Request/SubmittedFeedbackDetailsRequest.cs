@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class SubmittedFeedbackDetailsRequest : BaseRequest
     {

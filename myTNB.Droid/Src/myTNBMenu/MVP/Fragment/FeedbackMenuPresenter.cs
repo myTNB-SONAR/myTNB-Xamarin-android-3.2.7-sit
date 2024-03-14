@@ -1,12 +1,12 @@
-﻿using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base.Api;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
+namespace myTNB.Android.Src.myTNBMenu.MVP.Fragment
 {
     public class FeedbackMenuPresenter : FeedbackMenuContract.IUserActionsListener
     {

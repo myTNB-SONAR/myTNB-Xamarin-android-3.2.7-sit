@@ -1,10 +1,11 @@
 ﻿using Android.Content;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Util;
 
-namespace myTNB_Android.Src.Utils.Custom.ProgressButton
+namespace myTNB.Android.Src.Utils.Custom.ProgressButton
 {
     public class ResendButton : Android.Widget.Button
     {

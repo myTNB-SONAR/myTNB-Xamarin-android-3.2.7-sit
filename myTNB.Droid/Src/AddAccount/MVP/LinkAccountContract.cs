@@ -1,18 +1,18 @@
-﻿using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Database.Model;
+﻿using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Database.Model;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.AddAccount.MVP
+namespace myTNB.Android.Src.AddAccount.MVP
 {
     public class LinkAccountContract
     {
         public interface IView : IBaseView<IUserActionsListener>
         {
             /// <summary>
-            /// Shows terms & conditions activity/dialog
+            /// Shows terms and conditions activity/dialog
             /// </summary>
             void ShowTermsAndConditions();
 
@@ -99,19 +99,16 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// <summary>
             /// Get Customer Accounts by NRIC/ID APi : GetCustomerAccountsForICNum
             /// </summary>
-            /// <param name="exception"></param>
             void GetAccountByIC(string apiKeyId, string currentLinkedAccounts, string email, string identificationNo);
 
             /// <summary>
             /// Called when user click on Confirm button
             /// </summary>
-            /// <param name="exception"></param>
             void OnConfirm(List<NewAccount> newList);
 
             /// <summary>
             /// Add multiple accounts to customers APi : AddMultipleSupplyAccountsToUserReg
             /// </summary>
-            /// <param name="exception"></param>
             void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, string name, List<Models.AddAccount> accounts);
             //void AddMultipleAccounts(string apiKeyId, string sspUserId, string email, List<Models.AddAccountV2> accounts);
 
@@ -120,11 +117,10 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// <summary>
             /// Called when user click on Confirm button
             /// </summary>
-            /// <param name="exception"></param>
             void CheckRequiredFields(string totalacc, bool checkbox);
 
             /// <summary>
-            /// User actions to navigate to terms & condition screen
+            /// User actions to navigate to terms and condition screen
             /// </summary>
             void NavigateToTermsAndConditions();
         }

@@ -15,29 +15,29 @@ using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
-using myTNB_Android.Src.MultipleAccountPayment.Fragment;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.SessionCache;
-using myTNB_Android.Src.SummaryDashBoard.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Api;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.MultipleAccountPayment.Fragment;
+using myTNB.Android.Src.MultipleAccountPayment.Model;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.SessionCache;
+using myTNB.Android.Src.SummaryDashBoard.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.Activity
+namespace myTNB.Android.Src.MultipleAccountPayment.Activity
 {
     [Activity(Label = "Select Payment Method"
         , ScreenOrientation = ScreenOrientation.Portrait

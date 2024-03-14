@@ -17,22 +17,22 @@ using AndroidX.Core.Content;
 using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.AddAcc_UpdateIdentification_StepThree.Activity;
-using myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.MVP;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Fragment;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP;
-using myTNB_Android.Src.UpdatePersonalDetailStepTwo.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAcc_UpdateIdentification_StepThree.Activity;
+using myTNB.Android.Src.AddAcc_UpdateIdentification_StepTwo.MVP;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Fragment;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.MVP;
+using myTNB.Android.Src.UpdatePersonalDetailStepTwo.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using NSubstitute.Core;
 
-namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
+namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
 
 {

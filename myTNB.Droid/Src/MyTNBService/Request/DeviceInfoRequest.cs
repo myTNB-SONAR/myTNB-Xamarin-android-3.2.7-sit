@@ -1,6 +1,6 @@
-﻿using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class DeviceInfoRequest
     {

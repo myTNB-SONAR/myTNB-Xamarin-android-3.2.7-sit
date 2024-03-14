@@ -7,13 +7,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Enquiry.GSL.Fragment;
-using myTNB_Android.Src.Enquiry.GSL.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Enquiry.GSL.Fragment;
+using myTNB.Android.Src.Enquiry.GSL.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.Enquiry.GSL.Activity
+namespace myTNB.Android.Src.Enquiry.GSL.Activity
 {
     [Activity(Label = "GSL Rebate Step Two"
       , ScreenOrientation = ScreenOrientation.Portrait

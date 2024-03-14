@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.FindUs.Maps
+﻿namespace myTNB.Android.Src.FindUs.Maps
 {
     public class MapMarkers
     {

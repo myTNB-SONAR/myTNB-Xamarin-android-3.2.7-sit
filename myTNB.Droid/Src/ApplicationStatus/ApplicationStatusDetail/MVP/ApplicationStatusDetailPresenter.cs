@@ -8,16 +8,16 @@ using Android.Content;
 using Android.OS;
 using Com.Airbnb.Lottie.Network;
 using myTNB.Mobile;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
     public class ApplicationStatusDetailPresenter
     {

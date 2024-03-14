@@ -7,16 +7,16 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.Barcode.MVP;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Barcode.MVP;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 using System.Threading.Tasks;
 using ZXing.Mobile;
 
-namespace myTNB_Android.Src.Barcode.Activity
+namespace myTNB.Android.Src.Barcode.Activity
 {
     [Activity(Label = "@string/barcode_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

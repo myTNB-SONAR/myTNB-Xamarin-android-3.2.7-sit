@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.myTNBMenu.Models
+﻿namespace myTNB.Android.Src.myTNBMenu.Models
 {
     public enum ChartType
     {

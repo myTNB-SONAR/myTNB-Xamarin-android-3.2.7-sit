@@ -9,20 +9,20 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.EnergyBudget.Adapter;
-using myTNB_Android.Src.EnergyBudget.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.EnergyBudget.Adapter;
+using myTNB.Android.Src.EnergyBudget.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.EnergyBudget.Activity
+namespace myTNB.Android.Src.EnergyBudget.Activity
 {
     [Activity(Label = "@string/my_account_activity_title"
         //, Icon = "@drawable/Logo"

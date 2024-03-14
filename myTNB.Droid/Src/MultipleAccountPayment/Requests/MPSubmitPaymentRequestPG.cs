@@ -1,6 +1,6 @@
-﻿using myTNB_Android.Src.MultipleAccountPayment.Model;
+﻿using myTNB.Android.Src.MultipleAccountPayment.Model;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.Requests
+namespace myTNB.Android.Src.MultipleAccountPayment.Requests
 {
     public class MPSubmitPaymentRequestPG : MPSubmitPaymentRequest
     {

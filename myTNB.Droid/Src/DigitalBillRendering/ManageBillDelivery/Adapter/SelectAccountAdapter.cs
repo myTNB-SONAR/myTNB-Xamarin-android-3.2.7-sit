@@ -4,11 +4,11 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.DBR.DBRApplication.MVP;
 
-namespace myTNB_Android.Src.DBR.DBRApplication.Adapter
+namespace myTNB.Android.Src.DBR.DBRApplication.Adapter
 {
     public class SelectAccountAdapter : BaseCustomAdapter<DBRAccount>
     {

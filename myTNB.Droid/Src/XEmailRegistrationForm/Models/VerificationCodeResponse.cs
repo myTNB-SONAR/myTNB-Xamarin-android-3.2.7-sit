@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.XEmailRegistrationForm.Activity.Models
+namespace myTNB.Android.Src.XEmailRegistrationForm.Activity.Models
 {
     public class VerificationCodeResponse
     {

@@ -5,13 +5,13 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter
+namespace myTNB.Android.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter
 {
     
     public class ManageBillDeliveryEmailListAdapter : RecyclerView.Adapter

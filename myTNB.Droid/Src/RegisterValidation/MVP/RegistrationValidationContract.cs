@@ -1,9 +1,9 @@
 ﻿using Android.Content.PM;
-using myTNB_Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.MVP;
 using Refit;
 using System;
 
-namespace myTNB_Android.Src.RegisterValidation.MVP
+namespace myTNB.Android.Src.RegisterValidation.MVP
 {
     public class RegistrationValidationContract
     {

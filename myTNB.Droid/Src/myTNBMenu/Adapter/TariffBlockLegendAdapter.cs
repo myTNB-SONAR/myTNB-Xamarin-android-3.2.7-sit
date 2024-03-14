@@ -6,12 +6,12 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.myTNBMenu.Adapter
+namespace myTNB.Android.Src.myTNBMenu.Adapter
 {
     public class TariffBlockLegendAdapter : RecyclerView.Adapter
     {

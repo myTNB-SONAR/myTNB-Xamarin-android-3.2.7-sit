@@ -6,33 +6,33 @@ using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Billing.MVP;
-using myTNB_Android.Src.ManageAccess.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
-using myTNB_Android.Src.NewAppTutorial.Adapter;
-using myTNB_Android.Src.RewardDetail.MVP;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Fragments;
+using myTNB.Android.Src.Billing.MVP;
+using myTNB.Android.Src.ManageAccess.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
+using myTNB.Android.Src.NewAppTutorial.Adapter;
+using myTNB.Android.Src.RewardDetail.MVP;
+using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.Android.Src.SSMRMeterHistory.MVP;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using myTNB_Android.Src.ManageSupplyAccount.Activity;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.Android.Src.ManageSupplyAccount.Activity;
+using myTNB.Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.NewWalkthrough.MVP;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.NewWalkthrough.MVP;
 
-namespace myTNB_Android.Src.NewAppTutorial.MVP
+namespace myTNB.Android.Src.NewAppTutorial.MVP
 {
     public class NewAppTutorialDialogFragment : DialogFragment, View.IOnTouchListener, ViewPager.IPageTransformer
     {

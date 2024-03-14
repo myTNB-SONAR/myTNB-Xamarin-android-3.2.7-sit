@@ -19,19 +19,19 @@ using myTNB.Mobile;
 using myTNB.Mobile.API.Models.Home.PostServices;
 using myTNB.Mobile.AWS.Managers.MoreIcon;
 using myTNB.Mobile.AWS.Models.MoreIcon;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.QuickActionArrange.Adapter;
-using myTNB_Android.Src.QuickActionArrange.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.QuickActionArrange.Adapter;
+using myTNB.Android.Src.QuickActionArrange.Model;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB_Android.Src.QuickActionArrange.Adapter.QuickActionLockedAndExtraAdapter;
-using Feature = myTNB_Android.Src.QuickActionArrange.Model.Feature;
+using static myTNB.Android.Src.QuickActionArrange.Adapter.QuickActionLockedAndExtraAdapter;
+using Feature = myTNB.Android.Src.QuickActionArrange.Model.Feature;
 
-namespace myTNB_Android.Src.QuickActionArrange.Activity
+namespace myTNB.Android.Src.QuickActionArrange.Activity
 {
     [Activity(Label = "Rearrange Quick Action Icon", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class QuickActionArrangeActivity : BaseActivityCustom, RearrangeQuickActionListAdapter.OnItemDismissListener, IItemClickListener, RearrangeQuickActionListAdapter.OnItemDragAndMoveListener, AddIconAdapter.IItemClickListener

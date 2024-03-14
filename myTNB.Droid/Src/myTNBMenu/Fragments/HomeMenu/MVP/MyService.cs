@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
 	public class MyService
 	{

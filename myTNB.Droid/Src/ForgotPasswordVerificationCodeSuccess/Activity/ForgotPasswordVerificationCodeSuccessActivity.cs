@@ -5,14 +5,14 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.MVP;
-using myTNB_Android.Src.Login.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.ForgotPasswordVerificationCodeSuccess.MVP;
+using myTNB.Android.Src.Login.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Runtime;
 
-namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
+namespace myTNB.Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
 {
     [Activity(NoHistory = true
               , Icon = "@drawable/ic_launcher"

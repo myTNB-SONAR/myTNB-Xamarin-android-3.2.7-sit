@@ -1,9 +1,9 @@
-﻿using myTNB_Android.Src.FindUs.Response;
+﻿using myTNB.Android.Src.FindUs.Response;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.FindUs.Api
+namespace myTNB.Android.Src.FindUs.Api
 {
     public interface GetGoogleLocationApi
     {

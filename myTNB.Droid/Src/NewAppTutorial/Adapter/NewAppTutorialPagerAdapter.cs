@@ -7,37 +7,37 @@ using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using AndroidX.ViewPager.Widget;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Billing.MVP;
-using myTNB_Android.Src.ManageAccess.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.RewardDetail.MVP;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Fragments;
+using myTNB.Android.Src.Billing.MVP;
+using myTNB.Android.Src.ManageAccess.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.RewardDetail.MVP;
+using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.Android.Src.SSMRMeterHistory.MVP;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using myTNB_Android.Src.MyAccount.Activity;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.Android.Src.MyAccount.Activity;
 using Newtonsoft.Json;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageSupplyAccount.Activity;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ManageSupplyAccount.Activity;
+using myTNB.Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile;
-using myTNB_Android.Src.MyHome;
+using myTNB.Android.Src.MyHome;
 using System.Runtime.Remoting.Contexts;
 
-namespace myTNB_Android.Src.NewAppTutorial.Adapter
+namespace myTNB.Android.Src.NewAppTutorial.Adapter
 {
     public class NewAppTutorialPagerAdapter : PagerAdapter
     {
@@ -832,7 +832,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 }
                                 if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                    int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                     middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                     topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                 }
@@ -1176,7 +1176,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     }
                                     if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                        int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                         middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                         if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                         {
@@ -1224,7 +1224,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     }
                                     if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                        int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                         middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                         if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                         {
@@ -1272,7 +1272,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     }
                                     if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                        int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                         middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                         if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                         {
@@ -1321,7 +1321,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                     }
                                     if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                     {
-                                        int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                        int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                         middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                         if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                         {
@@ -1481,7 +1481,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                 middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
@@ -1636,7 +1636,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                 middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
@@ -1822,7 +1822,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                 middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
@@ -2009,7 +2009,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                 middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                 if (!((HomeMenuFragment)this.mFragment).IsMyServiceLoadMoreVisible() && this.mContext.Resources.DisplayMetrics.HeightPixels <= 800)
                                 {
@@ -2251,7 +2251,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             }
                             if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                int belowHeight = ((myTNB_Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
+                                int belowHeight = ((myTNB.Android.Src.myTNBMenu.Activity.DashboardHomeActivity)this.mContext).BottomNavigationViewHeight() + (TextViewUtils.IsLargeFonts ? 0 : ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight());
                                 middleHeight += ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                                 topHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - belowHeight) - middleHeight - ((HomeMenuFragment)this.mFragment).GetnewFAQTitleHeight();
                             }

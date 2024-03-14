@@ -1,16 +1,16 @@
 ﻿using Android.Content;
 using AndroidX.AppCompat.App;
-using myTNB_Android.Src.myTNBMenu.Fragments;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
-using myTNB_Android.Src.SSMRMeterHistory.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.Android.Src.SSMRMeterHistory.MVP;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class NewAppTutorialUtils
     {

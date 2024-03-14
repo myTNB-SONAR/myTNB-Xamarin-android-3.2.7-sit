@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Base.MVP;
+﻿using myTNB.Android.Src.Base.MVP;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.FAQ.MVP
+namespace myTNB.Android.Src.FAQ.MVP
 {
     public class FAQContract
     {

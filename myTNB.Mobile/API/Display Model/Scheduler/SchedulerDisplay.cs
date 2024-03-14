@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment;
+using myTNB.Mobile.Extensions;
 using System.Diagnostics;
 using System.Globalization;
-using myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment;
-using myTNB.Mobile.Extensions;
 
 namespace myTNB.Mobile.API.DisplayModel.Scheduler
 {
@@ -38,7 +36,7 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 try
                 {
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                    return AppointmentDate != null && AppointmentDate.Value != null
+                    return AppointmentDate != null && AppointmentDate.HasValue
                         ? AppointmentDate.Value.ToString("MMM", dateCultureInfo) ?? string.Empty
                         : string.Empty;
                 }
@@ -56,7 +54,7 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 try
                 {
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                    return AppointmentDate != null && AppointmentDate.Value != null
+                    return AppointmentDate != null && AppointmentDate.HasValue
                         ? AppointmentDate.Value.ToString("yyyy", dateCultureInfo) ?? string.Empty
                         : string.Empty;
                 }
@@ -74,7 +72,7 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 try
                 {
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                    return AppointmentDate != null && AppointmentDate.Value != null
+                    return AppointmentDate != null && AppointmentDate.HasValue
                         ? AppointmentDate.Value.ToString("MM", dateCultureInfo) ?? string.Empty
                         : string.Empty;
                 }
@@ -108,7 +106,7 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 try
                 {
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(LanguageManager.Language.EN.ToString());
-                    return AppointmentDate != null && AppointmentDate.Value != null
+                    return AppointmentDate != null && AppointmentDate.HasValue
                         ? AppointmentDate.Value.ToString("ddd", dateCultureInfo).ToUpper() ?? string.Empty
                         : string.Empty;
                 }
@@ -127,7 +125,7 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
         {
             get
             {
-                return AppointmentDate != null && AppointmentDate.Value != null
+                return AppointmentDate != null && AppointmentDate.HasValue
                     ? AppointmentDate.Value.Day.ToString()
                     : string.Empty;
             }
@@ -140,7 +138,7 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                 try
                 {
                     CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                    return AppointmentDate != null && AppointmentDate.Value != null
+                    return AppointmentDate != null && AppointmentDate.HasValue
                         ? AppointmentDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                         : string.Empty;
                 }
@@ -175,11 +173,11 @@ namespace myTNB.Mobile.API.DisplayModel.Scheduler
                     string start = string.Empty;
                     string end = string.Empty;
                     string display = string.Empty;
-                    if (SlotStartTime != null && SlotStartTime.Value != null)
+                    if (SlotStartTime != null && SlotStartTime.HasValue)
                     {
                         start = SlotStartTime.Value.ToString("hh:mm tt", dateCultureInfo);
                     }
-                    if (SlotEndTime != null && SlotEndTime.Value != null)
+                    if (SlotEndTime != null && SlotEndTime.HasValue)
                     {
                         end = SlotEndTime.Value.ToString("hh:mm tt", dateCultureInfo);
                     }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using Newtonsoft.Json;
 
 namespace myTNB.Mobile.API.Models.ApplicationStatus
 {
@@ -58,7 +55,7 @@ namespace myTNB.Mobile.API.Models.ApplicationStatus
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                string date = createdDate != null && createdDate.Value != null
+                string date = createdDate != null && createdDate.HasValue
                     ? createdDate.Value.ToString("dd MMM yyyy", dateCultureInfo) ?? string.Empty
                     : string.Empty;
                 return date;

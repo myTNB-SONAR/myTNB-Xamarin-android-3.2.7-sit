@@ -4,9 +4,9 @@ using Android.Icu.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Graphics.Drawable;
 using Android.Content.Res;
 
-namespace myTNB_Android.Src.FeedbackAboutBillEnquiryStepOne.Adapter
+namespace myTNB.Android.Src.FeedbackAboutBillEnquiryStepOne.Adapter
 {
     public class FeedbackAboutBillEnquiryStepOneImageRecyclerAdapter : BaseRecyclerAdapter<AttachedImage>
     {

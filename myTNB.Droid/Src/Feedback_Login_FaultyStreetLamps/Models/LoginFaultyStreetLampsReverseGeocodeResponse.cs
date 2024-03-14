@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Models
+namespace myTNB.Android.Src.Feedback_Login_FaultyStreetLamps.Models
 {
     public class LoginFaultyStreetLampsReverseGeocodeResponse
     {

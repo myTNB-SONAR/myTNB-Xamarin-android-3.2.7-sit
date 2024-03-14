@@ -1,17 +1,17 @@
 ﻿using Android.Text;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.UpdateNickname.MVP
+namespace myTNB.Android.Src.UpdateNickname.MVP
 {
     public class UpdateNicknamePresenter : UpdateNicknameContract.IUserActionsListener
     {

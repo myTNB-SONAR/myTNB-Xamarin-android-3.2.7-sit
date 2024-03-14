@@ -5,12 +5,12 @@ using System.Threading;
 using Android.Content;
 using Android.Graphics;
 using Android.Text;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
-using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
+using static myTNB.Android.Src.Base.Models.SubmittedFeedbackDetails;
 
-namespace myTNB_Android.Src.SubmittedNewEnquiry.MVP
+namespace myTNB.Android.Src.SubmittedNewEnquiry.MVP
 {
     public class SubmittedNewEnquiryPresenter : SubmittedNewEnquiryContract.IUserActionsListener
     {

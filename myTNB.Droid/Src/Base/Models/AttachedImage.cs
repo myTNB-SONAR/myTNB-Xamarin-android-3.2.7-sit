@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.Base.Models
+namespace myTNB.Android.Src.Base.Models
 {
     public class AttachedImage
     {

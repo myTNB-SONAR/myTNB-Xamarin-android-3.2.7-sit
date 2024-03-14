@@ -12,14 +12,14 @@ using MikePhil.Charting.Data;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
 using MikePhil.Charting.Util;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.Custom;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
+namespace myTNB.Android.Src.myTNBMenu.Charts.SelectedMarkerView
 {
     public class SelectedMarkerView : MarkerView
     {

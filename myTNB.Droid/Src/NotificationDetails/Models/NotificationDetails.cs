@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.NotificationDetails.Models
+namespace myTNB.Android.Src.NotificationDetails.Models
 {
     public class NotificationDetails
     {

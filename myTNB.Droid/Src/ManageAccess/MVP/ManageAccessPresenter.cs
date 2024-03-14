@@ -3,18 +3,18 @@ using Android.Content;
 using Android.Runtime;
 using Java.Util;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.LogUserAccess.Models;
-using myTNB_Android.Src.LogUserAccess.Models;
-using myTNB_Android.Src.ManageAccess.Models;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.LogUserAccess.Models;
+using myTNB.Android.Src.LogUserAccess.Models;
+using myTNB.Android.Src.ManageAccess.Models;
+using myTNB.Android.Src.ManageCards.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -24,7 +24,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.ManageAccess.MVP
+namespace myTNB.Android.Src.ManageAccess.MVP
 {
     internal class ManageAccessPresenter : ManageAccessContract.IUserActionsListener
     {

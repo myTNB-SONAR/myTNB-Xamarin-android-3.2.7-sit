@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.FindUs.Response;
+﻿using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.FindUs.Response;
 
-namespace myTNB_Android.Src.FindUs.MVP
+namespace myTNB.Android.Src.FindUs.MVP
 {
     public class FindUsContract
     {

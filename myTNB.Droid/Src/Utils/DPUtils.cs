@@ -2,7 +2,7 @@
 using Android.Util;
 using System;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class DPUtils
     {

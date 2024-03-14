@@ -1,9 +1,9 @@
-﻿using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
+﻿using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
 using System.Collections.Generic;
-using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
+using static myTNB.Android.Src.Base.Models.SubmittedFeedbackDetails;
 
-namespace myTNB_Android.Src.FeedbackDetails.MVP
+namespace myTNB.Android.Src.FeedbackDetails.MVP
 {
     public class FeedbackDetailsContract
     {

@@ -13,14 +13,14 @@ using AndroidX.AppCompat.App;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using Google.Android.Material.Tabs;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
-using myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Fragments;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
+using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
     public class WhatsNewMenuFragment : BaseFragment, WhatsNewMenuContract.IWhatsNewMenuView, ViewPager.IOnPageChangeListener
     {

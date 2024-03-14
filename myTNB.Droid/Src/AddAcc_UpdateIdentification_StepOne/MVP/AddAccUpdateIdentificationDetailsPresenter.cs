@@ -6,14 +6,14 @@ using Android.Telephony;
 using Android.Text;
 using Castle.Core.Internal;
 using Java.Text;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Api;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -23,7 +23,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace myTNB_Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
+namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepOne.MVP
 {
     public class AddAccUpdateIdentificationDetailsPresenter: AddAccUpdateIdentificationDetailsContract.IUserActionsListener
     {

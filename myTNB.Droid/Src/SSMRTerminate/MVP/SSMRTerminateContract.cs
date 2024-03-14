@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
-using myTNB_Android.Src.SSMRTerminate.Api;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.SSMR.SMRApplication.Api;
+using myTNB.Android.Src.SSMRTerminate.Api;
 
-namespace myTNB_Android.Src.SSMRTerminate.MVP
+namespace myTNB.Android.Src.SSMRTerminate.MVP
 {
     public class SSMRTerminateContract
     {

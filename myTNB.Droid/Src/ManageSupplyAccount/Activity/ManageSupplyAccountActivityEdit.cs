@@ -8,29 +8,29 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.ManageSupplyAccount.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.UpdateNickname.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.ManageSupplyAccount.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.UpdateNickname.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
 using System.Collections.Generic;
-using myTNB_Android.Src.ManageAccess.Activity;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.ManageAccess.Activity;
+using myTNB.Android.Src.Database.Model;
 using Android.Preferences;
 using myTNB.Mobile;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.ManageBillDelivery.MVP;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.NewAppTutorial.MVP;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB_Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.myTNBMenu.Async;
 
-namespace myTNB_Android.Src.ManageSupplyAccount.Activity
+namespace myTNB.Android.Src.ManageSupplyAccount.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,22 +1,22 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
 using Android.Views;
 using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
 using System.Collections.Generic;
-using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter;
-using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
+using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter;
+using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using Newtonsoft.Json;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 using System.ComponentModel;
 
-namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP
+namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP
 {
     [Activity(Label = "Select", Theme = "@style/Theme.RegisterForm")]
     public class SearchApplicationStatusSelectionActivity : BaseActivityCustom

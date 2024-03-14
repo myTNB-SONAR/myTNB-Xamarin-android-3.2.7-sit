@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB.Android.Src.SSMR.SMRApplication.Api;
 using Refit;
 
-namespace myTNB_Android.Src.SSMRTerminate.Api
+namespace myTNB.Android.Src.SSMRTerminate.Api
 {
     public interface SSMRTerminateApi
     {

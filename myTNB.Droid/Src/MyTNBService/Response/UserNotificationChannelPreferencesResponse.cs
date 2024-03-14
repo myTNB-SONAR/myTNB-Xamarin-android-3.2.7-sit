@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class UserNotificationChannelPreferencesResponse : BaseResponse<List<UserNotificationChannel>>
     {

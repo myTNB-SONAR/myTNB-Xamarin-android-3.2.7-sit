@@ -1,9 +1,9 @@
 ﻿using Android.Util;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -12,7 +12,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.SelectSupplyAccount.MVP
+namespace myTNB.Android.Src.SelectSupplyAccount.MVP
 {
     public class SelectSupplyAccountPresenter : SelectSupplyAccountContract.IUserActionsListener
     {

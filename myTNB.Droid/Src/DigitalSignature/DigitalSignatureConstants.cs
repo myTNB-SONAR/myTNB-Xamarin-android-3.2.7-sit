@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.DigitalSignature
+﻿namespace myTNB.Android.Src.DigitalSignature
 {
     public class DigitalSignatureConstants
     {

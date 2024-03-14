@@ -1,9 +1,9 @@
-﻿using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.Database.Model;
+﻿using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.Database.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.ManageAccess.Models
+namespace myTNB.Android.Src.ManageAccess.Models
 {
     public class AccountUserAccessData
     {

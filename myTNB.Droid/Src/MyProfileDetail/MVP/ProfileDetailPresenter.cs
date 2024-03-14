@@ -1,20 +1,20 @@
 ﻿using System;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System.Threading.Tasks;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.Base.Activity;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models.DS.Status;
 using myTNB.Mobile.AWS.Managers.DS;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Base;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Base;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.MyProfileDetail.MVP
+namespace myTNB.Android.Src.MyProfileDetail.MVP
 {
     public class ProfileDetailPresenter : ProfileDetailContract.IUserActionsListener
     {

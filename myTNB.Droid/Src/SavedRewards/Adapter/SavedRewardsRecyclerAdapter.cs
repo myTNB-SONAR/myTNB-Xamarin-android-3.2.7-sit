@@ -7,8 +7,8 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.SavedRewards.Adapter
+namespace myTNB.Android.Src.SavedRewards.Adapter
 {
     public class SavedRewardsRecyclerAdapter : RecyclerView.Adapter
     {

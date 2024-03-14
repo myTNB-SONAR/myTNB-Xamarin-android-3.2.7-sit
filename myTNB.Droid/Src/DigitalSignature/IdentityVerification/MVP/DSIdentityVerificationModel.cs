@@ -1,6 +1,6 @@
 ﻿using myTNB.Mobile.AWS.Managers.DS;
-using myTNB_Android.Src.Utils;
-namespace myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP
+using myTNB.Android.Src.Utils;
+namespace myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP
 {
     public class DSIdentityVerificationModel { }
 

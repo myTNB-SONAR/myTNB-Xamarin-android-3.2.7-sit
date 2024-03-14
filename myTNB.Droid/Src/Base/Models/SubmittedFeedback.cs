@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Enquiry;
+﻿using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Enquiry;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.Base.Models
+namespace myTNB.Android.Src.Base.Models
 {
     public class SubmittedFeedback
     {

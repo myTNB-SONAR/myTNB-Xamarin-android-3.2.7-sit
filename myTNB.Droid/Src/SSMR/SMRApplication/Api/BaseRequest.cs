@@ -1,8 +1,8 @@
 ﻿using System;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.Android.Src.SSMR.SMRApplication.Api
 {
     public class BaseRequest
     {

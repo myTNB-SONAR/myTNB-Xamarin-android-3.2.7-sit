@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.Base.Fragments
+namespace myTNB.Android.Src.Base.Fragments
 {
     public interface IExceptionView
     {

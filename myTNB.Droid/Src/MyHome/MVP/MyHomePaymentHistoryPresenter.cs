@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.OS;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using myTNB.Mobile.Constants;
-using static myTNB_Android.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
+using static myTNB.Android.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
 
-namespace myTNB_Android.Src.MyHome.MVP
+namespace myTNB.Android.Src.MyHome.MVP
 {
     public class MyHomePaymentHistoryPresenter : MyHomePaymentHistoryContract.IUserActionsListener
     {

@@ -15,27 +15,27 @@ using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Feedback_PreLogin_Menu.Activity;
-using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.Login.Activity;
-using myTNB_Android.Src.Maintenance.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.PreLogin.MVP;
-using myTNB_Android.Src.XEmailRegistrationForm.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.Feedback_PreLogin_Menu.Activity;
+using myTNB.Android.Src.FindUs.Activity;
+using myTNB.Android.Src.Login.Activity;
+using myTNB.Android.Src.Maintenance.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.PreLogin.MVP;
+using myTNB.Android.Src.XEmailRegistrationForm.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.PreLogin.Activity
+namespace myTNB.Android.Src.PreLogin.Activity
 {
     [Activity(Label = "@string/app_name"
               , Icon = "@drawable/ic_launcher"

@@ -10,10 +10,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
 
-namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.MVP
+namespace myTNB.Android.Src.UpdatePersonalDetailStepOne.MVP
 {
     public class UpdatePersonalDetailStepOneContract
     {

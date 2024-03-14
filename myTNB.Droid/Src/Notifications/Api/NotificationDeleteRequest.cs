@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using myTNB_Android.Src.Notifications.Models;
+using myTNB.Android.Src.Notifications.Models;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.Notifications.Api
+namespace myTNB.Android.Src.Notifications.Api
 {
     public class NotificationDeleteRequest
     {

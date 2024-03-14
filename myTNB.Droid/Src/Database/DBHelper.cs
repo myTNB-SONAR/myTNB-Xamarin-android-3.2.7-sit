@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.Utils;
 using SQLite;
 
-namespace myTNB_Android.Src.Database
+namespace myTNB.Android.Src.Database
 {
     public class DBHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using myTNB_Android.Src.NotificationSettings.Models;
+using myTNB.Android.Src.NotificationSettings.Models;
 
-namespace myTNB_Android.Src.MyTNBService.Response
+namespace myTNB.Android.Src.MyTNBService.Response
 {
     public class SaveUserNotificationChannelPreferenceResponse : BaseResponse<UserPreferenceData>
     {

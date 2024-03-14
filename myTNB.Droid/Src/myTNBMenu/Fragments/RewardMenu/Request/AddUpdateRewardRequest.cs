@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+﻿using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request
 {
     public class AddUpdateRewardRequest
     {

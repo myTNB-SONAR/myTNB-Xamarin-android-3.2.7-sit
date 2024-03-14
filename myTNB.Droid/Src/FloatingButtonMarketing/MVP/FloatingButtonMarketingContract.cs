@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.SitecoreCMS.Model;
 
-namespace myTNB_Android.Src.FloatingButtonMarketing.MVP
+namespace myTNB.Android.Src.FloatingButtonMarketing.MVP
 {
     public class FloatingButtonMarketingContract
     {

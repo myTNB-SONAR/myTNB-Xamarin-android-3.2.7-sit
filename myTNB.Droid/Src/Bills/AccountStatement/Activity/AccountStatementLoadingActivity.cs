@@ -7,16 +7,16 @@ using Android.Runtime;
 using Android.Widget;
 using CheeseBind;
 using Com.Airbnb.Lottie;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Bills.AccountStatement.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Bills.AccountStatement.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Android.Views;
 using myTNB;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.Bills.AccountStatement.Activity
+namespace myTNB.Android.Src.Bills.AccountStatement.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class AccountStatementLoadingActivity : BaseToolbarAppCompatActivity, AccountStatementLoadingContract.IView

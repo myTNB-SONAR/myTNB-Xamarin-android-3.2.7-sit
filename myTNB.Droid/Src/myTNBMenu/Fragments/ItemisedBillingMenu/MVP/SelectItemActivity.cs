@@ -9,12 +9,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     [Activity(Label = "Filter", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class SelectItemActivity : BaseActivityCustom

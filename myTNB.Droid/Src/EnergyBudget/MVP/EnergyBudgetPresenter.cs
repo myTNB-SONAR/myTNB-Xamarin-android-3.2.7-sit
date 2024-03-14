@@ -2,11 +2,11 @@
 using Android.Content;
 using Android.Runtime;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.SSMR.SMRApplication.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.ManageCards.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.SSMR.SMRApplication.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -16,7 +16,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.EnergyBudget.MVP
+namespace myTNB.Android.Src.EnergyBudget.MVP
 {
     internal class EnergyBudgetPresenter : EnergyBudgetContract.IUserActionsListener
     {

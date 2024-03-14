@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace myTNB_Android.Src.AddAccount.Models
+namespace myTNB.Android.Src.AddAccount.Models
 {
     public class NewAccount
     {

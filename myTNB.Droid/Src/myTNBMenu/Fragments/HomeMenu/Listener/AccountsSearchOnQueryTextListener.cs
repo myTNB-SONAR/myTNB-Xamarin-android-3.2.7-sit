@@ -1,10 +1,10 @@
 ﻿using System;
 using Android.Widget;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
+namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 {
 	public class AccountsSearchOnQueryTextListener : Java.Lang.Object, SearchView.IOnQueryTextListener
 	{

@@ -3,7 +3,7 @@ using Android.Graphics;
 using Android.Util;
 using Com.Davemorrissey.Labs.Subscaleview;
 
-namespace myTNB_Android.Src.Utils.ZoomImageView
+namespace myTNB.Android.Src.Utils.ZoomImageView
 {
     public class ZoomImageView : SubsamplingScaleImageView
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.Utils;
 using SQLite;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("MyServiceChildEntity")]
     public class MyServiceChildEntity : MyServiceEntity

@@ -10,17 +10,17 @@ using AndroidX.AppCompat.App;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Java.Lang;
-using myTNB_Android.Src.AppLaunch.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Runtime;
 using System.Text;
 using AlertDialog = Android.App.AlertDialog;
-using Constants = myTNB_Android.Src.Utils.Constants;
+using Constants = myTNB.Android.Src.Utils.Constants;
 
-namespace myTNB_Android.Src.Base.Activity
+namespace myTNB.Android.Src.Base.Activity
 {
     /// <summary>
     /// The class that abstracts the implementation of the resourceId and handling of permissions.

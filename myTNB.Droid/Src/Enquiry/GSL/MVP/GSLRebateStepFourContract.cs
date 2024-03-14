@@ -3,12 +3,12 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Common.Model;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Common.Model;
 
-namespace myTNB_Android.Src.Enquiry.GSL.MVP
+namespace myTNB.Android.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateStepFourContract
     {

@@ -93,14 +93,14 @@
     </BundleAssemblies>
     <AndroidHttpClientHandlerType>
     </AndroidHttpClientHandlerType>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
     <AndroidKeyStore>
     </AndroidKeyStore>
     <AndroidKeyStore>
     </AndroidKeyStore>
     <AndroidSigningStorePass>
     </AndroidSigningStorePass>
-    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <JavaMaximumHeapSize>4G</JavaMaximumHeapSize>
     <AndroidSigningKeyStore>
     </AndroidSigningKeyStore>
   </PropertyGroup>
@@ -154,6 +154,7 @@
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.1.2" />
     <PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
     <PackageReference Include="MisterJimson.Cheeseknife" Version="1.1.0" />
+    <PackageReference Include="MonkeyCache.FileStore" Version="2.0.1" />
     <PackageReference Include="NETStandard.Library" Version="2.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NineOldAndroids" Version="2.4.0" />
@@ -192,7 +193,6 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.26.1" />
     <PackageReference Include="System.IO" Version="4.3.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
-    <PackageReference Include="System.IO.Compression.ZipFile" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
     <PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
     <PackageReference Include="System.Json" Version="4.5.0" />
@@ -409,6 +409,7 @@
     <PackageReference Include="Xamarin.Kotlin.StdLib.Jdk8" Version="1.9.23" />
     <PackageReference Include="ZhangHai.Android.MaterialProgressBar" Version="1.4.2" />
     <PackageReference Include="ZXing.Net.Mobile" Version="2.4.1" />
+	<PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.10" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Src\Database\Model\PromotionsEntity.cs" />

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -16,29 +13,32 @@ using CheeseBind;
 using Facebook.Shimmer;
 using Google.Android.Material.Snackbar;
 using Java.Text;
-using myTNB_Android.Src.Base.Fragments;
-using myTNB_Android.Src.Billing.MVP;
-using myTNB_Android.Src.Common;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ViewBill.Activity;
-using myTNB_Android.Src.ViewReceipt.Activity;
-using Newtonsoft.Json;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.Base.Fragments;
+using myTNB.Android.Src.Billing.MVP;
+using myTNB.Android.Src.Bills.AccountStatement.Activity;
+using myTNB.Android.Src.Common;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.MultipleAccountPayment.Activity;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.ViewBill.Activity;
+using myTNB.Android.Src.ViewReceipt.Activity;
 using myTNB.Mobile;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.Database.Model;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.Bills.AccountStatement.Activity;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB_Android.Src.myTNBMenu.Async;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
+namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
     public class ItemisedBillingMenuFragment : BaseFragmentCustom, ItemisedBillingContract.IView
     {
@@ -716,7 +716,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                                         }
                                         else
                                         {
-                                            
+
                                             if (tenantAllowOptIn)
                                             {
                                                 paperlessTitle.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("Common", "dbrPaperBill"));

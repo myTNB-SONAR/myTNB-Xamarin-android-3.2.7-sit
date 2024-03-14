@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.Base.Response
+namespace myTNB.Android.Src.Base.Response
 {
     public class APIBaseResponse
     {

@@ -1,7 +1,7 @@
 ﻿using Android.Text;
 using Java.Lang;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class InputFilterPhoneNumber : Java.Lang.Object, IInputFilter
     {

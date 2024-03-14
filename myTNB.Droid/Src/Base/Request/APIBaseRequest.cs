@@ -1,8 +1,8 @@
 ﻿using System;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Base.Request
+namespace myTNB.Android.Src.Base.Request
 {
     public class APIBaseRequest
     {

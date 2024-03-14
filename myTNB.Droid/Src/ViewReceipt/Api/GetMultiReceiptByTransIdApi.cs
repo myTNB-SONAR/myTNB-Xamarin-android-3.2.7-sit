@@ -1,8 +1,8 @@
-﻿using myTNB_Android.Src.ViewReceipt.Model;
+﻿using myTNB.Android.Src.ViewReceipt.Model;
 using Refit;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.ViewReceipt.Api
+namespace myTNB.Android.Src.ViewReceipt.Api
 {
     public interface GetMultiReceiptByTransId
     {

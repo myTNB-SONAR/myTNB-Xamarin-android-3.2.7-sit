@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Android.OS;
+﻿using Android.OS;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
+using myTNB.Android.Src.NewAppTutorial.MVP;
 using myTNB.Mobile;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
-using myTNB_Android.Src.NewAppTutorial.MVP;
-using myTNB_Android.Src.Utils;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
     public class ApplicationStatusDetailContract
     {
@@ -51,7 +50,6 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             /// </summary>
             /// <param name="resultCode"></param>
             /// <param name="cancelUrl"></param>
-            /// <param name="myHomeDetail"></param>
             void NavigateToMicrosite(string accessToken, int resultCode, string cancelUrl);
 
             /// <summary>
@@ -93,11 +91,10 @@ namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
             /// </summary>
             /// <param name="resultCode"></param>
             /// <param name="cancelUrl"></param>
-            /// <param name="myHomeDetail"></param>
             void OnGetAccessToken(int resultCode, string cancelUrl);
 
             /// <summary>
-            /// Function to delete draft application for NC, COT & COA
+            /// Function to delete draft application for NC, COT and COA
             /// </summary>
             /// <param name="type"></param>
             /// <param name="isCOTExistingOwner"></param>

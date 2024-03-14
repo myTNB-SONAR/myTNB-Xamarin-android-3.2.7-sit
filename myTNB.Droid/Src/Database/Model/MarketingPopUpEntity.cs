@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using SQLite;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("MarketingPopUpEntity")]
     public class MarketingPopUpEntity

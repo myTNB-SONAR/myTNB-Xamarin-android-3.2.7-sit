@@ -1,15 +1,15 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
+namespace myTNB.Android.Src.Feedback_Login_BillRelated.MVP
 {
     public class FeedbackLoginBillRelatedContract
     {
@@ -226,7 +226,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.MVP
             void CheckRequiredFields(string feedback);
 
             /// <summary>
-            /// Action to check empty mobile & feedback
+            /// Action to check empty mobile and feedback
             /// </summary>
             /// <param name="mobile_no">string</param>
             /// <param name="feedback">string</param>

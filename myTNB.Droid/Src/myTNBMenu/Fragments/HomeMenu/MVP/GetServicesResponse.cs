@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models
+namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models
 {
 	public class GetServicesResponse
     {

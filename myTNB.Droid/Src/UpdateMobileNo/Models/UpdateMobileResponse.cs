@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.UpdateMobileNo.Models
+namespace myTNB.Android.Src.UpdateMobileNo.Models
 {
     public class UpdateMobileResponse
     {

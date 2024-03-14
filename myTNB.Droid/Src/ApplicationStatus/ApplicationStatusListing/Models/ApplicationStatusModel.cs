@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Models
 {
     public class ApplicationStatusModel
     {

@@ -1,19 +1,19 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
 using Android.Views;
 using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.Bills.AccountStatement.Activity
+namespace myTNB.Android.Src.Bills.AccountStatement.Activity
 {
     [Activity(Theme = "@style/Theme.Dashboard")]
     public class AccountStatementSelectionActivity : BaseActivityCustom

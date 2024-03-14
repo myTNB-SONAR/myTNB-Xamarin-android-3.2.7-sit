@@ -15,21 +15,21 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.RegisterValidation;
-using myTNB_Android.Src.RegistrationForm.Models;
-using myTNB_Android.Src.RegistrationForm.MVP;
-using myTNB_Android.Src.TermsAndConditions.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.RegisterValidation;
+using myTNB.Android.Src.RegistrationForm.Models;
+using myTNB.Android.Src.RegistrationForm.MVP;
+using myTNB.Android.Src.TermsAndConditions.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB_Android.Src.RegistrationForm.Activity
+namespace myTNB.Android.Src.RegistrationForm.Activity
 {
     [Activity(Label = "@string/registration_activity_title"
       , NoHistory = false

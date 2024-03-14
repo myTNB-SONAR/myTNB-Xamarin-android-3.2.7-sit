@@ -2,11 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.AppLaunch.Requests;
 using Refit;
 
-namespace myTNB_Android.Src.AppLaunch.Api
+namespace myTNB.Android.Src.AppLaunch.Api
 {
     public interface IUpdateAppUserDeviceApi
     {

@@ -2,7 +2,7 @@
 using System.Globalization;
 using myTNB.Mobile;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public static class NumberUtils
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Android.Graphics;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     public class UnderstandTooltipModel
     {

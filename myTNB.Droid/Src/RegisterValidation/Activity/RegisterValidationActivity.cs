@@ -15,21 +15,21 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.AddAccount.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Login.Activity;
-using myTNB_Android.Src.RegisterValidation.Activity;
-using myTNB_Android.Src.RegisterValidation.MVP;
-using myTNB_Android.Src.RegistrationForm.Models;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressButton;
+using myTNB.Android.Src.AddAccount.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Login.Activity;
+using myTNB.Android.Src.RegisterValidation.Activity;
+using myTNB.Android.Src.RegisterValidation.MVP;
+using myTNB.Android.Src.RegistrationForm.Models;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.Custom.ProgressButton;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB_Android.Src.RegisterValidation
+namespace myTNB.Android.Src.RegisterValidation
 {
     [Activity(Label = "@string/registration_validation_activity_title"
               , Icon = "@drawable/ic_launcher"

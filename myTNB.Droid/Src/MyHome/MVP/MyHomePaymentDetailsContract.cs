@@ -1,14 +1,14 @@
 ﻿using System;
 using Android.OS;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.MyTNBService.Model;
 using System.Collections.Generic;
-using myTNB_Android.Src.MyHome.Model;
-using myTNB_Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyHome.Model;
+using myTNB.Android.Src.MyTNBService.Response;
 using System.Security.Cryptography;
-using myTNB_Android.Src.MultipleAccountPayment.Models;
+using myTNB.Android.Src.MultipleAccountPayment.Models;
 
-namespace myTNB_Android.Src.MyHome.MVP
+namespace myTNB.Android.Src.MyHome.MVP
 {
 	public class MyHomePaymentDetailsContract
 	{

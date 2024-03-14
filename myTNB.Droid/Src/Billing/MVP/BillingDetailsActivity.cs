@@ -15,30 +15,30 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
 using myTNB.Mobile;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.ManageBillDelivery.MVP;
-using myTNB_Android.Src.MultipleAccountPayment.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Model;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ViewBill.Activity;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.ManageBillDelivery.MVP;
+using myTNB.Android.Src.MultipleAccountPayment.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
+using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using myTNB.Mobile.AWS.Models;
-using myTNB_Android.Src.Database.Model;
-using static myTNB_Android.Src.CompoundView.ExpandableTextViewComponent;
+using myTNB.Android.Src.Database.Model;
+using static myTNB.Android.Src.CompoundView.ExpandableTextViewComponent;
 using myTNB.Mobile.AWS.Models.DBR;
 using Android.Runtime;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.MultipleAccountPayment.Model;
+using static myTNB.Android.Src.MyTNBService.Response.AccountChargesResponse;
 
-namespace myTNB_Android.Src.Billing.MVP
+namespace myTNB.Android.Src.Billing.MVP
 {
     [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class BillingDetailsActivity : BaseActivityCustom, BillingDetailsContract.IView

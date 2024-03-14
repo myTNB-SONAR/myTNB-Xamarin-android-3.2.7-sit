@@ -4,11 +4,11 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Profile.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Profile.Activity;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Common
+namespace myTNB.Android.Src.Common
 {
     public class SelectItemAdapter : BaseCustomAdapter<Item>
     {

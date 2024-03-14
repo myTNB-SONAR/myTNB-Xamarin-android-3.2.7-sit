@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.EnergyBudgetRating.Response
+namespace myTNB.Android.Src.EnergyBudgetRating.Response
 {
     public class SubmitRateUsEBResponse
     {

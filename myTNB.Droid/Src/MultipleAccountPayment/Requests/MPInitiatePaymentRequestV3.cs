@@ -1,7 +1,7 @@
-﻿using myTNB_Android.Src.MultipleAccountPayment.Model;
+﻿using myTNB.Android.Src.MultipleAccountPayment.Model;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.Requests
+namespace myTNB.Android.Src.MultipleAccountPayment.Requests
 {
     public class MPInitiatePaymentRequestV3 : MPInitiatePaymentRequest
     {

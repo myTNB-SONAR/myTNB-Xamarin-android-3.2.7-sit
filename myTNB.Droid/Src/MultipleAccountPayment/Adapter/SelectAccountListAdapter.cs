@@ -7,15 +7,15 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
 using Java.Text;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MultipleAccountPayment.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.MultipleAccountPayment.Model;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
+namespace myTNB.Android.Src.MultipleAccountPayment.Adapter
 {
     public class SelectAccountListAdapter : RecyclerView.Adapter
     {

@@ -11,18 +11,18 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using static myTNB_Android.Src.Utils.Constants;
+using static myTNB.Android.Src.Utils.Constants;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 {
     public class RewardsRecyclerAdapter : RecyclerView.Adapter
     {

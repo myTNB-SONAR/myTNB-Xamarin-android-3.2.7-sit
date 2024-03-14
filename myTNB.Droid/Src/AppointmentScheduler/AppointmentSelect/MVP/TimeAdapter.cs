@@ -6,9 +6,9 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.AppointmentScheduler.AppointmentSelect.MVP
+namespace myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     public class TimeAdapter : RecyclerView.Adapter
     {

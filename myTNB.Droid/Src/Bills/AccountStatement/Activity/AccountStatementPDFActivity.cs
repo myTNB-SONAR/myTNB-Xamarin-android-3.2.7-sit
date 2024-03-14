@@ -10,11 +10,11 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB.Mobile;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.PDFView;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.PDFView;
 
-namespace myTNB_Android.Src.Bills.AccountStatement.Activity
+namespace myTNB.Android.Src.Bills.AccountStatement.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class AccountStatementPDFActivity : BaseToolbarAppCompatActivity

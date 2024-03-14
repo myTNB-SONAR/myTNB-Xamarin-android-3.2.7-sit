@@ -2,7 +2,7 @@
 using AndroidX.Fragment.App;
 using Java.Lang;
 
-namespace myTNB_Android.Src.NewWalkthrough.MVP
+namespace myTNB.Android.Src.NewWalkthrough.MVP
 {
     public class NewWalkthroughAdapter : FragmentStatePagerAdapter
     {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using myTNB.Mobile;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.NewWalkthrough.MVP
+namespace myTNB.Android.Src.NewWalkthrough.MVP
 {
     public class NewWalkthroughPresenter
     {

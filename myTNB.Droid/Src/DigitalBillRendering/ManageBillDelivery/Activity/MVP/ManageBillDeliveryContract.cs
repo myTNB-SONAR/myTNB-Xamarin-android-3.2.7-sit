@@ -2,11 +2,11 @@
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB_Android.Src.Base.MVP;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DBR.DBRApplication.MVP;
+using myTNB.Android.Src.Base.MVP;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DBR.DBRApplication.MVP;
 
-namespace myTNB_Android.Src.ManageBillDelivery.MVP
+namespace myTNB.Android.Src.ManageBillDelivery.MVP
 {
     public class ManageBillDeliveryContract
     {

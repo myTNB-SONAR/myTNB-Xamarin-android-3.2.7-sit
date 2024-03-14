@@ -10,17 +10,17 @@ using Android.Widget;
 using AndroidX.ViewPager.Widget;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
+using static myTNB.Android.Src.AppLaunch.Models.MasterDataResponse;
 
-namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
+namespace myTNB.Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
 {
     public class SSMRMeterReadingPagerAdapter : PagerAdapter
     {

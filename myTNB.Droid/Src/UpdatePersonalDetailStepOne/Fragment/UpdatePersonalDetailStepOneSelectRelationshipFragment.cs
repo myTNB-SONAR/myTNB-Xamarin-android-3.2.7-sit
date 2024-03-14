@@ -11,14 +11,14 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Activity;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Adapter;
-using myTNB_Android.Src.UpdatePersonalDetailStepOne.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Activity;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Adapter;
+using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.UpdatePersonalDetailStepOne.Fragment
+namespace myTNB.Android.Src.UpdatePersonalDetailStepOne.Fragment
 {
 
     [Activity(Label = "Relationship with Owner"

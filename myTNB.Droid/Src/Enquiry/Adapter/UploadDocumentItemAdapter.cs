@@ -3,18 +3,18 @@ using Android.Graphics.Drawables;
 using Android.Icu.Text;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Graphics.Drawable;
+using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
+using Java.Util;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
-using Java.Util;
-using AndroidX.RecyclerView.Widget;
-using AndroidX.Core.Graphics.Drawable;
 
-namespace myTNB_Android.Src.Enquiry.Adapter
+namespace myTNB.Android.Src.Enquiry.Adapter
 {
     public class UploadDocumentItemAdapter : BaseRecyclerAdapter<AttachedImage>
     {

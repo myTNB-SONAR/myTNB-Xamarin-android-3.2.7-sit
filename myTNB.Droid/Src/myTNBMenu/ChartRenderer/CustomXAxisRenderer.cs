@@ -7,10 +7,10 @@ using MikePhil.Charting.Components;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Renderer;
 using MikePhil.Charting.Util;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
+namespace myTNB.Android.Src.myTNBMenu.ChartRenderer
 {
     public class CustomXAxisRenderer : XAxisRenderer
     {

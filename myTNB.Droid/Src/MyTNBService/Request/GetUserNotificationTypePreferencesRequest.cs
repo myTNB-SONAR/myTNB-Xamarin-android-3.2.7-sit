@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using myTNB.Mobile;
 using static myTNB.Mobile.FeatureInfoClass;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class GetUserNotificationTypePreferencesRequest : BaseRequest
     {

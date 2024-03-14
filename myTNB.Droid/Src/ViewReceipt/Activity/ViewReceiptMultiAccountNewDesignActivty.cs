@@ -14,10 +14,10 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.ViewReceipt.MVP;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.ViewReceipt.MVP;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -25,9 +25,9 @@ using System.IO;
 using System.Linq;
 using System.Runtime;
 using System.Threading.Tasks;
-using static myTNB_Android.Src.MyTNBService.Response.AccountReceiptResponse;
+using static myTNB.Android.Src.MyTNBService.Response.AccountReceiptResponse;
 
-namespace myTNB_Android.Src.ViewReceipt.Activity
+namespace myTNB.Android.Src.ViewReceipt.Activity
 {
     [Activity(Label = "Payment Receipt"
         , ScreenOrientation = ScreenOrientation.Portrait

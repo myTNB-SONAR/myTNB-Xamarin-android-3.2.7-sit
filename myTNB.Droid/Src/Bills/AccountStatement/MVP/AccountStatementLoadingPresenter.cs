@@ -4,13 +4,13 @@ using Android.Content;
 using Android.Util;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models.AccountStatement;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.DeviceCache;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.DeviceCache;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Bills.AccountStatement.MVP
+namespace myTNB.Android.Src.Bills.AccountStatement.MVP
 {
     public class AccountStatementLoadingPresenter : AccountStatementLoadingContract.IUserActionsListener
     {

@@ -1,8 +1,8 @@
 ﻿using myTNB.SitecoreCM.Services;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Service;
-using myTNB_Android.Src.SitecoreCMS.Model;
-using myTNB_Android.Src.SitecoreCMS.Service;
+using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.Android.Src.SitecoreCMS.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

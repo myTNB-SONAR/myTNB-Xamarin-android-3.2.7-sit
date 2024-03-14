@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using myTNB_Android.Src.Enquiry.GSL.MVP;
+using myTNB.Android.Src.Enquiry.GSL.MVP;
 
-namespace myTNB_Android.Src.MyTNBService.Request
+namespace myTNB.Android.Src.MyTNBService.Request
 {
     public class SubmitGSLEnquiryRequest : BaseRequest
     {

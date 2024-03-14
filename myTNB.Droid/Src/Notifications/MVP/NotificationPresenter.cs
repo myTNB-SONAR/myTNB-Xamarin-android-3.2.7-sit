@@ -2,10 +2,10 @@
 using Android.Content;
 using Android.Runtime;
 using Android.Text;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Notifications.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Notifications.Models;
+using myTNB.Android.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -13,17 +13,17 @@ using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
-using myTNB_Android.Src.Notifications.Api;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.Base;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB.Android.Src.Notifications.Api;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.Base;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.SummaryDashBoard.Models;
 using Android.OS;
-using myTNB_Android.Src.MyHome;
+using myTNB.Android.Src.MyHome;
 using myTNB.Mobile.AWS.Managers.DS;
 
-namespace myTNB_Android.Src.Notifications.MVP
+namespace myTNB.Android.Src.Notifications.MVP
 {
     enum API_ACTION
     {

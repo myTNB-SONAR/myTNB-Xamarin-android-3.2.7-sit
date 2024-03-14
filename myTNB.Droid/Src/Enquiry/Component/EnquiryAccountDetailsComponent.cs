@@ -5,12 +5,12 @@ using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.Enquiry.Component
+namespace myTNB.Android.Src.Enquiry.Component
 {
     public class EnquiryAccountDetailsComponent : LinearLayout
     {

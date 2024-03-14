@@ -1,22 +1,22 @@
 ﻿using Android.Content;
 using Android.OS;
 using Android.Views;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 using Android.Widget;
 
-using static myTNB_Android.Src.Utils.Constants;
+using static myTNB.Android.Src.Utils.Constants;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 using Android.Preferences;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
-using myTNB_Android.Src.RewardDetail.MVP;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter;
+using myTNB.Android.Src.RewardDetail.MVP;
 using Newtonsoft.Json;
-using myTNB_Android.Src.Database.Model;
+using myTNB.Android.Src.Database.Model;
 using System;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Fragment.App;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
     public class RewardItemFragment : Fragment, RewardItemContract.IRewardItemView
     {

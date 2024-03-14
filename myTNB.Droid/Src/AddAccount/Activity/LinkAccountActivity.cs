@@ -15,17 +15,17 @@ using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile;
-using myTNB_Android.Src.AddAccount.Models;
-using myTNB_Android.Src.AddAccount.MVP;
-using myTNB_Android.Src.AddAccountDisclaimer.Activity;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.SSMR.Util;
-using myTNB_Android.Src.TermsAndConditions.Activity;
-using myTNB_Android.Src.myTNBMenu.Async;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AddAccount.Models;
+using myTNB.Android.Src.AddAccount.MVP;
+using myTNB.Android.Src.AddAccountDisclaimer.Activity;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.Android.Src.SSMR.Util;
+using myTNB.Android.Src.TermsAndConditions.Activity;
+using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -34,7 +34,7 @@ using System.Linq;
 using System.Runtime;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.AddAccount.Activity
+namespace myTNB.Android.Src.AddAccount.Activity
 {
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.OwnerTenantBaseTheme")]

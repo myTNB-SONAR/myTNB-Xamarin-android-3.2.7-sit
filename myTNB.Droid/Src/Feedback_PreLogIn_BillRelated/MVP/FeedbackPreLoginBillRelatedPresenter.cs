@@ -3,13 +3,13 @@ using Android.Content;
 using Android.Runtime;
 using Android.Text;
 using Java.Text;
-using myTNB_Android.Src.Base.Api;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Base.Request;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Api;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Base.Request;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -18,7 +18,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
+namespace myTNB.Android.Src.Feedback_PreLogIn_BillRelated.MVP
 {
     public class FeedbackPreLoginBillRelatedPresenter : FeedbackPreLoginBillRelatedContract.IUserActionsListener
     {

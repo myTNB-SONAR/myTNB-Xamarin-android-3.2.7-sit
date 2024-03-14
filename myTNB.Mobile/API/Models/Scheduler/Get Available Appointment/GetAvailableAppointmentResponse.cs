@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using myTNB.Mobile.API.Base;
+﻿using myTNB.Mobile.API.Base;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment
 {
@@ -21,7 +19,7 @@ namespace myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
+                return AppointmentDate != null && AppointmentDate.HasValue
                     ? AppointmentDate.Value.ToString("ddd", dateCultureInfo) ?? string.Empty
                     : string.Empty;
             }
@@ -33,9 +31,9 @@ namespace myTNB.Mobile.API.Models.Scheduler.GetAvailableAppointment
             get
             {
                 CultureInfo dateCultureInfo = CultureInfo.CreateSpecificCulture(AppInfoManager.Instance.Language.ToString());
-                return AppointmentDate != null && AppointmentDate.Value != null
+                return AppointmentDate != null && AppointmentDate.HasValue
                     ? AppointmentDate.Value.ToString("MM", dateCultureInfo) ?? string.Empty
-                    : string.Empty;;
+                    : string.Empty; ;
             }
         }
     }

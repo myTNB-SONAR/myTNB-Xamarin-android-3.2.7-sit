@@ -3,11 +3,11 @@ using System.Web;
 using myTNB.Mobile.SessionCache;
 using System.Text.RegularExpressions;
 
-using Constant = myTNB_Android.Src.Utils.Deeplink.Deeplink.Constants;
-using Screen = myTNB_Android.Src.Utils.Deeplink.Deeplink.ScreenEnum;
-using myTNB_Android.Src.DigitalSignature.IdentityVerification.MVP;
+using Constant = myTNB.Android.Src.Utils.Deeplink.Deeplink.Constants;
+using Screen = myTNB.Android.Src.Utils.Deeplink.Deeplink.ScreenEnum;
+using myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP;
 
-namespace myTNB_Android.Src.Utils.Deeplink
+namespace myTNB.Android.Src.Utils.Deeplink
 {
     public sealed class DeeplinkUtil
     {

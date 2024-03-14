@@ -5,7 +5,7 @@ using System;
 using Android.Runtime;
 using Android.Graphics;
 using MikePhil.Charting.Interfaces.Datasets;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Charts;
 using Android.OS;
@@ -15,9 +15,9 @@ using System.Linq;
 using Android.Util;
 using MikePhil.Charting.Data;
 using System.Collections.Generic;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
+namespace myTNB.Android.Src.myTNBMenu.ChartRenderer
 {
     public class StackedBarChartRenderer : BarChartRenderer
     {

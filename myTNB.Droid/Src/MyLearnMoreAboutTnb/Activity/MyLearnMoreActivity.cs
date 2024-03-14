@@ -10,24 +10,24 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.MyLearnMoreAboutTnb.MVP;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.TermsAndConditions.Activity;
-using myTNB_Android.Src.UpdateMobileNo.Activity;
-using myTNB_Android.Src.UpdatePassword.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FAQ.Activity;
+using myTNB.Android.Src.FindUs.Activity;
+using myTNB.Android.Src.MyLearnMoreAboutTnb.MVP;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.TermsAndConditions.Activity;
+using myTNB.Android.Src.UpdateMobileNo.Activity;
+using myTNB.Android.Src.UpdatePassword.Activity;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB_Android.Src.MyLearnMoreAboutTnb.Activity
+namespace myTNB.Android.Src.MyLearnMoreAboutTnb.Activity
 {
     [Activity(Label = "Learn More About TNB"
       //, NoHistory = false

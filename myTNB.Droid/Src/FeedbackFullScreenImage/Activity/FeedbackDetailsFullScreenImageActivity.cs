@@ -6,15 +6,15 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Com.Davemorrissey.Labs.Subscaleview;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.ZoomImageView;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.ZoomImageView;
 using Square.Picasso;
 using System;
 using System.Runtime;
 
-namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
+namespace myTNB.Android.Src.FeedbackFullScreenImage.Activity
 {
     [Activity(Label = "@string/feedback_full_image_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait

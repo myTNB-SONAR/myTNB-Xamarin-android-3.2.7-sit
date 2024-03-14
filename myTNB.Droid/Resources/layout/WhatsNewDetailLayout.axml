@@ -121,7 +121,7 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     android:id="@+id/whatsNewFullImageDetailLayout">
-                    <myTNB_Android.Src.Utils.ZoomImageView.ZoomImageView
+                    <myTNB.Android.Src.Utils.ZoomImageView.ZoomImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/imgFullView" />
@@ -132,7 +132,7 @@
                     android:orientation="vertical"
                     android:visibility="gone"
                     android:id="@+id/whatsNewFullPDFDetailLayout">
-                    <myTNB_Android.Src.Utils.PDFView.PDFView
+                    <myTNB.Android.Src.Utils.PDFView.PDFView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/pdfFullView" />

@@ -11,21 +11,21 @@ using AndroidX.RecyclerView.Widget;
 using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FeedbackDetails.Adapter;
-using myTNB_Android.Src.FeedbackDetails.MVP;
-using myTNB_Android.Src.FeedbackFullScreenImage.Activity;
-using myTNB_Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FeedbackDetails.Adapter;
+using myTNB.Android.Src.FeedbackDetails.MVP;
+using myTNB.Android.Src.FeedbackFullScreenImage.Activity;
+using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
-using static myTNB_Android.Src.Base.Models.SubmittedFeedbackDetails;
+using static myTNB.Android.Src.Base.Models.SubmittedFeedbackDetails;
 
-namespace myTNB_Android.Src.FeedbackDetails.Activity
+namespace myTNB.Android.Src.FeedbackDetails.Activity
 {
     [Activity(Label = "@string/bill_related_activity_title"
       , ScreenOrientation = ScreenOrientation.Portrait

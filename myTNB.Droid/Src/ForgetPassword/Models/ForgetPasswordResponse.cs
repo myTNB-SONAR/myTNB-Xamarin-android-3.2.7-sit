@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ForgetPassword.Models
+namespace myTNB.Android.Src.ForgetPassword.Models
 {
     public class ForgetPasswordResponse
     {

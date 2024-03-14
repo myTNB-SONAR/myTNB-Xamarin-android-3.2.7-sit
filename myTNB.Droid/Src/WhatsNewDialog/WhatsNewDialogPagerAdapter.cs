@@ -11,8 +11,8 @@ using Dynatrace.Xamarin.Binding.Android;
 using Facebook.Shimmer;
 using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +20,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.WhatsNewDialog
+namespace myTNB.Android.Src.WhatsNewDialog
 {
     public class WhatsNewDialogPagerAdapter : PagerAdapter
     {

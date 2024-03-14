@@ -1,10 +1,10 @@
 ﻿using myTNB.Mobile.Business;
-using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Api
+namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Api
 {
     public interface IGetIsSmrApplyAllowedApi
     {

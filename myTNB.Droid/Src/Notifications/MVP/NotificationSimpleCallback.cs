@@ -6,9 +6,9 @@ using Android.Graphics.Drawables;
 using Android.Text;
 using Android.Views;
 using AndroidX.RecyclerView.Widget;
-using myTNB_Android.Src.Notifications.Adapter;
+using myTNB.Android.Src.Notifications.Adapter;
 
-namespace myTNB_Android.Src.Notifications.MVP
+namespace myTNB.Android.Src.Notifications.MVP
 {
     public class NotificationSimpleCallback : ItemTouchHelper.SimpleCallback
     {

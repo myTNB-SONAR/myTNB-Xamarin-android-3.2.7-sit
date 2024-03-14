@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.OverVoltageClaim.Model
+namespace myTNB.Android.Src.OverVoltageClaim.Model
 {
     public class DTOWebView
     {

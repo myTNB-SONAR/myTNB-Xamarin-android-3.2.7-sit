@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.Base.Request
+namespace myTNB.Android.Src.Base.Request
 {
     public class FeedbackRequest
     {

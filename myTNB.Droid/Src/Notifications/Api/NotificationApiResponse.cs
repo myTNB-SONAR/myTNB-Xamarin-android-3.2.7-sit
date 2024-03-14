@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.Notifications.Api
+namespace myTNB.Android.Src.Notifications.Api
 {
     public class NotificationApiResponse
     {

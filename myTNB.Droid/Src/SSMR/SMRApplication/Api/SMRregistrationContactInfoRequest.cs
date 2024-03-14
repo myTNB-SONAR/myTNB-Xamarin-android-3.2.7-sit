@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.Android.Src.SSMR.SMRApplication.Api
 {
     public class SMRregistrationContactInfoRequest : BaseRequest
     {

@@ -4,12 +4,12 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter
+namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter
 {
     public class SearchApplicationAdapter : RecyclerView.Adapter
     {

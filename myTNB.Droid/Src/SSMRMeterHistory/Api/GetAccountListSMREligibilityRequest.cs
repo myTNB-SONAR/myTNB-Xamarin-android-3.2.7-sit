@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB.Android.Src.SSMR.SMRApplication.Api;
 
-namespace myTNB_Android.Src.SSMRMeterHistory.Api
+namespace myTNB.Android.Src.SSMRMeterHistory.Api
 {
     public class GetAccountListSMREligibilityRequest : BaseRequest
     {

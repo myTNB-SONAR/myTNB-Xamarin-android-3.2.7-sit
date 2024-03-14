@@ -10,20 +10,20 @@ using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.FAQ.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB_Android.Src.RewardDetail.MVP;
-using myTNB_Android.Src.WhatsNewDetail.MVP;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.FAQ.Activity;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB.Android.Src.RewardDetail.MVP;
+using myTNB.Android.Src.WhatsNewDetail.MVP;
 
-using Screen = myTNB_Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
+using Screen = myTNB.Android.Src.Utils.LinkRedirection.LinkRedirection.ScreenEnum;
 
-namespace myTNB_Android.Src.Utils
+namespace myTNB.Android.Src.Utils
 {
     public class LinkRedirectionUtils
     {

@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Android.Util;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.MultipleAccountPayment.Models;
-using myTNB_Android.Src.ManageCards.Models;
-using myTNB_Android.Src.myTNBMenu.Models;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.MultipleAccountPayment.Models;
+using myTNB.Android.Src.ManageCards.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.Utils;
 using Refit;
 using myTNB;
-using myTNB_Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.AppLaunch.Models;
 using Android.Content;
 using myTNB.Mobile;
-using myTNB_Android.Src.DeviceCache;
+using myTNB.Android.Src.DeviceCache;
 using System.Threading.Tasks;
 
-namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
+namespace myTNB.Android.Src.myTNBMenu.MVP.Fragment
 {
     public class ProfileMenuPresenter : ProfileMenuContract.IUserActionsListener
     {

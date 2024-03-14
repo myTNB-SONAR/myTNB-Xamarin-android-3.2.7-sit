@@ -1,8 +1,8 @@
 ﻿using Android.App;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
-using static myTNB_Android.Src.Utils.Constants;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using static myTNB.Android.Src.Utils.Constants;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Model
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model
 {
     public class RewardMenuModel
     {

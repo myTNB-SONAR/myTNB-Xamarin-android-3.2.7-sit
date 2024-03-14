@@ -9,20 +9,20 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.ForgetPassword.MVP;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Custom.ProgressButton;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.ForgetPassword.MVP;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.Custom.ProgressButton;
 using Refit;
 using System;
 using System.Linq;
 using System.Runtime;
-using myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity;
+using myTNB.Android.Src.ForgotPasswordVerificationCodeSuccess.Activity;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 
-namespace myTNB_Android.Src.ForgetPassword.Activity
+namespace myTNB.Android.Src.ForgetPassword.Activity
 {
     [Activity(Label = "@string/forget_password_verfication_code_activity_title"
               , Icon = "@drawable/ic_launcher"

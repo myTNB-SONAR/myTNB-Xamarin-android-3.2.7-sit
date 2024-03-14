@@ -1,10 +1,10 @@
 ﻿using MikePhil.Charting.Charts;
 using MikePhil.Charting.Components;
 using MikePhil.Charting.Formatter;
-using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB.Android.Src.myTNBMenu.Models;
 using System.Collections.Generic;
 
-namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
+namespace myTNB.Android.Src.myTNBMenu.Charts.Formatter
 {
     public class ChartsDayFormatter : Java.Lang.Object, IAxisValueFormatter
     {

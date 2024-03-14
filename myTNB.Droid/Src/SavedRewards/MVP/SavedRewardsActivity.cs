@@ -9,15 +9,15 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB.SitecoreCMS.Model;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.RewardDetail.MVP;
-using myTNB_Android.Src.SavedRewards.Adapter;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.RewardDetail.MVP;
+using myTNB.Android.Src.SavedRewards.Adapter;
+using myTNB.Android.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB_Android.Src.SavedRewards.MVP
+namespace myTNB.Android.Src.SavedRewards.MVP
 {
     [Activity(Label = "My Saved Rewards"
               , Icon = "@drawable/ic_launcher"

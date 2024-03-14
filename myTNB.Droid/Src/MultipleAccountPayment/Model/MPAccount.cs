@@ -1,4 +1,4 @@
-﻿namespace myTNB_Android.Src.MultipleAccountPayment.Model
+﻿namespace myTNB.Android.Src.MultipleAccountPayment.Model
 {
     public class MPAccount
     {

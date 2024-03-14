@@ -11,21 +11,21 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.Common.Activity;
-using myTNB_Android.Src.Common.Model;
-using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Login.Requests;
-using myTNB_Android.Src.SSMR.Util;
-using myTNB_Android.Src.UpdateMobileNo.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.Common.Activity;
+using myTNB.Android.Src.Common.Model;
+using myTNB.Android.Src.CompoundView;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Login.Requests;
+using myTNB.Android.Src.SSMR.Util;
+using myTNB.Android.Src.UpdateMobileNo.MVP;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB_Android.Src.UpdateMobileNo.Activity
+namespace myTNB.Android.Src.UpdateMobileNo.Activity
 {
     [Activity(Label = "@string/update_mobile_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

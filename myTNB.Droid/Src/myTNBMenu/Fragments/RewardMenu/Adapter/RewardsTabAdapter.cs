@@ -6,10 +6,10 @@ using Android.Widget;
 using AndroidX.Fragment.App;
 using Facebook.Shimmer;
 using Java.Lang;
-using myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB.Android.Src.Utils;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
+namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Adapter
 {
     public class RewardsTabAdapter : FragmentStatePagerAdapter
     {

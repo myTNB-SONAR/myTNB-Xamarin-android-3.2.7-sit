@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using myTNB_Android.Src.AppLaunch.Models;
-using myTNB_Android.Src.Database.Model;
-using static myTNB_Android.Src.FindUs.Response.GetLocationTypesResponse;
-using myTNB_Android.Src.MyTNBService.Request;
-using myTNB_Android.Src.MyTNBService.Response;
-using myTNB_Android.Src.MyTNBService.ServiceImpl;
-using myTNB_Android.Src.SummaryDashBoard.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.Android.Src.Database.Model;
+using static myTNB.Android.Src.FindUs.Response.GetLocationTypesResponse;
+using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.Android.Src.SummaryDashBoard.Models;
+using myTNB.Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Mobile.AWS;
 
-namespace myTNB_Android.Src.Base
+namespace myTNB.Android.Src.Base
 {
     public class MyTNBAccountManagement
     {

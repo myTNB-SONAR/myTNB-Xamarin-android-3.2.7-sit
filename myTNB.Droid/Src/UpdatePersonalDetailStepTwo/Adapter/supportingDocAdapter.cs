@@ -1,8 +1,8 @@
 ﻿using Android.Widget;
 using CheeseBind;
-using myTNB_Android.Src.Base.Adapter;
-using myTNB_Android.Src.Base.Models;
-using myTNB_Android.Src.Utils;
+using myTNB.Android.Src.Base.Adapter;
+using myTNB.Android.Src.Base.Models;
+using myTNB.Android.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ using Android.Views;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Graphics.Drawable;
 
-namespace myTNB_Android.Src.UpdatePersonalDetailStepTwo.Adapter
+namespace myTNB.Android.Src.UpdatePersonalDetailStepTwo.Adapter
 {
 
 

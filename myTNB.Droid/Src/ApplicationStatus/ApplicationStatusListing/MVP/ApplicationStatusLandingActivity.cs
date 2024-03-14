@@ -24,20 +24,20 @@ using Google.Android.Material.Snackbar;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.SessionCache;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
-using myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
-using myTNB_Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
-using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.FindUs.Activity;
-using myTNB_Android.Src.MyHome;
-using myTNB_Android.Src.Utils;
-using myTNB_Android.Src.Utils.Deeplink;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter;
+using myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Models;
+using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.MVP;
+using myTNB.Android.Src.Database.Model;
+using myTNB.Android.Src.Base.Activity;
+using myTNB.Android.Src.FindUs.Activity;
+using myTNB.Android.Src.MyHome;
+using myTNB.Android.Src.Utils;
+using myTNB.Android.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
+namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
     [Activity(Label = "Application Status", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusLandingActivity : BaseActivityCustom, ApplicationStatusLandingContract.IView

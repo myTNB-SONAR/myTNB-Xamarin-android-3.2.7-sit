@@ -1,10 +1,10 @@
-﻿using myTNB_Android.Src.Utils;
+﻿using myTNB.Android.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB_Android.Src.Database.Model
+namespace myTNB.Android.Src.Database.Model
 {
     [Table("UserRegister")]
     public class UserRegister

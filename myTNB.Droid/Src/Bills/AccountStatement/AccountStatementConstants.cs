@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB_Android.Src.Bills.AccountStatement
+namespace myTNB.Android.Src.Bills.AccountStatement
 {
     public class AccountStatementConstants
     {

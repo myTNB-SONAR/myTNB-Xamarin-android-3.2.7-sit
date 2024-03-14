@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB_Android.Src.Login.Models
+namespace myTNB.Android.Src.Login.Models
 {
     public class UserResponse
     {
