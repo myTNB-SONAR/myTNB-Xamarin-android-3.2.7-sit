@@ -314,7 +314,7 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
 
-            bottomNavigationView.NavigationItemSelected += BottomNavigationView_NavigationItemSelected;
+            bottomNavigationView.ItemSelected += BottomNavigationView_NavigationItemSelected;
 
             RewardsMenuUtils.OnSetRewardLoading(false);
 
@@ -614,7 +614,7 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
             }
         }
 
-        private void BottomNavigationView_NavigationItemSelected(object sender, BottomNavigationView.NavigationItemSelectedEventArgs e)
+        private void BottomNavigationView_NavigationItemSelected(object sender, BottomNavigationView.ItemSelectedEventArgs e)
         {
             this.userActionsListener.OnMenuSelect(e.Item.ItemId);
         }
