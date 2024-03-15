@@ -13,14 +13,14 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Com.Airbnb.Lottie;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.SSMR.Util;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.SSMR.Util;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     [Activity(Label = "Take Photo", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity, SubmitMeterTakePhotoContract.IView

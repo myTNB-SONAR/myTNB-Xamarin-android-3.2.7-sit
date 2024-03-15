@@ -4,9 +4,9 @@ using Android.Content;
 using Android.Util;
 using Firebase.Iid;
 using Firebase.Messaging;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.Database.Model;
 
-namespace myTNB.Android.Src.Firebase.Services
+namespace myTNB.AndroidApp.Src.Firebase.Services
 {
     //[Service]
     //[IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]

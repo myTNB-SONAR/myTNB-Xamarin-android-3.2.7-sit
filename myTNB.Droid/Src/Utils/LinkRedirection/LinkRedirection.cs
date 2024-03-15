@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.Utils.LinkRedirection
+namespace myTNB.AndroidApp.Src.Utils.LinkRedirection
 {
     public class LinkRedirection
     {

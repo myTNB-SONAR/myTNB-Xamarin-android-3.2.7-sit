@@ -8,14 +8,14 @@ using AndroidX.CardView.Widget;
 using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.myTNBMenu.Adapter
+namespace myTNB.AndroidApp.Src.myTNBMenu.Adapter
 {
 	public class EnergySavingTipsShimmerAdapter : RecyclerView.Adapter
 	{

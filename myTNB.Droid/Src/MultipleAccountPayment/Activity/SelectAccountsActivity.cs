@@ -13,18 +13,18 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Billing.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MultipleAccountPayment.Adapter;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.MultipleAccountPayment.MVP;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Billing.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Adapter;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.Activity
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.Activity
 {
     [Activity(Label = "Select Bill(s)"
        , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.LinkAccount",
@@ -494,7 +494,7 @@ namespace myTNB.Android.Src.MultipleAccountPayment.Activity
                         if (response.accountDueAmountResponse.accounts.Count > 0)
                         {
                             accountList.Clear();
-                            foreach (myTNB.Android.Src.MultipleAccountPayment.Model.MPAccountDueResponse.Account account in response.accountDueAmountResponse.accounts)
+                            foreach (myTNB.AndroidApp.Src.MultipleAccountPayment.Model.MPAccountDueResponse.Account account in response.accountDueAmountResponse.accounts)
                             {
                                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(account.accNum);
                                 double dueAmount = account.amountDue;

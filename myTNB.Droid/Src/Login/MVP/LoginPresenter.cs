@@ -3,15 +3,15 @@ using Android.Text;
 using Android.Util;
 using fbm = Firebase.Messaging;
 using myTNB;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Login.Requests;
-using myTNB.Android.Src.myTNBMenu.Async;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Login.Requests;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -20,9 +20,9 @@ using System.Threading;
 using Android.Gms.Extensions;
 using System.Threading.Tasks;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Response;
+using myTNB.AndroidApp.Src.Base.Response;
 
-namespace myTNB.Android.Src.Login.MVP
+namespace myTNB.AndroidApp.Src.Login.MVP
 {
     public class LoginPresenter : LoginContract.IUserActionsListener
     {
@@ -256,7 +256,7 @@ namespace myTNB.Android.Src.Login.MVP
                         FirebaseTokenEntity.InsertOrReplace(newfcmToken, true);
                         UserInfo usrinf = new UserInfo();
                         UserEntity userEntity = UserEntity.GetActive();
-                        myTNB.Android.Src.MyTNBService.Request.BaseRequest baseRequest = new myTNB.Android.Src.MyTNBService.Request.BaseRequest();
+                        myTNB.AndroidApp.Src.MyTNBService.Request.BaseRequest baseRequest = new myTNB.AndroidApp.Src.MyTNBService.Request.BaseRequest();
                         baseRequest.usrInf.ft = newfcmToken;
                         //string ts = JsonConvert.SerializeObject(baseRequest);
                         APIBaseResponse DataResponse = await ServiceApiImpl.Instance.UpdateUserInfoDevice(baseRequest);

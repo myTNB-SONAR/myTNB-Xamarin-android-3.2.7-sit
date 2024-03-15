@@ -1,14 +1,14 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.SummaryDashBoard.Models;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("UserManageAccountEntity")]
     public class UserManageAccessAccount

@@ -18,19 +18,19 @@ using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
 using Microsoft.Maui.ApplicationModel;
 using myTNB.Mobile;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Helper;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.OverVoltageClaim.Model;
-using myTNB.Android.Src.OverVoltageClaimSuccessPage.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Helper;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.OverVoltageClaim.Model;
+using myTNB.AndroidApp.Src.OverVoltageClaimSuccessPage.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Org.Json;
 
 
-namespace myTNB.Android.Src.OverVoltageClaim.Activity
+namespace myTNB.AndroidApp.Src.OverVoltageClaim.Activity
 {
     [Activity(Label = "@string/submitICFeedback_OverVoltageClaimTitle"
           , ScreenOrientation = ScreenOrientation.Portrait

@@ -12,19 +12,19 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Enquiry.GSL.MVP;
-using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using static Android.Views.View;
 
-namespace myTNB.Android.Src.Enquiry.GSL.Activity
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
     [Activity(Label = "GSL Rebate Step One"
       , ScreenOrientation = ScreenOrientation.Portrait

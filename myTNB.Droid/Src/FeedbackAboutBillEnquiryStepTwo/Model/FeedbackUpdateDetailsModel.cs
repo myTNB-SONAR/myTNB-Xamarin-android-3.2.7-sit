@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.Model
+namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepTwo.Model
 {
     public class FeedbackUpdateDetailsModel
     {

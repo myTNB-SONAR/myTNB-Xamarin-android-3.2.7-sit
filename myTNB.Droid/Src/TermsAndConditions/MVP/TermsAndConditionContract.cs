@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.TermsAndConditions.MVP
+namespace myTNB.AndroidApp.Src.TermsAndConditions.MVP
 {
     public class TermsAndConditionContract
     {

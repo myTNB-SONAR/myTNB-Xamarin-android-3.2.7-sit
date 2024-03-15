@@ -1,6 +1,6 @@
 ﻿using myTNB.SitecoreCMS.Models;
-using myTNB.Android.Src.Database;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;

@@ -1,18 +1,18 @@
 ﻿using Android.Util;
-using myTNB.Android.Src.FindUs.Api;
-using myTNB.Android.Src.FindUs.Request;
-using myTNB.Android.Src.FindUs.Response;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.FindUs.Api;
+using myTNB.AndroidApp.Src.FindUs.Request;
+using myTNB.AndroidApp.Src.FindUs.Response;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB.Android.Src.FindUs.MVP
+namespace myTNB.AndroidApp.Src.FindUs.MVP
 {
     public class FindUsPresenter : FindUsContract.IUserActionsListener
     {

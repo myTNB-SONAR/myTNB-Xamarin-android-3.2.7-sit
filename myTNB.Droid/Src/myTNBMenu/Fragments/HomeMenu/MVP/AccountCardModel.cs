@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class AccountCardModel
     {

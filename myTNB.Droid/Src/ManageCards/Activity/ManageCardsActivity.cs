@@ -9,20 +9,20 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.ManageCards.Adapter;
-using myTNB.Android.Src.ManageCards.Models;
-using myTNB.Android.Src.ManageCards.MVP;
-using myTNB.Android.Src.MyAccount.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.ManageCards.Adapter;
+using myTNB.AndroidApp.Src.ManageCards.Models;
+using myTNB.AndroidApp.Src.ManageCards.MVP;
+using myTNB.AndroidApp.Src.MyAccount.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.ManageCards.Activity
+namespace myTNB.AndroidApp.Src.ManageCards.Activity
 {
     [Activity(Label = "@string/manage_cards_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

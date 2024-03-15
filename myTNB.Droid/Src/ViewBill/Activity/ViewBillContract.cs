@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Response;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.ViewBill.Activity
+namespace myTNB.AndroidApp.Src.ViewBill.Activity
 {
     public class ViewBillContract
     {

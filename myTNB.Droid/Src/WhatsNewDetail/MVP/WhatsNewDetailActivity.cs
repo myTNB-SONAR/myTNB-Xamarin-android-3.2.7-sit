@@ -23,20 +23,20 @@ using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using Google.Android.Material.Snackbar;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FAQ.Activity;
-using myTNB.Android.Src.RewardDetail.MVP;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.PDFView;
-using myTNB.Android.Src.Utils.ZoomImageView;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FAQ.Activity;
+using myTNB.AndroidApp.Src.RewardDetail.MVP;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.PDFView;
+using myTNB.AndroidApp.Src.Utils.ZoomImageView;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime;
 
-namespace myTNB.Android.Src.WhatsNewDetail.MVP
+namespace myTNB.AndroidApp.Src.WhatsNewDetail.MVP
 {
     [Activity(Label = "What’s New"
               , Icon = "@drawable/ic_launcher"

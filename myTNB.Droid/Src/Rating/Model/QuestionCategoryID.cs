@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.Rating.Model
+﻿namespace myTNB.AndroidApp.Src.Rating.Model
 {
     public enum QuestionCategoryID
     {

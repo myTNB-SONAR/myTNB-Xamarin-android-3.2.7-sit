@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.myTNBMenu.Models
+namespace myTNB.AndroidApp.Src.myTNBMenu.Models
 {
     public class AccountDueAmountResponse
     {

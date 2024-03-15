@@ -5,12 +5,12 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Enquiry.GSL.Activity
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait,
         WindowSoftInputMode = SoftInput.AdjustPan,

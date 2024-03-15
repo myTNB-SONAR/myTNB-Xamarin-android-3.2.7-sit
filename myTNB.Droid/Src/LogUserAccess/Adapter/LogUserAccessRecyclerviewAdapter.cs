@@ -9,17 +9,17 @@ using AndroidX.AppCompat.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.LogUserAccess.Models;
-using myTNB.Android.Src.LogUserAccess.MVP;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.LogUserAccess.Models;
+using myTNB.AndroidApp.Src.LogUserAccess.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace myTNB.Android.Src.LogUserAccess.Adapter
+namespace myTNB.AndroidApp.Src.LogUserAccess.Adapter
 {
     public class LogUserAccessRecyclerviewAdapter : RecyclerView.Adapter
     {

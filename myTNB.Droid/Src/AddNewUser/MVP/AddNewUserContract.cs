@@ -1,12 +1,12 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.AddNewUser.MVP
+namespace myTNB.AndroidApp.Src.AddNewUser.MVP
 {
     public class AddNewUserContract
     {

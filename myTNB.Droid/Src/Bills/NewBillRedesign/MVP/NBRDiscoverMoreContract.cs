@@ -1,8 +1,8 @@
 ﻿using System;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Bills.NewBillRedesign.Model;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign.Model;
 
-namespace myTNB.Android.Src.Bills.NewBillRedesign.MVP
+namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign.MVP
 {
     public class NBRDiscoverMoreContract
     {

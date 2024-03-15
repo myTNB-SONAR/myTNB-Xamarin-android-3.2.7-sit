@@ -10,17 +10,17 @@ using CheeseBind;
 using myTNB;
 using myTNB.SitecoreCMS.Models;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.FAQ.Adapter;
-using myTNB.Android.Src.FAQ.Model;
-using myTNB.Android.Src.FAQ.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.FAQ.Adapter;
+using myTNB.AndroidApp.Src.FAQ.Model;
+using myTNB.AndroidApp.Src.FAQ.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.FAQ.Activity
+namespace myTNB.AndroidApp.Src.FAQ.Activity
 {
     [Activity(Label = "@string/faq_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

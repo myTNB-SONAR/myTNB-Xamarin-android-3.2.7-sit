@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Requests
 {
 	public class GetServiceRequests
 	{

@@ -5,14 +5,14 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.MyHome;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Rating.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.MyHome;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Rating.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 
-namespace myTNB.Android.Src.Rating.Fargment
+namespace myTNB.AndroidApp.Src.Rating.Fargment
 {
     public class ThankYouFragment : AndroidX.Fragment.App.Fragment
     {

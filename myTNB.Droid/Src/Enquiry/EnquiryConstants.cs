@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.Enquiry
+﻿namespace myTNB.AndroidApp.Src.Enquiry
 {
     public class EnquiryConstants
     {

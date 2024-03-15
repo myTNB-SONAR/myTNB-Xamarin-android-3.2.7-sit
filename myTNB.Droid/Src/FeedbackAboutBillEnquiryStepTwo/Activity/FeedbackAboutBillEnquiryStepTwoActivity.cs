@@ -23,21 +23,21 @@ using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.Model;
-using myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.MVP;
-using myTNB.Android.Src.SubmitEnquirySuccess.Activity;
-using myTNB.Android.Src.UpdatePersonalDetailTnC.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepTwo.Model;
+using myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepTwo.MVP;
+using myTNB.AndroidApp.Src.SubmitEnquirySuccess.Activity;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.FeedbackAboutBillEnquiryStepTwo.Activity
+namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepTwo.Activity
 {
 
     [Activity(Label = "@string/GeneralEnquiry2of2_app_bar"

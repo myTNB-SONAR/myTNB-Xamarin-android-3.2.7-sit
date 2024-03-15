@@ -7,13 +7,13 @@ using MikePhil.Charting.Components;
 using MikePhil.Charting.Data;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Util;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.Custom;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.Custom;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.myTNBMenu.Charts.SelectedMarkerView
+namespace myTNB.AndroidApp.Src.myTNBMenu.Charts.SelectedMarkerView
 {
     public class SMSelectedMarkerView : MarkerView
     {

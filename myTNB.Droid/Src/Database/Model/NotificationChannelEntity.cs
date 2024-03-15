@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("NotificationChannelEntity")]
     public class NotificationChannelEntity

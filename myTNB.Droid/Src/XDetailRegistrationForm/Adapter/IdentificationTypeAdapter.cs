@@ -1,12 +1,12 @@
 ﻿using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.XDetailRegistrationForm.Models;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.XDetailRegistrationForm.Adapter
+namespace myTNB.AndroidApp.Src.XDetailRegistrationForm.Adapter
 {
     public class IdentificationTypeAdapter : BaseCustomAdapter<IdentificationType>
     {

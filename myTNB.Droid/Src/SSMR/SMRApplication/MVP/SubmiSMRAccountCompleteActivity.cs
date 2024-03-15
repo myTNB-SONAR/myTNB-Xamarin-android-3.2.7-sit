@@ -11,13 +11,13 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.SSMR.SMRApplication.Api;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     [Activity(Label = "SubmiSMRAccountCompleteActivity", Theme = "@style/Theme.Dashboard")]
     public class SubmiSMRAccountCompleteActivity : BaseToolbarAppCompatActivity

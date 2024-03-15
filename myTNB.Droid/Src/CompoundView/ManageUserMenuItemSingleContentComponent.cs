@@ -5,9 +5,9 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class ManageUserMenuItemSingleContentComponent : RelativeLayout
     {

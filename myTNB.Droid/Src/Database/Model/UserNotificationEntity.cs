@@ -1,12 +1,12 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("UserNotificationEntity")]
     public class UserNotificationEntity

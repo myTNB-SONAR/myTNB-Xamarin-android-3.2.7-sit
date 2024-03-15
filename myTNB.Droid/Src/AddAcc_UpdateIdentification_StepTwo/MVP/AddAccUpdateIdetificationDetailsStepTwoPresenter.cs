@@ -11,10 +11,10 @@ using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepTwo.MVP
+namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.MVP
 {
 
 

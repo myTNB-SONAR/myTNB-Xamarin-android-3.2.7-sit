@@ -11,11 +11,11 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.ZoomImageView;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.ZoomImageView;
 
-namespace myTNB.Android.Src.Bills.NewBillRedesign.Activity
+namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign.Activity
 {
     [Activity(Label = "", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class NBRDiscoverMoreBannerFullViewActivity : BaseToolbarAppCompatActivity

@@ -5,13 +5,13 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.SSMRMeterHistory.MVP;
-using myTNB.Android.Src.SSMRTerminate.Api;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.MVP;
+using myTNB.AndroidApp.Src.SSMRTerminate.Api;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SSMRTerminate.Adapter
+namespace myTNB.AndroidApp.Src.SSMRTerminate.Adapter
 {
     public class SSMRTerminationReasonAdapter : RecyclerView.Adapter
     {

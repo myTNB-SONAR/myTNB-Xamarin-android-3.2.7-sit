@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static myTNB.Mobile.FeatureInfoClass;
 
-namespace myTNB.Android.Src.MyTNBService.Request
+namespace myTNB.AndroidApp.Src.MyTNBService.Request
 {
     public class GetAcccountsV4Request : BaseRequestV4
     {

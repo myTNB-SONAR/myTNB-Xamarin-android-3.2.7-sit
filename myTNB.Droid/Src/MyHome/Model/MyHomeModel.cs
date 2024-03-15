@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.MyHome.Model;
 using static myTNB.Mobile.MobileEnums;
 using Android.Graphics;
 using Newtonsoft.Json;
-using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 
-namespace myTNB.Android.Src.MyHome.Model
+namespace myTNB.AndroidApp.Src.MyHome.Model
 {
     public class MyServiceModel
     {

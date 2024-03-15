@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.MyTNBService.InterfaceAPI;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.MyTNBService.InterfaceAPI;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class SendEmailVerificationResponse { 
         

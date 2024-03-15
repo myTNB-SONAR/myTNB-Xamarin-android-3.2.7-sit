@@ -5,14 +5,14 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
-using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.Models;
+using myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter
+namespace myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.Adapter
 {
     public class SearchApplicationStatusAdapter : RecyclerView.Adapter
     {

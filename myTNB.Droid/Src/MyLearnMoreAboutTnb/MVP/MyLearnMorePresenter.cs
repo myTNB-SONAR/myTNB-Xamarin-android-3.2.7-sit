@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Android.Util;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
-using myTNB.Android.Src.ManageCards.Models;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.ManageCards.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 
-namespace myTNB.Android.Src.MyLearnMoreAboutTnb.MVP
+namespace myTNB.AndroidApp.Src.MyLearnMoreAboutTnb.MVP
 {
     public class MyLearnMorePresenter : MyLearnMoreContract.IUserActionsListener
     {

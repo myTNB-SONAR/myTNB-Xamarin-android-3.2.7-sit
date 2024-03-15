@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.SummaryDashBoard.Models;
+﻿using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
 
-namespace myTNB.Android.Src.SummaryDashBoard.SummaryListener
+namespace myTNB.AndroidApp.Src.SummaryDashBoard.SummaryListener
 {
     public interface ISummaryListener
     {

@@ -3,17 +3,17 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FindUs.Adapter;
-using myTNB.Android.Src.FindUs.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FindUs.Adapter;
+using myTNB.AndroidApp.Src.FindUs.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.FindUs.Activity
+namespace myTNB.AndroidApp.Src.FindUs.Activity
 {
     [Activity(Label = "Store Type"
        , ScreenOrientation = ScreenOrientation.Portrait

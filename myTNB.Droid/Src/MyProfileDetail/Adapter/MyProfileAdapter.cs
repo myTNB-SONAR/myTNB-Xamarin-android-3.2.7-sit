@@ -2,12 +2,12 @@
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.MyProfileDetail.Adapter
+namespace myTNB.AndroidApp.Src.MyProfileDetail.Adapter
 {
     internal class MyProfileAdapter : BaseCustomAdapter<CustomerBillingAccount>
     {

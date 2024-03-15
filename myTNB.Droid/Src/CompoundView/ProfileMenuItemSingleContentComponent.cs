@@ -3,10 +3,10 @@ using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Widget;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class ProfileMenuItemSingleContentComponent : RelativeLayout
     {

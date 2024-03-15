@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Refit;
 
-namespace myTNB.Android.Src.ForgetPassword.Requests
+namespace myTNB.AndroidApp.Src.ForgetPassword.Requests
 {
     public class ForgetPasswordRequest : BaseRequest
     {

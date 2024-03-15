@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace myTNB.Android.Src.SiteCore
+namespace myTNB.AndroidApp.Src.SiteCore
 {
     internal static class SiteCoreConfig
     {

@@ -6,15 +6,15 @@ using Android.Content;
 using Android.Icu.Text;
 using Java.Util;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.MVP
 {
     public class RewardItemPresenter : RewardItemContract.IRewardItemPresenter
     {

@@ -8,18 +8,18 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Base;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
 using System.Threading.Tasks;
 using AndroidX.Core.Content;
 using myTNB;
 using myTNB.Mobile.SessionCache;
-using myTNB.Android.Src.NewWalkthrough.MVP;
-using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.NewWalkthrough.MVP;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
 
-namespace myTNB.Android.Src.Profile.Activity
+namespace myTNB.AndroidApp.Src.Profile.Activity
 {
     [Activity(Label = "Set App Font", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class AppLargeFontActivity : BaseActivityCustom

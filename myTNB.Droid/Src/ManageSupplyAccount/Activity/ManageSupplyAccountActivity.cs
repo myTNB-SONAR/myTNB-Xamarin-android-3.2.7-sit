@@ -12,23 +12,23 @@ using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.DeviceCache;
-using myTNB.Android.Src.ManageBillDelivery.MVP;
-using myTNB.Android.Src.ManageSupplyAccount.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.SessionCache;
-using myTNB.Android.Src.UpdateNickname.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DeviceCache;
+using myTNB.AndroidApp.Src.ManageBillDelivery.MVP;
+using myTNB.AndroidApp.Src.ManageSupplyAccount.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.SessionCache;
+using myTNB.AndroidApp.Src.UpdateNickname.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.ManageSupplyAccount.Activity
+namespace myTNB.AndroidApp.Src.ManageSupplyAccount.Activity
 {
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

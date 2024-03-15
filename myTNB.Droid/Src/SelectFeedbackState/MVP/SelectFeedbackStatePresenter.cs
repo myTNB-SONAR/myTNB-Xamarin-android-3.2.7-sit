@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB.Android.Src.SelectFeedbackState.MVP
+namespace myTNB.AndroidApp.Src.SelectFeedbackState.MVP
 {
     public class SelectFeedbackStatePresenter : SelectFeedbackStateContract.IUserActionsListener
     {

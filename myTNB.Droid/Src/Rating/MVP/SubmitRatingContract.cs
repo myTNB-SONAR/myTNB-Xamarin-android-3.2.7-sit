@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Rating.Request;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Rating.Request;
 using System;
 using System.Collections.Generic;
-using static myTNB.Android.Src.Rating.Request.SubmitRateUsRequest;
+using static myTNB.AndroidApp.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB.Android.Src.Rating.MVP
+namespace myTNB.AndroidApp.Src.Rating.MVP
 {
     public class SubmitRatingContract
     {

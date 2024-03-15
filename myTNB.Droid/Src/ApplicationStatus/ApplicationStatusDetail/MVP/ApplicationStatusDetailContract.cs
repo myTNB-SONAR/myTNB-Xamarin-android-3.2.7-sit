@@ -1,11 +1,11 @@
 ﻿using Android.OS;
-using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
-using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.Models;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
 using myTNB.Mobile;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
     public class ApplicationStatusDetailContract
     {

@@ -12,18 +12,18 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.Mobile;
-using myTNB.Android.Src.AddAccount.Activity;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.AddAccount.MVP;
-using myTNB.Android.Src.Barcode.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Activity;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.AddAccount.MVP;
+using myTNB.AndroidApp.Src.Barcode.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.AddAccount.Fragment
+namespace myTNB.AndroidApp.Src.AddAccount.Fragment
 {
     public class AddAccountFormFragmentBusiness : AndroidX.Fragment.App.Fragment, AddAccountContract.IView, View.IOnTouchListener
     {

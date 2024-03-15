@@ -8,10 +8,10 @@ using Android.Util;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.Database.Model;
 using Newtonsoft.Json;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.SSMR.Util;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.SSMR.Util;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -20,10 +20,10 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 using myTNB.Mobile.Helpers;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class Utility
     {

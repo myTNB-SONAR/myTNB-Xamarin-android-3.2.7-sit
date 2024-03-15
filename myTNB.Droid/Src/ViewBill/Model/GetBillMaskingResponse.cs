@@ -2,7 +2,7 @@
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.ViewBill.Model
+namespace myTNB.AndroidApp.Src.ViewBill.Model
 {
     public class GetBillMaskingResponse
     {

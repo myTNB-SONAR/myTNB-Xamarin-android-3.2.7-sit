@@ -14,16 +14,16 @@ using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.TextField;
 using myTNB;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Enquiry.GSL.MVP;
-using myTNB.Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails;
-using myTNB.Android.Src.FeedbackDetails.Adapter;
-using myTNB.Android.Src.FeedbackFullScreenImage.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
+using myTNB.AndroidApp.Src.Enquiry.GSL.MVP.GSLSubmittedDetails;
+using myTNB.AndroidApp.Src.FeedbackDetails.Adapter;
+using myTNB.AndroidApp.Src.FeedbackFullScreenImage.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Enquiry.GSL.Activity
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
     [Activity(Label = "GSL Rebate",
         ScreenOrientation = ScreenOrientation.Portrait,

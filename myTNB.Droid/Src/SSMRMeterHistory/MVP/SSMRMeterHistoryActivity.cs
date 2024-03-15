@@ -21,24 +21,24 @@ using AndroidX.Core.Content;
 using AndroidX.Core.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.NotificationSettings.Activity;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
-using myTNB.Android.Src.SSMR.Util;
-using myTNB.Android.Src.SSMRMeterHistory.Adapter;
-using myTNB.Android.Src.SSMRTerminate.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.NotificationSettings.Activity;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.AndroidApp.Src.SSMR.Util;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.Adapter;
+using myTNB.AndroidApp.Src.SSMRTerminate.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.SSMRMeterHistory.MVP
+namespace myTNB.AndroidApp.Src.SSMRMeterHistory.MVP
 {
     [Activity(Label = "@string/ssmr_meter_history_activity_title"
           , ScreenOrientation = ScreenOrientation.Portrait

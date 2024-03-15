@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.UpdatePassword.MVP
+namespace myTNB.AndroidApp.Src.UpdatePassword.MVP
 {
     public class UpdatePasswordContract
     {

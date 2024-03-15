@@ -2,14 +2,14 @@
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Dashboard.Adapter
+namespace myTNB.AndroidApp.Src.Dashboard.Adapter
 {
     public class SelectSupplyAccountAdapter : BaseCustomAdapter<CustomerBillingAccount>
     {

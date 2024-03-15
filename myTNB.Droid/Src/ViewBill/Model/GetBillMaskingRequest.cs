@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.ViewBill.Model
+namespace myTNB.AndroidApp.Src.ViewBill.Model
 {
     public class GetBillMaskingRequest
     {

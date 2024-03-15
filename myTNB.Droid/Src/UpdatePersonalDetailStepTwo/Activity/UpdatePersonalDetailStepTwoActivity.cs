@@ -21,18 +21,18 @@ using Castle.Core.Internal;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB.Android.Src.UpdatePersonalDetailStepTwo.Adapter;
-using myTNB.Android.Src.UpdatePersonalDetailStepTwo.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Adapter;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Adapter;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepTwo.Activity
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.AdjustPan

@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using SQLite;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("AccountDataEntity")]
     public class AccountDataEntity : AccountDataModel

@@ -4,13 +4,13 @@ using Android.Widget;
 using AndroidX.AppCompat.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.SelectNotification.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.SelectNotification.Models;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.NotificationSettings.Adapter
+namespace myTNB.AndroidApp.Src.NotificationSettings.Adapter
 {
     public class NotificationTypeAdapter : BaseRecyclerAdapter<NotificationTypeUserPreference>
     {

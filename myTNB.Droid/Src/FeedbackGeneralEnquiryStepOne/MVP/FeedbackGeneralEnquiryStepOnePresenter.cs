@@ -4,10 +4,10 @@ using Android.App;
 using Android.Content;
 using Android.Runtime;
 using Android.Text;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
 
-namespace myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.MVP
+namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.MVP
 {
     public class FeedbackGeneralEnquiryStepOnePresenter : FeedbackGeneralEnquiryStepOneContract.IUserActionsListener
     {

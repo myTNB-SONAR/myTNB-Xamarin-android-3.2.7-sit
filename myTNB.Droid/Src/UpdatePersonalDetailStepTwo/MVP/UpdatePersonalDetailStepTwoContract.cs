@@ -9,12 +9,12 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Base.Request;
-using static myTNB.Android.Src.UpdatePersonalDetailStepTwo.Activity.UpdatePersonalDetailStepTwoActivity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.Request;
+using static myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity.UpdatePersonalDetailStepTwoActivity;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepTwo.MVP
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.MVP
 {
     public class UpdatePersonalDetailStepTwoContract
     {

@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.Model
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.Model
 {
     public class MPInitiatePaymentResult
     {

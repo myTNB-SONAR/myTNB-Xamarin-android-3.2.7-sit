@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.SSMRMeterHistory.MVP
+namespace myTNB.AndroidApp.Src.SSMRMeterHistory.MVP
 {
     public class ContactNotAvailableModel
     {

@@ -2,12 +2,12 @@
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Utils;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Feedback_Login_BillRelated.Adapter
+namespace myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Adapter
 {
     public class FeedbackSelectAccountAdapter : BaseCustomAdapter<AccountData>
     {

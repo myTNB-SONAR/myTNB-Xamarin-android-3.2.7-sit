@@ -1,11 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
 using Refit;
 
-namespace myTNB.Android.Src.MyTNBService.InterfaceAPI
+namespace myTNB.AndroidApp.Src.MyTNBService.InterfaceAPI
 {
     public interface IServiceV6
     {

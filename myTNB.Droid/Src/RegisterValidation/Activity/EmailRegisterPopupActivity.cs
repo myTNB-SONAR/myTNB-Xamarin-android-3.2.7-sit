@@ -11,21 +11,21 @@ using AndroidSwipeLayout;
 using AndroidSwipeLayout.Util;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.AddAccount.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.MyAccount.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.XDetailRegistrationForm.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.MyAccount.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.RegisterValidation.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Login.Activity;
+using myTNB.AndroidApp.Src.RegisterValidation.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Login.Activity;
 
-namespace myTNB.Android.Src.RegisterValidation.Activity
+namespace myTNB.AndroidApp.Src.RegisterValidation.Activity
 {
     [Activity(Label = "@string/app_name"
               , Icon = "@drawable/ic_launcher"

@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
 
-namespace myTNB.Android.Src.AddAccount.Requests
+namespace myTNB.AndroidApp.Src.AddAccount.Requests
 {
     public class GetCustomerAccountsRequest : AccountsResquest
     {

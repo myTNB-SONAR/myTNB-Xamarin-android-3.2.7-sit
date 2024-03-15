@@ -1,15 +1,15 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.Feedback_Login_BillRelated.MVP
+namespace myTNB.AndroidApp.Src.Feedback_Login_BillRelated.MVP
 {
     public class FeedbackLoginBillRelatedContract
     {

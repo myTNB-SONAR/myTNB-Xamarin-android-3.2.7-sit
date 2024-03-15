@@ -2,11 +2,11 @@
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.Common.Model;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.Common.Model;
 
-namespace myTNB.Android.Src.Enquiry.GSL.MVP
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateStepOneContract
     {

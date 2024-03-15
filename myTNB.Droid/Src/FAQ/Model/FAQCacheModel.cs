@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.FAQ.Model
+namespace myTNB.AndroidApp.Src.FAQ.Model
 {
     public class FAQCacheModel
     {

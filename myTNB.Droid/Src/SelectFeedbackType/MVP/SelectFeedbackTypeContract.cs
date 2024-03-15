@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SelectFeedbackType.MVP
+namespace myTNB.AndroidApp.Src.SelectFeedbackType.MVP
 {
     public class SelectFeedbackTypeContract
     {

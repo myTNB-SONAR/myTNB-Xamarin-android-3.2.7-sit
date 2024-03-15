@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.ViewReceipt.Model;
+﻿using myTNB.AndroidApp.Src.ViewReceipt.Model;
 using Refit;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.ViewReceipt.Api
+namespace myTNB.AndroidApp.Src.ViewReceipt.Api
 {
     public interface GetReceiptApi
     {

@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
 
-namespace myTNB.Android.Src.ForgotPasswordVerificationCodeSuccess.MVP
+namespace myTNB.AndroidApp.Src.ForgotPasswordVerificationCodeSuccess.MVP
 {
     public class ForgotPasswordVerificationCodeSuccessContract
     {

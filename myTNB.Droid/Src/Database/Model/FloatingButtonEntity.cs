@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.AndroidApp.Src.SitecoreCMS.Model;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("FloatingButtonEntity")]
     public class FloatingButtonEntity

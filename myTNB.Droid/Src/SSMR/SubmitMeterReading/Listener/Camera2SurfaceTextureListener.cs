@@ -1,9 +1,9 @@
 ﻿using Android.Graphics;
 using Android.Views;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP;
 using System;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Listener
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Listener
 {
     public class Camera2SurfaceTextureListener : Java.Lang.Object, TextureView.ISurfaceTextureListener
     {

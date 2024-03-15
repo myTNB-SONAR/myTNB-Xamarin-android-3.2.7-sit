@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("FirebaseTokenEntity")]
     internal class FirebaseTokenEntity

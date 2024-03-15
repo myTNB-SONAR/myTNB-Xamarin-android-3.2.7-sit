@@ -1,4 +1,4 @@
-﻿using myTNB.Android.Src.SiteCore;
+﻿using myTNB.AndroidApp.Src.SiteCore;
 using Sitecore.MobileSDK.API;
 using Sitecore.MobileSDK.API.Exceptions;
 using Sitecore.MobileSDK.API.Items;

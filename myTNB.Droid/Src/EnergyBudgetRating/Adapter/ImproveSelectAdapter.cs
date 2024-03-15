@@ -7,14 +7,14 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.EnergyBudgetRating.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.EnergyBudgetRating.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static myTNB.Android.Src.Rating.Request.SubmitRateUsRequest;
+using static myTNB.AndroidApp.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB.Android.Src.EnergyBudgetRating.Adapter
+namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Adapter
 {
     public class ImproveSelectAdapter : RecyclerView.Adapter
     {

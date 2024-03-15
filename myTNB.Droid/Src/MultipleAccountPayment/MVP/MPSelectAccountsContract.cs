@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Model;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.MVP
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.MVP
 {
     public class MPSelectAccountsContract
     {

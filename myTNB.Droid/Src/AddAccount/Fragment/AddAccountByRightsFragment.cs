@@ -5,13 +5,13 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB.Android.Src.AddAccount.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Org.Xml.Sax;
 using System;
 using System.Linq;
 
-namespace myTNB.Android.Src.AddAccount.Fragment
+namespace myTNB.AndroidApp.Src.AddAccount.Fragment
 {
     public class AddAccountByRightsFragment : AndroidX.Fragment.App.Fragment
     {

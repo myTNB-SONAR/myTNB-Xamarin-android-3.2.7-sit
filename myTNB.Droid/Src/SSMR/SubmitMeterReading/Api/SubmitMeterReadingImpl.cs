@@ -2,10 +2,10 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Api
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api
 {
     public class SubmitMeterReadingImpl : SubmitMeterReadingApi
     {

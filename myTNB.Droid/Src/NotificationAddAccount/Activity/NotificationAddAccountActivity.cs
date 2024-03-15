@@ -11,11 +11,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.NotificationAddAccount.Activity
+namespace myTNB.AndroidApp.Src.NotificationAddAccount.Activity
 {
     [Activity(Label = "NotificationAddAccount", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.DashboardHome")]
     public class NotificationAddAccountActivity : BaseActivityCustom

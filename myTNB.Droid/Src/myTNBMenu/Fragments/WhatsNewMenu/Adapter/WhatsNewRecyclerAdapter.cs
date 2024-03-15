@@ -9,8 +9,8 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -18,9 +18,9 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using static myTNB.Android.Src.Utils.Constants;
+using static myTNB.AndroidApp.Src.Utils.Constants;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter
 {
     public class WhatsNewRecyclerAdapter : RecyclerView.Adapter
     {

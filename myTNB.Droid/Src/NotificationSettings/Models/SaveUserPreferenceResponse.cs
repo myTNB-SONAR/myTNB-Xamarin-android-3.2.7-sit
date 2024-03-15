@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.NotificationSettings.Models
+namespace myTNB.AndroidApp.Src.NotificationSettings.Models
 {
     public class SaveUserPreferenceResponse
     {

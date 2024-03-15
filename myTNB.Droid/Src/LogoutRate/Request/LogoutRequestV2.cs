@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.LogoutRate.Request
+namespace myTNB.AndroidApp.Src.LogoutRate.Request
 {
     public class LogoutRequestV2
     {

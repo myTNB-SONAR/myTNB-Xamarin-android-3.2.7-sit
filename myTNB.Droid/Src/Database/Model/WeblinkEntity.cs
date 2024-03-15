@@ -1,9 +1,9 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("WeblinkEntity")]
     public class WeblinkEntity

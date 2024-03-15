@@ -5,7 +5,7 @@ using Android.Util;
 using Android.Views;
 using Android.App;
 using Android.Widget;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.Listener;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Listener;
 using Java.Util.Concurrent;
 using Android.Hardware.Camera2;
 using Android.Graphics;
@@ -17,10 +17,10 @@ using Java.Util;
 using Java.IO;
 using Orientation = Android.Content.Res.Orientation;
 using Android.Content;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using Android.Text;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     public class SubmitMeterTakePhotoFragment : AndroidX.Fragment.App.Fragment
     {

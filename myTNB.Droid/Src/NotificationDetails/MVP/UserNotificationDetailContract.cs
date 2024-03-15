@@ -1,20 +1,20 @@
 ﻿using System;
 using myTNB;
 using myTNB.Mobile;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyHome;
-using myTNB.Android.Src.MyHome.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.SSMRMeterHistory.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyHome;
+using myTNB.AndroidApp.Src.MyHome.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 
-using MyHomeModel = myTNB.Android.Src.MyHome.Model.MyHomeModel;
+using MyHomeModel = myTNB.AndroidApp.Src.MyHome.Model.MyHomeModel;
 
-namespace myTNB.Android.Src.NotificationDetails.MVP
+namespace myTNB.AndroidApp.Src.NotificationDetails.MVP
 {
     public class UserNotificationDetailContract
     {

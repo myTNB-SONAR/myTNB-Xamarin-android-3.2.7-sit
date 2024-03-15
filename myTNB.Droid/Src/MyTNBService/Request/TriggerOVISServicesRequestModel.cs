@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.MyTNBService.Request
+namespace myTNB.AndroidApp.Src.MyTNBService.Request
 {
     public class OVISRequest
     {

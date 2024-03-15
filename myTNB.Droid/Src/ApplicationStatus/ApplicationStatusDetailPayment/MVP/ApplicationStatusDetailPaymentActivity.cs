@@ -12,15 +12,15 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB.Android.Src.CompoundView.ExpandableTextViewComponent;
+using static myTNB.AndroidApp.Src.CompoundView.ExpandableTextViewComponent;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP
 {
     [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class ApplicationStatusDetailPaymentActivity : BaseActivityCustom

@@ -7,7 +7,7 @@
     android:minWidth="25px"
     android:minHeight="25px">
   
-    <myTNB.Android.Src.SSMR.SubmitMeterReading.MVP.AutoFitTextureView
+    <myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP.AutoFitTextureView
         android:id="@+id/texture_view_autofit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

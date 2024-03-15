@@ -5,11 +5,11 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Base.Fragments
+namespace myTNB.AndroidApp.Src.Base.Fragments
 {
     public class MonthYearPickerDialog : DialogFragment
     {

@@ -107,7 +107,7 @@
             android:id="@+id/photoPreview"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <myTNB.Android.Src.SSMR.SubmitMeterReading.MVP.ScaledImageView
+            <myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP.ScaledImageView
                 android:id="@+id/adjust_photo_preview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

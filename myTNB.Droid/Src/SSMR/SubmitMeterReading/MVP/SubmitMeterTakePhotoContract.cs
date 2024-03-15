@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Android.Graphics;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     public class SubmitMeterTakePhotoContract
     {

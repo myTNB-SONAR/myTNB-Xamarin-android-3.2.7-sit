@@ -16,19 +16,19 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB.Android.Src.AddAccount.Adapter;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FAQ.Activity;
-using myTNB.Android.Src.MultipleAccountPayment.Adapter;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.SSMR.SMRApplication.Adapter;
-using myTNB.Android.Src.SSMR.Util;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Adapter;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FAQ.Activity;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Adapter;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Adapter;
+using myTNB.AndroidApp.Src.SSMR.Util;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     [Activity(Label = "Select Electricity Account"
     , ScreenOrientation = ScreenOrientation.Portrait

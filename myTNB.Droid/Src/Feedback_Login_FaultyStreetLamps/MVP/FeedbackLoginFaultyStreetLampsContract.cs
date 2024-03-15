@@ -2,14 +2,14 @@
 using Android.Content;
 using Android.Locations;
 using Android.Runtime;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Base.Request;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.Request;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.Feedback_Login_FaultyStreetLamps.MVP
+namespace myTNB.AndroidApp.Src.Feedback_Login_FaultyStreetLamps.MVP
 {
     public class FeedbackLoginFaultyStreetLampsContract
     {

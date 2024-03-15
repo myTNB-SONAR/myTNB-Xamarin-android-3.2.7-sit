@@ -5,15 +5,15 @@ using Android.Gms.Common.Apis;
 using Android.Telephony;
 using Android.Text;
 using Android.Util;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.SSMR.SMRApplication.Api;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.SSMRTerminate.Api;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.SSMRTerminate.Api;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.SSMRTerminate.MVP
+namespace myTNB.AndroidApp.Src.SSMRTerminate.MVP
 {
     public class SSMRTerminatePresenter : SSMRTerminateContract.IPresenter
     {

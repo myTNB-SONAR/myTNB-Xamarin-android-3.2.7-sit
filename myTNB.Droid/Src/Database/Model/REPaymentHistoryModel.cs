@@ -1,7 +1,7 @@
 ﻿using SQLite;
 using System;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     public class REPaymentHistoryModel
     {

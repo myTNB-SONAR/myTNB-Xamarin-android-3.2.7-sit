@@ -3,7 +3,7 @@ using Android.Content;
 using AndroidX.Fragment.App;
 using Java.Lang;
 
-namespace myTNB.Android.Src.ManageBillDelivery.MVP
+namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 {
     public class ManageBillDeliveryAdapter : FragmentStatePagerAdapter
     {

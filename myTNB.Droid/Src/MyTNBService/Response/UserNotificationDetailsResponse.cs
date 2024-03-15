@@ -1,8 +1,8 @@
 ﻿using System;
-using myTNB.Android.Src.Base.Response;
+using myTNB.AndroidApp.Src.Base.Response;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class UserNotificationDetailsResponse : BaseResponse<UserNotificationDetailsResponse.UserNotificationDetailsResponseData>
     {

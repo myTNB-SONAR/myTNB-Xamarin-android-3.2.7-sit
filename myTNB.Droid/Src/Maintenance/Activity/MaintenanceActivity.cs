@@ -8,14 +8,14 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Maintenance.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Maintenance.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.Maintenance.Activity
+namespace myTNB.AndroidApp.Src.Maintenance.Activity
 {
     [Activity(Label = "@string/app_name"
        , NoHistory = true

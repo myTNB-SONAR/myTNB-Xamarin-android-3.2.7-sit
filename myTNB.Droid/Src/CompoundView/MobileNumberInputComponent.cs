@@ -8,11 +8,11 @@ using Android.Support.V4.View;
 using Android.Text;
 using Android.Util;
 using Android.Widget;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Utils;
 using static Android.Resource;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class MobileNumberInputComponent : LinearLayout
     {

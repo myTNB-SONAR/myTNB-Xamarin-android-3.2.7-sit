@@ -9,16 +9,16 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SSMR.Util;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SSMR.Util;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.RearrangeAccount.MVP
+namespace myTNB.AndroidApp.Src.RearrangeAccount.MVP
 {
     [Activity(Label = "Rearrange Accounts"
               , Icon = "@drawable/ic_launcher"

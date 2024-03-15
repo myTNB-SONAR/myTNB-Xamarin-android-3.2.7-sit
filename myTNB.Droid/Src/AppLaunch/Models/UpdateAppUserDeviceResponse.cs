@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.AppLaunch.Models
+namespace myTNB.AndroidApp.Src.AppLaunch.Models
 {
     public class UpdateAppUserDeviceResponse
     {

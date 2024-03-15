@@ -6,9 +6,9 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Lang;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP;
 
-namespace myTNB.Android.Src.SSMR.Util
+namespace myTNB.AndroidApp.Src.SSMR.Util
 {
     public class MeterReadingValuesViewHelper
     {

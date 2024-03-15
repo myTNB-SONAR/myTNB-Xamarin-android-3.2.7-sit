@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
+﻿using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Api;
 
-namespace myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP
+namespace myTNB.AndroidApp.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     public class AppointmentSelectPresenter
     {

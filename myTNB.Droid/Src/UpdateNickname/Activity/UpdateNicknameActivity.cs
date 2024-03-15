@@ -12,16 +12,16 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.UpdateNickname.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.UpdateNickname.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.UpdateNickname.Activity
+namespace myTNB.AndroidApp.Src.UpdateNickname.Activity
 {
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait

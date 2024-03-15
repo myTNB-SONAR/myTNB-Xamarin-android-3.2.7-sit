@@ -7,9 +7,9 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     public class MeterReadingInputLayout : LinearLayout
     {

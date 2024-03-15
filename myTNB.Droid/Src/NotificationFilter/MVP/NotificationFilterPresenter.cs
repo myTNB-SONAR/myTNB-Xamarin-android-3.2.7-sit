@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.NotificationFilter.Models;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.NotificationFilter.Models;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.NotificationFilter.MVP
+namespace myTNB.AndroidApp.Src.NotificationFilter.MVP
 {
     public class NotificationFilterPresenter : NotificationFilterContract.IUserActionsListener
     {

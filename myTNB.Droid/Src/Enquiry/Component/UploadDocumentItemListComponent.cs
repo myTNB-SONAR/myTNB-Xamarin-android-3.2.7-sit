@@ -3,10 +3,10 @@ using Android.Content;
 using Android.Util;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.Enquiry.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Enquiry.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Enquiry.Component
+namespace myTNB.AndroidApp.Src.Enquiry.Component
 {
     public class UploadDocumentItemListComponent : LinearLayout
     {

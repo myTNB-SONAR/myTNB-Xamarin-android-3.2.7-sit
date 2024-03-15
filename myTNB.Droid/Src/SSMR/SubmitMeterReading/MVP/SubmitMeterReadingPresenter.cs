@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 using Android.Graphics;
 using myTNB.Mobile.Business;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.SSMR.SSMRBase.MVP;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.Api;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.SSMR.SSMRBase.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB.Android.Src.AppLaunch.Models.MasterDataResponse;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
+using static myTNB.AndroidApp.Src.AppLaunch.Models.MasterDataResponse;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     public class SubmitMeterReadingPresenter : SubmitMeterReadingContract.IPresenter
     {

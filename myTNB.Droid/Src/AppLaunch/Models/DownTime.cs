@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.AppLaunch.Models
+namespace myTNB.AndroidApp.Src.AppLaunch.Models
 {
     public class DownTime
     {

@@ -1,11 +1,11 @@
 ﻿using Android.Text;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Api;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.myTNBMenu.Requests;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewBill.Model;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Api;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Requests;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewBill.Model;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.ViewBill.Activity
+namespace myTNB.AndroidApp.Src.ViewBill.Activity
 {
     public class ViewBillPresenter : ViewBillContract.IUserActionsListener
     {

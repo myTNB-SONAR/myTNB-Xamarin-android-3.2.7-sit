@@ -12,7 +12,7 @@ using Android.Text.Style;
 using System.Text.RegularExpressions;
 using myTNB.Mobile.Constants.DS;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class MyTNBAppToolTipBuilder
     {

@@ -5,7 +5,7 @@ using Android.Util;
 using myTNB;
 using myTNB.Mobile;
 
-namespace myTNB.Android.Src.DeviceCache
+namespace myTNB.AndroidApp.Src.DeviceCache
 {
     internal sealed class AccessTokenCache
     {

@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.UpdateID.Models
+﻿namespace myTNB.AndroidApp.Src.UpdateID.Models
 {
     public class IdType
     {

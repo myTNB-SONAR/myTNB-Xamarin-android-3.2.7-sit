@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.ManageBillDelivery.MVP
+﻿namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 {
     public class ManageBillDeliveryModel
     {

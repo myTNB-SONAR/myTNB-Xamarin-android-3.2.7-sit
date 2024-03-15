@@ -1,11 +1,11 @@
 ﻿using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.FindUs.Adapter
+namespace myTNB.AndroidApp.Src.FindUs.Adapter
 {
     public class ServiceListAdapter : RecyclerView.Adapter
     {

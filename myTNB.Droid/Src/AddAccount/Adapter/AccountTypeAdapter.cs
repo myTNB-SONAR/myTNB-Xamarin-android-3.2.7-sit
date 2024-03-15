@@ -1,12 +1,12 @@
 ﻿using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.AddAccount.Adapter
+namespace myTNB.AndroidApp.Src.AddAccount.Adapter
 {
     public class AccountTypeAdapter : BaseCustomAdapter<AccountType>
     {

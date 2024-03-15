@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.SubmitEnquirySuccess.MVP
+namespace myTNB.AndroidApp.Src.SubmitEnquirySuccess.MVP
 {
    public class SubmitEnquirySuccessPresenter
     {

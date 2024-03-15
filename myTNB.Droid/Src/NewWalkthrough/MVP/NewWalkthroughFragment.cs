@@ -4,14 +4,14 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Fragments;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.NewWalkthrough.MVP
+namespace myTNB.AndroidApp.Src.NewWalkthrough.MVP
 {
     public class NewWalkthroughFragment : BaseFragmentV4Custom
     {

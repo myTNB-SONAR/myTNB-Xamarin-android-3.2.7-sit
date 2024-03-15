@@ -3,7 +3,7 @@ using Android.OS;
 using System;
 
 
-namespace myTNB.Android.Src.Utils.Custom.ProgressButton
+namespace myTNB.AndroidApp.Src.Utils.Custom.ProgressButton
 {
     public class ProgressGenerator
     {

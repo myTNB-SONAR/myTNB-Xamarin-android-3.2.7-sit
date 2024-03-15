@@ -11,11 +11,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     [Activity(Label = "SubmiSMRAccountFailedActivity", Theme = "@style/Theme.Dashboard")]
     public class SubmiSMRAccountFailedActivity : BaseToolbarAppCompatActivity

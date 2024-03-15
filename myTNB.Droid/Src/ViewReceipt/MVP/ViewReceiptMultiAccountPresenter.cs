@@ -1,12 +1,12 @@
 ﻿using Android.Util;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewReceipt.Api;
-using myTNB.Android.Src.ViewReceipt.Model;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewReceipt.Api;
+using myTNB.AndroidApp.Src.ViewReceipt.Model;
 using Refit;
 using System;
 using System.Net;
 
-namespace myTNB.Android.Src.ViewReceipt.MVP
+namespace myTNB.AndroidApp.Src.ViewReceipt.MVP
 {
     public class ViewReceiptMultiAccountPresenter : ViewReceiptMultiAccountContract.IUserActionsListener
     {

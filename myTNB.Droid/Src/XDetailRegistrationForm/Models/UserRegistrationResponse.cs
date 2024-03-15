@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.XDetailRegistrationForm.Models
+namespace myTNB.AndroidApp.Src.XDetailRegistrationForm.Models
 {
     public class UserRegistrationResponse
     {

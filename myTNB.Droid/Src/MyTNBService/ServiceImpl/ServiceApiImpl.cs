@@ -1,13 +1,13 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.AppLaunch.Requests;
-using myTNB.Android.Src.Base.Response;
-using myTNB.Android.Src.Login.Models;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
-using myTNB.Android.Src.MyTNBService.InterfaceAPI;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewBill.Model;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Requests;
+using myTNB.AndroidApp.Src.Base.Response;
+using myTNB.AndroidApp.Src.Login.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB.AndroidApp.Src.MyTNBService.InterfaceAPI;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewBill.Model;
 using myTNB.Mobile.Business;
 using Refit;
 using System;
@@ -15,7 +15,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.MyTNBService.ServiceImpl
+namespace myTNB.AndroidApp.Src.MyTNBService.ServiceImpl
 {
     public class ServiceApiImpl
     {

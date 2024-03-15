@@ -10,26 +10,26 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Enquiry.Component;
-using myTNB.Android.Src.Enquiry.GSL.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Enquiry.Component;
+using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Android.Provider;
 using Android;
-using FileUtils = myTNB.Android.Src.Utils.FileUtils;
+using FileUtils = myTNB.AndroidApp.Src.Utils.FileUtils;
 using Java.Text;
 using Java.Util;
 using Android.Preferences;
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 using System.Threading.Tasks;
-using myTNB.Android.Src.Enquiry.Adapter;
+using myTNB.AndroidApp.Src.Enquiry.Adapter;
 using Android.Support.Design.Widget;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.Database.Model;
 using CheeseBind;
 using Castle.Core.Internal;
 
-namespace myTNB.Android.Src.Enquiry.GSL.Activity
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
     [Activity(Label = "GSL Rebate Step Three"
       , ScreenOrientation = ScreenOrientation.Portrait

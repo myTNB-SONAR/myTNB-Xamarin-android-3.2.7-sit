@@ -12,7 +12,7 @@ using Android.Text.Method;
 using Android.Views;
 using Com.Airbnb.Lottie;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
 	class LoadingOverlayUtils
 	{

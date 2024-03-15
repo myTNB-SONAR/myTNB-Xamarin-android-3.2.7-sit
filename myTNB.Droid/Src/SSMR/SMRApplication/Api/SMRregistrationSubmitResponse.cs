@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.Api
 {
     public class SMRregistrationSubmitResponse
     {

@@ -9,14 +9,14 @@ using Android.Widget;
 using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SSMR.SSMRMeterReadingTooltip.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SSMRMeterReadingTooltip.MVP
 {
     public class SSMRMeterReadingDialogFragment : DialogFragment
     {

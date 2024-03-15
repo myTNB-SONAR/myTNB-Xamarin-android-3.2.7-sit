@@ -3,16 +3,16 @@ using Android.Graphics;
 using Android.Text;
 using Java.Text;
 using Java.Util;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
-using static myTNB.Android.Src.Base.Models.SubmittedFeedbackDetails;
+using static myTNB.AndroidApp.Src.Base.Models.SubmittedFeedbackDetails;
 
-namespace myTNB.Android.Src.FeedbackDetails.MVP
+namespace myTNB.AndroidApp.Src.FeedbackDetails.MVP
 {
     public class FeedbackDetailsBillRelatedPresenter : FeedbackDetailsContract.BillRelated.IUserActionsListener
     {

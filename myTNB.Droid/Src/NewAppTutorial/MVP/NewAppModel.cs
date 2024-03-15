@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.NewAppTutorial.MVP
+﻿namespace myTNB.AndroidApp.Src.NewAppTutorial.MVP
 {
     public enum ContentType
     {

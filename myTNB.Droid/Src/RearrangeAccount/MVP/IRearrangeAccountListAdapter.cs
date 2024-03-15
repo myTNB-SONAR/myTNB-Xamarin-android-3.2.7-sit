@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.RearrangeAccount.MVP
+namespace myTNB.AndroidApp.Src.RearrangeAccount.MVP
 {
     public interface IRearrangeAccountListAdapter
     {

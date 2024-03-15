@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.ViewReceipt.Model
+namespace myTNB.AndroidApp.Src.ViewReceipt.Model
 {
     public class GetReceiptResponse
     {

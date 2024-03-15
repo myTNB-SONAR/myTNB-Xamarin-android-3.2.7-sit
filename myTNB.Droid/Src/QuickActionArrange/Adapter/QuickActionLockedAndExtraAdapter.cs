@@ -11,10 +11,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.QuickActionArrange.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.QuickActionArrange.Model;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.QuickActionArrange.Adapter
+namespace myTNB.AndroidApp.Src.QuickActionArrange.Adapter
 {
     public class QuickActionLockedAndExtraAdapter : RecyclerView.Adapter
     {

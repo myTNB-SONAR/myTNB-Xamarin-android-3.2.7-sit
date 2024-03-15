@@ -4,21 +4,21 @@ using Android.Text;
 using Android.Util;
 using myTNB;
 using myTNB.Mobile;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.AppLaunch.Api;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.AppLaunch.Requests;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Api;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Login.Requests;
-using myTNB.Android.Src.myTNBMenu.Async;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.UpdateMobileNo.Request;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Api;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Requests;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Api;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Login.Requests;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.UpdateMobileNo.Request;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -28,7 +28,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.RegisterValidation.MVP
+namespace myTNB.AndroidApp.Src.RegisterValidation.MVP
 {
     public class MobileTokenValidationPresenter : MobileTokenValidationContract.IUserActionsListener
     {

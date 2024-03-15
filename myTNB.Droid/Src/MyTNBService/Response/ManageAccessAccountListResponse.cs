@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class ManageAccessAccountListResponse : BaseResponse<List<ManageAccessAccountListResponse.CustomerAccountData>>
     {

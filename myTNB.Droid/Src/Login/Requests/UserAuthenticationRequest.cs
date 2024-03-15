@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Login.Requests
+namespace myTNB.AndroidApp.Src.Login.Requests
 {
     public class UserAuthenticationRequest : BaseRequest
     {

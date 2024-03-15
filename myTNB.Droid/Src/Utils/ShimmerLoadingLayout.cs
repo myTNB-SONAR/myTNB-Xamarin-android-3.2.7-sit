@@ -5,7 +5,7 @@ using Android.Views;
 using Android.Widget;
 using Facebook.Shimmer;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class ShimmerLoadingLayout
     {

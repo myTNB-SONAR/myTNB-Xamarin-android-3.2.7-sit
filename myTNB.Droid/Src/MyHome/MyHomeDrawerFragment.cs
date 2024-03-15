@@ -11,38 +11,38 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Base.Fragments;
 using AndroidX.Fragment.App;
 using Android.Graphics.Drawables;
 using Android.Graphics;
 
-using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
 using CheeseBind;
-using myTNB.Android.Src.myTNBMenu.Listener;
+using myTNB.AndroidApp.Src.myTNBMenu.Listener;
 using Google.Android.Material.BottomSheet;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.DigitalBill.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.DigitalBill.Activity;
 using System.Threading.Tasks;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.MyDrawer;
-using static myTNB.Android.Src.MyDrawer.MyDrawerModel;
-using static myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
-using static myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB.AndroidApp.Src.MyDrawer;
+using static myTNB.AndroidApp.Src.MyDrawer.MyDrawerModel;
+using static myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceAdapter;
+using static myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter.MyServiceShimmerAdapter;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using Android.Preferences;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
-using myTNB.Android.Src.MyHome.Activity;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.MyHome.Activity;
 using AndroidX.CoordinatorLayout.Widget;
 using myTNB.Mobile;
 using Color = Android.Graphics.Color;
 using Newtonsoft.Json;
-using MyHomeModel = myTNB.Android.Src.MyHome.Model.MyHomeModel;
-using myTNB.Android.Src.DeviceCache;
+using MyHomeModel = myTNB.AndroidApp.Src.MyHome.Model.MyHomeModel;
+using myTNB.AndroidApp.Src.DeviceCache;
 using myTNB.Mobile.Constants;
 
-namespace myTNB.Android.Src.MyHome
+namespace myTNB.AndroidApp.Src.MyHome
 {
     public class MyHomeDrawerFragment : AndroidX.Fragment.App.DialogFragment
     {

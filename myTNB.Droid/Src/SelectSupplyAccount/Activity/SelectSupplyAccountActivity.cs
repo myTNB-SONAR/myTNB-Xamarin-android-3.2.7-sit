@@ -10,14 +10,14 @@ using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Dashboard.Adapter;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.DBR.DBRApplication.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.SelectSupplyAccount.MVP;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewBill.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Dashboard.Adapter;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DBR.DBRApplication.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.SelectSupplyAccount.MVP;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB.Android.Src.SelectSupplyAccount.Activity
+namespace myTNB.AndroidApp.Src.SelectSupplyAccount.Activity
 {
     [Activity(Label = "Select Electricity Account"
         , Icon = "@drawable/ic_launcher"

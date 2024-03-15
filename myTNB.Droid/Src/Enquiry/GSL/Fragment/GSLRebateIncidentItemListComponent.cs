@@ -6,12 +6,12 @@ using Android.Util;
 using Android.Widget;
 using Google.Android.Material.TextField;
 using Java.Util;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Enquiry.GSL.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Calendar = Java.Util.Calendar;
 
-namespace myTNB.Android.Src.Enquiry.GSL.Fragment
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.Fragment
 {
     public class GSLRebateIncidentItemListComponent : LinearLayout, DatePickerDialog.IOnDateSetListener, TimePickerDialog.IOnTimeSetListener
     {

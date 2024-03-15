@@ -2,7 +2,7 @@
 using Android.Graphics;
 using Android.Runtime;
 using Android.Views;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using ZXing.Mobile.CameraAccess;
 

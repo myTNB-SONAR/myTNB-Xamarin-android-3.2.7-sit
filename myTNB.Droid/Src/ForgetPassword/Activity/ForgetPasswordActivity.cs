@@ -12,14 +12,14 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.ForgetPassword.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.ForgetPassword.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.ForgetPassword.Activity
+namespace myTNB.AndroidApp.Src.ForgetPassword.Activity
 {
     [Activity(Label = "@string/forget_password_activity_title"
               , Icon = "@drawable/ic_launcher"

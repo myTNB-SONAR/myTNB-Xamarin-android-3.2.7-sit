@@ -6,7 +6,7 @@
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
     android:id="@+id/rootView">
-    <myTNB.Android.Src.myTNBMenu.Listener.SMDashboardScrollView
+    <myTNB.AndroidApp.Src.myTNBMenu.Listener.SMDashboardScrollView
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:overScrollMode="never"
@@ -648,7 +648,7 @@
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>
-    </myTNB.Android.Src.myTNBMenu.Listener.SMDashboardScrollView>
+    </myTNB.AndroidApp.Src.myTNBMenu.Listener.SMDashboardScrollView>
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_height="wrap_content"

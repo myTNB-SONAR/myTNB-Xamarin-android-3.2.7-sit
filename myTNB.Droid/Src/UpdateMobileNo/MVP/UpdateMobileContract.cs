@@ -1,9 +1,9 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Login.Requests;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Login.Requests;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.UpdateMobileNo.MVP
+namespace myTNB.AndroidApp.Src.UpdateMobileNo.MVP
 {
     public class UpdateMobileContract
     {

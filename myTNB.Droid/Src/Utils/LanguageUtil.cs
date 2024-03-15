@@ -8,12 +8,12 @@ using myTNB;
 using myTNB.Mobile;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.SiteCore;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.SiteCore;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class LanguageUtil
     {

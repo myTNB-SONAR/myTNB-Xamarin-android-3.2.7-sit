@@ -15,12 +15,12 @@ using CheeseBind;
 using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.MVP;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Adapter;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.MVP;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Runtime;
@@ -29,7 +29,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Android.Support.Design.Widget;
 
-namespace myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Activity
+namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity
 {
 
     [Activity(Label = "General Enquiry"

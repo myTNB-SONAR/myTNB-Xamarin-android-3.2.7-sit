@@ -1,19 +1,19 @@
 ﻿using Android.Content;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.Api;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.Api;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Net.Http;
 using System.Threading;
-using static myTNB.Android.Src.AppLaunch.Models.MasterDataRequest;
+using static myTNB.AndroidApp.Src.AppLaunch.Models.MasterDataRequest;
 
-namespace myTNB.Android.Src.Maintenance.MVP
+namespace myTNB.AndroidApp.Src.Maintenance.MVP
 {
     public class MaintenancePresenter : MaintenanceContract.IUserActionsListener
     {

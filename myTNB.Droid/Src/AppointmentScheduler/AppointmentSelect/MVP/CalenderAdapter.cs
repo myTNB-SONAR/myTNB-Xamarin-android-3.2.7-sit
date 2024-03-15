@@ -10,9 +10,9 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP
+namespace myTNB.AndroidApp.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     public interface IDayClickListener
     {

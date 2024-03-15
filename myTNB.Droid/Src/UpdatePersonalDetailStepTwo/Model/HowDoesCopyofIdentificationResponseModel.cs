@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Android.Graphics;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepTwo.Model
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Model
 {
   
     public class HowDoesCopyofIdentificationResponseModel

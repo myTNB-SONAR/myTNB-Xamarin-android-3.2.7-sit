@@ -5,10 +5,10 @@ using Android.Graphics;
 using Android.Util;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB.Android.Src.NotificationDetails.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.NotificationDetails.Models;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class NotificationDetailCTAComponent : LinearLayout
     {

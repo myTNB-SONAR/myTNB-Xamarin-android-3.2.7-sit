@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.DigitalBill.MVP
+namespace myTNB.AndroidApp.Src.DigitalBill.MVP
 {
     public class DigitalBillContract
     {

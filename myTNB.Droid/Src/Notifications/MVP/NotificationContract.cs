@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.NotificationDetails.Requests;
-using myTNB.Android.Src.Notifications.Api;
-using myTNB.Android.Src.Notifications.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.NotificationDetails.Requests;
+using myTNB.AndroidApp.Src.Notifications.Api;
+using myTNB.AndroidApp.Src.Notifications.Models;
 using Refit;
 using static Android.Widget.CompoundButton;
 
-namespace myTNB.Android.Src.Notifications.MVP
+namespace myTNB.AndroidApp.Src.Notifications.MVP
 {
     public class NotificationContract
     {

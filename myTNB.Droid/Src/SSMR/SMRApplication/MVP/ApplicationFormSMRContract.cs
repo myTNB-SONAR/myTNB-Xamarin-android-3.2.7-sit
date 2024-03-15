@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using myTNB.Android.Src.SSMR.SMRApplication.Api;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     public class ApplicationFormSMRContract
     {

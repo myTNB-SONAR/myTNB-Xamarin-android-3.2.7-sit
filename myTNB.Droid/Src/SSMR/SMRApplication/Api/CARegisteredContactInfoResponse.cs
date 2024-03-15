@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.Api
 {
     public class CARegisteredContactInfoResponse
     {

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.Login.Models
+namespace myTNB.AndroidApp.Src.Login.Models
 {
     public class FeatureInfo
     {

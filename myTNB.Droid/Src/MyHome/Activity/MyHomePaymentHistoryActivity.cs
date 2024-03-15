@@ -12,16 +12,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.MyHome.MVP;
-using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewReceipt.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.MyHome.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewReceipt.Activity;
 using myTNB.Mobile.Constants;
 
-namespace myTNB.Android.Src.MyHome.Activity
+namespace myTNB.AndroidApp.Src.MyHome.Activity
 {
 	[Activity(Label = "MyHomePaymentHistoryActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class MyHomePaymentHistoryActivity : BaseActivityCustom, MyHomePaymentHistoryContract.IView

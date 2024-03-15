@@ -2,13 +2,13 @@
 using Android.Content;
 using Android.OS;
 using Firebase.Messaging;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Fragments;
 using System;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public static class DeviceIdUtils
     {

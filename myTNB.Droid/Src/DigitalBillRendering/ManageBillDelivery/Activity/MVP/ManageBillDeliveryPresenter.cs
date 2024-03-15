@@ -3,14 +3,14 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using myTNB.Android.Src.DBR.DBRApplication.MVP;
+using myTNB.AndroidApp.Src.DBR.DBRApplication.MVP;
 using myTNB.Mobile;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 
-namespace myTNB.Android.Src.ManageBillDelivery.MVP
+namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 {
     public class ManageBillDeliveryPresenter : ManageBillDeliveryContract.IUserActionsListener, ManageBillDeliveryContract.IPresenter
     {

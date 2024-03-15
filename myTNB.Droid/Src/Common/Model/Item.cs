@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.Common
+namespace myTNB.AndroidApp.Src.Common
 {
     public class Item
     {

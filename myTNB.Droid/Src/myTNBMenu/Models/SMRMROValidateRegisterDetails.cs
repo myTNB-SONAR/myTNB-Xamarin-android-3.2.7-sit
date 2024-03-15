@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.myTNBMenu.Models
+namespace myTNB.AndroidApp.Src.myTNBMenu.Models
 {
     public class SMRMROValidateRegisterDetails
     {

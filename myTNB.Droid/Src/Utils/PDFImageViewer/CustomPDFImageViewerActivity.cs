@@ -14,13 +14,13 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.PDFView;
-using myTNB.Android.Src.Utils.ZoomImageView;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.PDFView;
+using myTNB.AndroidApp.Src.Utils.ZoomImageView;
 
-namespace myTNB.Android.Src.Bills.AccountStatement.Activity
+namespace myTNB.AndroidApp.Src.Bills.AccountStatement.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class CustomPDFImageViewerActivity : BaseToolbarAppCompatActivity

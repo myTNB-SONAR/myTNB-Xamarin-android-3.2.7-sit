@@ -7,12 +7,12 @@ using Android.Text;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using myTNB.Mobile;
-using myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP
 {
     [Activity(Label = "ApplicationDetailActivityLogActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.RegisterForm")]
     public class ApplicationDetailActivityLogActivity : BaseToolbarAppCompatActivity

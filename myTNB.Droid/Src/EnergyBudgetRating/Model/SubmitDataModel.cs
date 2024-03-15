@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.EnergyBudgetRating.Model
+namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Model
 {
     public class SubmitDataModel
     {

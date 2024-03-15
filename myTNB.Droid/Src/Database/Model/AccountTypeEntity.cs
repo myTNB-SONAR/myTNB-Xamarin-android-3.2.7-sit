@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("AccountTypeEntity")]
     public class AccountTypeEntity

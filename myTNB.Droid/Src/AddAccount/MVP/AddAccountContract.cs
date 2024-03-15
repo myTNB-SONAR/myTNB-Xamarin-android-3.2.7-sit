@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.AddAccount.MVP
+namespace myTNB.AndroidApp.Src.AddAccount.MVP
 {
     public class AddAccountContract
     {

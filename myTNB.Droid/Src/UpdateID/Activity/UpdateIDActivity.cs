@@ -15,30 +15,30 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.RegisterValidation;
-using myTNB.Android.Src.UpdateID.MVP;
-using myTNB.Android.Src.TermsAndConditions.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.UpdateID.Models;
-using myTNB.Android.Src.UpdateID.Adapter;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.RegisterValidation;
+using myTNB.AndroidApp.Src.UpdateID.MVP;
+using myTNB.AndroidApp.Src.TermsAndConditions.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.UpdateID.Models;
+using myTNB.AndroidApp.Src.UpdateID.Adapter;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
-using myTNB.Android.Src.UpdateID.Activity;
+using myTNB.AndroidApp.Src.UpdateID.Activity;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using myTNB.Android.Src.MyAccount.Activity;
-using myTNB.Android.Src.XDetailRegistrationForm.Models;
-using myTNB.Android.Src.XDetailRegistrationForm.Adapter;
-using myTNB.Android.Src.XDetailRegistrationForm.Activity;
-using myTNB.Android.Src.Base;
+using myTNB.AndroidApp.Src.MyAccount.Activity;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Adapter;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Activity;
+using myTNB.AndroidApp.Src.Base;
 
-namespace myTNB.Android.Src.UpdateID.Activity
+namespace myTNB.AndroidApp.Src.UpdateID.Activity
 {
     [Activity(Label = "Update Identification Number"
       , NoHistory = false

@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
 
-namespace myTNB.Android.Src.RewardDetail.MVP
+namespace myTNB.AndroidApp.Src.RewardDetail.MVP
 {
 	public class RewardDetailContract
     {

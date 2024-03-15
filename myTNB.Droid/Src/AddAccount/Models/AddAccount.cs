@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.AddAccount.Models
+namespace myTNB.AndroidApp.Src.AddAccount.Models
 {
     public class AddAccount
     {

@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.AddAccount.Models
+namespace myTNB.AndroidApp.Src.AddAccount.Models
 {
     public class ItemizedBillingDetails
     {

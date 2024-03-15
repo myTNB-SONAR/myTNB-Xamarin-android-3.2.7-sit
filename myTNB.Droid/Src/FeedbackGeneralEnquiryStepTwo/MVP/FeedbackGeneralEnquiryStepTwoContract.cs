@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using myTNB.Android.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.MVP;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
 using System.Threading.Tasks;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.Model;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Model;
 
-namespace myTNB.Android.Src.FeedbackGeneralEnquiryStepTwo.MVP
+namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.MVP
 {
     public class FeedbackGeneralEnquiryStepTwoContract
     {

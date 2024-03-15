@@ -12,19 +12,19 @@ using Card.IO;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.AddCard.MVP;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddCard.MVP;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB.Android.Src.AddCard.Activity
+namespace myTNB.AndroidApp.Src.AddCard.Activity
 {
     [Activity(Label = "Add Card"
               , Icon = "@drawable/ic_launcher"

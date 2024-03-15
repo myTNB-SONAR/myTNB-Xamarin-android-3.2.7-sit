@@ -8,15 +8,15 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.LogUserAccess.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.LogUserAccess.Models;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace myTNB.Android.Src.LogUserAccess.Adapter
+namespace myTNB.AndroidApp.Src.LogUserAccess.Adapter
 {
     public class LogUserAccessAdapter : BaseCustomAdapter<LogUserAccessNewData>
     {

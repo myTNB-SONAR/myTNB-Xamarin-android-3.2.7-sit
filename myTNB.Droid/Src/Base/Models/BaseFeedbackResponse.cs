@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Base.Models
+namespace myTNB.AndroidApp.Src.Base.Models
 {
     public class PreLoginFeedbackResponse
     {

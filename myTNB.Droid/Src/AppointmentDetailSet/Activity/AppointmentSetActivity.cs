@@ -12,12 +12,12 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.OverVoltageFeedback.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.OverVoltageFeedback.Activity;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.AppointmentDetailSet.Activity
+namespace myTNB.AndroidApp.Src.AppointmentDetailSet.Activity
 {
     [Activity(Label = "AppointmentSetActivity", ScreenOrientation = ScreenOrientation.Portrait
                   , WindowSoftInputMode = SoftInput.AdjustPan

@@ -5,16 +5,16 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.NotificationFilter.Adapter;
-using myTNB.Android.Src.NotificationFilter.Models;
-using myTNB.Android.Src.NotificationFilter.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.NotificationFilter.Adapter;
+using myTNB.AndroidApp.Src.NotificationFilter.Models;
+using myTNB.AndroidApp.Src.NotificationFilter.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.NotificationFilter.Activity
+namespace myTNB.AndroidApp.Src.NotificationFilter.Activity
 {
     [Activity(Label = "@string/notification_filter_activity_title"
               , Icon = "@drawable/ic_launcher"

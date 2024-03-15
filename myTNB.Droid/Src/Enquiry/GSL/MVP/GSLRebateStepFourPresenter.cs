@@ -4,19 +4,19 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Java.Text;
 using System.Globalization;
 using Android.Gms.Common.Apis;
 
-namespace myTNB.Android.Src.Enquiry.GSL.MVP
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateStepFourPresenter : GSLRebateStepFourContract.IUserActionsListener
     {

@@ -1,5 +1,5 @@
 ﻿
-namespace myTNB.Android.Src.UpdatePersonalDetailStepOne.Model
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Model
 {
     public class SelectRelationshipModel
     {

@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.Login.Models;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.Login.Models;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("UserEntity")]
     public class UserEntity

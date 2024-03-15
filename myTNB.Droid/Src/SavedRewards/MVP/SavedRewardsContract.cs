@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB.Android.Src.SavedRewards.MVP
+namespace myTNB.AndroidApp.Src.SavedRewards.MVP
 {
     public class SavedRewardsContract
     {

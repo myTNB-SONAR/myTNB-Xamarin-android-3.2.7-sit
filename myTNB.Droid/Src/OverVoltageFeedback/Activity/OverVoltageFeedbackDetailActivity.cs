@@ -16,28 +16,29 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.AppointmentDetailSet.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FeedbackDetails.MVP;
-using myTNB.Android.Src.FeedBackSubmittedSucess.Activity;
-using myTNB.Android.Src.OverVoltageClaimSuccessPage.Activity;
-using myTNB.Android.Src.PaymentInfoSunmittedSuccess.Activity;
-using myTNB.Android.Src.SelectSubmittedFeedback.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppointmentDetailSet.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FeedbackDetails.MVP;
+using myTNB.AndroidApp.Src.FeedBackSubmittedSucess.Activity;
+using myTNB.AndroidApp.Src.OverVoltageClaimSuccessPage.Activity;
+using myTNB.AndroidApp.Src.PaymentInfoSunmittedSuccess.Activity;
+using myTNB.AndroidApp.Src.SelectSubmittedFeedback.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using myTNB_Android.Src.MyTNBService.Request;
-using BaseRequest = myTNB.Android.Src.MyTNBService.Request.BaseRequest;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using BaseRequest = myTNB.AndroidApp.Src.MyTNBService.Request.BaseRequest;
 
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Helper;
-using myTNB.Android.Src.OverVoltageFeedback.Model;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Helper;
+using myTNB.AndroidApp.Src.OverVoltageFeedback.Model;
 using myTNB.Mobile;
 using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Devices;
 
-namespace myTNB.Android.Src.OverVoltageFeedback.Activity
+namespace myTNB.AndroidApp.Src.OverVoltageFeedback.Activity
 {
     [Activity(Label = "OverVoltageFeedbackDetailActivity"
           , ScreenOrientation = ScreenOrientation.Portrait

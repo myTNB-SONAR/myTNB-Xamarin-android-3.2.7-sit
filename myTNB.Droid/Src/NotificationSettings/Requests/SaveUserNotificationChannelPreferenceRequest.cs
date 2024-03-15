@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.NotificationSettings.Requests
+namespace myTNB.AndroidApp.Src.NotificationSettings.Requests
 {
     public class SaveUserNotificationChannelPreferenceRequest
     {

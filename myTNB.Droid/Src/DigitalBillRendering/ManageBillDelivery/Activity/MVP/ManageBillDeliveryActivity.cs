@@ -11,28 +11,28 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using myTNB.Android.Src.DBR.DBRApplication.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.DigitalBill.Activity;
+using myTNB.AndroidApp.Src.DBR.DBRApplication.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.DigitalBill.Activity;
 using Android.Preferences;
-using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
 using myTNB.Mobile;
 using System.Linq;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Android.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
+using myTNB.AndroidApp.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
 using AndroidX.RecyclerView.Widget;
 using Android.Graphics;
 using static myTNB.Mobile.MobileEnums;
-using myTNB.Android.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
+using myTNB.AndroidApp.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
 using myTNB.Mobile.AWS.Models.DBR;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
 
-namespace myTNB.Android.Src.ManageBillDelivery.MVP
+namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 {
     [Activity(Label = "@string/managebilldelivery_activity_title"
         , Icon = "@drawable/ic_launcher"

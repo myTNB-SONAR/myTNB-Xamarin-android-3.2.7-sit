@@ -1,9 +1,9 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Database.Model;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Database.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.myTNBMenu.Models
+namespace myTNB.AndroidApp.Src.myTNBMenu.Models
 {
     public class AccountData
     {

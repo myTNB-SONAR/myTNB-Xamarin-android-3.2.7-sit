@@ -2,14 +2,14 @@
 using Android.Content;
 using Android.Runtime;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.ManageCards.Models;
-using myTNB.Android.Src.myTNBMenu.Async;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.ManageCards.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -19,7 +19,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB.Android.Src.MyAccount.MVP
+namespace myTNB.AndroidApp.Src.MyAccount.MVP
 {
     internal class MyAccountPresenter : MyAccountContract.IUserActionsListener
     {

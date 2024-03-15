@@ -6,10 +6,10 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationDetailActivityLog.Adapter
 {
     public class ApplicationDetailActivityAdapter : RecyclerView.Adapter
     {

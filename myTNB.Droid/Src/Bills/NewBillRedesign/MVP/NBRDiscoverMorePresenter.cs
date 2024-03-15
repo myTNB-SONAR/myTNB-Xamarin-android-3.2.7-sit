@@ -1,18 +1,18 @@
 ﻿using System;
 using myTNB;
-using myTNB.Android.Src.Bills.NewBillRedesign.Model;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign.Model;
 using System.Collections.Generic;
 using myTNB.Mobile;
 using System.Threading.Tasks;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using myTNB.SitecoreCMS.Services;
 using Android.App;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.SitecoreCMS.Model;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.SitecoreCMS.Model;
+using myTNB.AndroidApp.Src.Database.Model;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Bills.NewBillRedesign.MVP
+namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign.MVP
 {
     public class NBRDiscoverMorePresenter : NBRDiscoverMoreContract.IUserActionsListener
     {

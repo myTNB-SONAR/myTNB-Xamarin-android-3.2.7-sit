@@ -2,9 +2,9 @@
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepThree.MVP
+namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.MVP
 {
     public class AddAccUpdateIdetificationDetailsStepThreePresenter : AddAccUpdateIdetificationDetailsStepThreeContract.IUserActionsListener
     {

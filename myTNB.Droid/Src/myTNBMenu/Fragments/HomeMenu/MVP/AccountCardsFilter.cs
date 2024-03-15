@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.Widget;
 using Java.Lang;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class AccountCardsFilter : Filter
     {

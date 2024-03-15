@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Api
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api
 {
     public class SubmitMeterReadingResponse
     {

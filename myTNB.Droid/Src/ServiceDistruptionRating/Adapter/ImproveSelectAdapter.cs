@@ -7,14 +7,14 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.ServiceDistruptionRating.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.ServiceDistruptionRating.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static myTNB.Android.Src.Rating.Request.SubmitRateUsRequest;
+using static myTNB.AndroidApp.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB.Android.Src.ServiceDistruptionRating.Adapter
+namespace myTNB.AndroidApp.Src.ServiceDistruptionRating.Adapter
 {
     public class ImproveSelectAdapter : RecyclerView.Adapter
     {

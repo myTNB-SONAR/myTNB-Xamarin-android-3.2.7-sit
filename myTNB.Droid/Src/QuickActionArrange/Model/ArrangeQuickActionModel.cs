@@ -1,13 +1,13 @@
 ﻿
 using System.Collections.Generic;
-using myTNB.Android.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.MyHome.Model;
 using static myTNB.Mobile.MobileEnums;
 using Android.Graphics;
 using Newtonsoft.Json;
-using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 using System;
 
-namespace myTNB.Android.Src.QuickActionArrange.Model
+namespace myTNB.AndroidApp.Src.QuickActionArrange.Model
 {
     public class Feature
     {

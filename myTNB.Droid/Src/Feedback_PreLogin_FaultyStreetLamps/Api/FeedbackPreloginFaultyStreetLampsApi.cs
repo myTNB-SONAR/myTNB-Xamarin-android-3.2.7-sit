@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.Models;
+﻿using myTNB.AndroidApp.Src.Feedback_PreLogin_FaultyStreetLamps.Models;
 using Refit;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.Api
+namespace myTNB.AndroidApp.Src.Feedback_PreLogin_FaultyStreetLamps.Api
 {
     public interface IFeedbackPreloginFaultyStreetLampsApi
     {

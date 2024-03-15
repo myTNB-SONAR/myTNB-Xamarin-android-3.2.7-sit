@@ -6,9 +6,9 @@ using Android.Icu.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
@@ -19,7 +19,7 @@ using System.IO;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Graphics.Drawable;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepTwo.Adapter
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Adapter
 {
 
     public class your_ic_adaptercs : BaseRecyclerAdapter<AttachedImage>

@@ -4,7 +4,7 @@ using Android.Widget;
 using CheeseBind;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Base.Adapter
+namespace myTNB.AndroidApp.Src.Base.Adapter
 {
     /// <summary>
     /// The class that abstracts the implementation of the adding, removing , updating and handling for the preparation of listview.

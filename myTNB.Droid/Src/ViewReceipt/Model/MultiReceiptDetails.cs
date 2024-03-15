@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.ViewReceipt.Model
+namespace myTNB.AndroidApp.Src.ViewReceipt.Model
 {
     public class MultiReceiptDetails
     {

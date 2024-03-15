@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.Api
 {
     public class CARegisteredApiImpl : ApplicationFormSMRContract.IApiNotification
     {

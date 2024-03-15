@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Notifications.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Notifications.Models;
 
-namespace myTNB.Android.Src.MyTNBService.Request
+namespace myTNB.AndroidApp.Src.MyTNBService.Request
 {
     public class UserNotificationReadRequest : BaseRequest
     {

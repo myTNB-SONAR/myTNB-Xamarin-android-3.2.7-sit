@@ -8,13 +8,13 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Runtime;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
-namespace myTNB.Android.Src.Base.Activity
+namespace myTNB.AndroidApp.Src.Base.Activity
 {
     /// <summary>
     /// The class that abstracts the implementation of the resourceId , handling of permissions and the toolbar customizations.

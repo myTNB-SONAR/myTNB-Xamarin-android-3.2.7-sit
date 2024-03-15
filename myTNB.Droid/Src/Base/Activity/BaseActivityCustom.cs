@@ -1,7 +1,7 @@
 ﻿using Android.OS;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Base.Activity
+namespace myTNB.AndroidApp.Src.Base.Activity
 {
     public abstract class BaseActivityCustom : BaseToolbarAppCompatActivity
     {

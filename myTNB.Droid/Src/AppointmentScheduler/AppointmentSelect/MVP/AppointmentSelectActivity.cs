@@ -16,12 +16,12 @@ using myTNB.Mobile;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
 using myTNB.Mobile.API.Models.Scheduler.PostSetAppointment;
-using myTNB.Android.Src.AppointmentScheduler.AAppointmentSetLanding.MVP;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppointmentScheduler.AAppointmentSetLanding.MVP;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP
+namespace myTNB.AndroidApp.Src.AppointmentScheduler.AppointmentSelect.MVP
 {
     [Activity(Label = "Set anAppointment", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class AppointmentSelectActivity : BaseActivityCustom, AppointmentSelectContract.IView

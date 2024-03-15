@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <myTNB.Android.Src.Utils.ZoomImageView.ZoomImageView
+        <myTNB.AndroidApp.Src.Utils.ZoomImageView.ZoomImageView
             android:id="@+id/imgFeedback"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

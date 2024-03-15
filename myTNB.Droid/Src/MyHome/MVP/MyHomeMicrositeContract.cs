@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
 using Android.Content;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MyHome.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.Utils;
-using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Utils;
+using static myTNB.AndroidApp.Src.MyTNBService.Response.PaymentTransactionIdResponse;
 
-namespace myTNB.Android.Src.MyHome.MVP
+namespace myTNB.AndroidApp.Src.MyHome.MVP
 {
 	public class MyHomeMicrositeContract
 	{

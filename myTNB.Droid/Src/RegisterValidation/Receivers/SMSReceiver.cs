@@ -2,10 +2,10 @@
 using Android.Runtime;
 using Android.Telephony;
 using Android.Util;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using System.Text;
 
-namespace myTNB.Android.Src.RegisterValidation.Receivers
+namespace myTNB.AndroidApp.Src.RegisterValidation.Receivers
 {
     //[BroadcastReceiver(Enabled = true, Label = "SMSReceiver")]
     //[IntentFilter(new[] { "android.fileprovider.Telephony.SMS_RECEIVED" })]

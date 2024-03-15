@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("WhatsNewParentEntityV4")]
     public class WhatsNewParentEntity

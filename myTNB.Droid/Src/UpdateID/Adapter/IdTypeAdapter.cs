@@ -1,12 +1,12 @@
 ﻿using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.UpdateID.Models;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.UpdateID.Models;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.UpdateID.Adapter
+namespace myTNB.AndroidApp.Src.UpdateID.Adapter
 {
     public class IdTypeAdapter : BaseCustomAdapter<IdType>
     {

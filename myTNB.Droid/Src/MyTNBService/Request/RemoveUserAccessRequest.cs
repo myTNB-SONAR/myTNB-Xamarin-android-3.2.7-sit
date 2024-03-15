@@ -1,6 +1,6 @@
 ﻿using Java.Util;
 using System;
-namespace myTNB.Android.Src.MyTNBService.Request
+namespace myTNB.AndroidApp.Src.MyTNBService.Request
 {
     public class RemoveUserAccountRequest : BaseRequestV4
     {

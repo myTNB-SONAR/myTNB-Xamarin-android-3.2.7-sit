@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.Database.Model;
+﻿using myTNB.AndroidApp.Src.Database.Model;
 
-namespace myTNB.Android.Src.SelectNotification.Models
+namespace myTNB.AndroidApp.Src.SelectNotification.Models
 {
     public class NotificationTypeUserPreference
     {

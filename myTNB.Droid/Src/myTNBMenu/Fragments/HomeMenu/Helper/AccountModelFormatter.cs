@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using Java.Text;
-using myTNB.Android.Src.Base.Helper;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.Custom;
+using myTNB.AndroidApp.Src.Base.Helper;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.Custom;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Helper
 {
     public class AccountModelFormatter : ModelFormatter
     {

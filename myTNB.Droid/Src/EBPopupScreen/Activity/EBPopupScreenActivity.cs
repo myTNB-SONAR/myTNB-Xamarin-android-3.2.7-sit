@@ -11,17 +11,17 @@ using Android.Widget;
 using CheeseBind;
 using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.EBPopupScreen.MVP;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.EBPopupScreen.MVP;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.EBPopupScreen.Activity
+namespace myTNB.AndroidApp.Src.EBPopupScreen.Activity
 {
     [Activity(Label = "@string/app_name"
               , Icon = "@drawable/ic_launcher"

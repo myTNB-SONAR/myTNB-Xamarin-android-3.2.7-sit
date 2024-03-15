@@ -1,9 +1,9 @@
-﻿using myTNB.Android.Src.Rating.Model;
+﻿using myTNB.AndroidApp.Src.Rating.Model;
 using Newtonsoft.Json;
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Rating.Response
+namespace myTNB.AndroidApp.Src.Rating.Response
 {
     public class GetRateUsQuestionsResponse
     {

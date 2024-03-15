@@ -9,15 +9,15 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.LogoutEnd.Activity;
-using myTNB.Android.Src.LogoutRate.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.LogoutEnd.Activity;
+using myTNB.AndroidApp.Src.LogoutRate.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.LogoutRate.Activity
+namespace myTNB.AndroidApp.Src.LogoutRate.Activity
 {
     [Activity(Label = "@string/logout_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

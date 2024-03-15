@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.MVP;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailTnC.MVP
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.MVP
 {
     public class UpdatePersonalDetailTnCContract 
     {

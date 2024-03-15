@@ -3,8 +3,8 @@ using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.FAQ.MVP
+namespace myTNB.AndroidApp.Src.FAQ.MVP
 {
     public class FAQPresenter : FAQContract.IUserActionsListener
     {

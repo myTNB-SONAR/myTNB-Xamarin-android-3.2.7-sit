@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailTnC.MVP
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.MVP
 {
    public  class UpdatePersonalDetailTnCPresenter : UpdatePersonalDetailTnCContract.IUserActionsListener
     {

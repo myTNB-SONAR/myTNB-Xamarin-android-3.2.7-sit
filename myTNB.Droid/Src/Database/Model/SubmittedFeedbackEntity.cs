@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("SubmittedFeedbackEntity")]
     public class SubmittedFeedbackEntity

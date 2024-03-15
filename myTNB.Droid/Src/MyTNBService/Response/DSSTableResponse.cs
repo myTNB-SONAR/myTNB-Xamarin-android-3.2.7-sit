@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using myTNB.Mobile.API.Base;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.FindUs.Response;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.FindUs.Response;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class DSSTableResponse
     {

@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SelectSupplyAccount.MVP
+namespace myTNB.AndroidApp.Src.SelectSupplyAccount.MVP
 {
     public class SelectSupplyAccountContract
     {

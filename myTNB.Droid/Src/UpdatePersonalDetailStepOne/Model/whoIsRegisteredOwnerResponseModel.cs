@@ -10,7 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepOne.Model
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Model
 {
   
     public class whoIsRegisteredOwnerResponseModel

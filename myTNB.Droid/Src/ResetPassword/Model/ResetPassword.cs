@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.ResetPassword.Model
+namespace myTNB.AndroidApp.Src.ResetPassword.Model
 {
     public class ResetPassword
     {

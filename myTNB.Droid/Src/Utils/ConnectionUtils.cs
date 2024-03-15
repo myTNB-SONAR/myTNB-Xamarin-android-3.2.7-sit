@@ -2,7 +2,7 @@
 using Android.Net;
 using Android.OS;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class ConnectionUtils
     {

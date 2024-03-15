@@ -5,16 +5,16 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Rating.Activity;
-using myTNB.Android.Src.Rating.Adapter;
-using myTNB.Android.Src.Rating.Model;
-using myTNB.Android.Src.Rating.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Rating.Activity;
+using myTNB.AndroidApp.Src.Rating.Adapter;
+using myTNB.AndroidApp.Src.Rating.Model;
+using myTNB.AndroidApp.Src.Rating.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Rating.Fargment
+namespace myTNB.AndroidApp.Src.Rating.Fargment
 {
     public class SubmitRatingFragment : AndroidX.Fragment.App.Fragment, SubmitRatingContract.IView
     {

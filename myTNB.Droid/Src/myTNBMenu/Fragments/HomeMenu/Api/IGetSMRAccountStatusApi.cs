@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
 using myTNB.Mobile.Business;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Api
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Api
 {
 	public interface IAccountsSMRStatusApi
 	{

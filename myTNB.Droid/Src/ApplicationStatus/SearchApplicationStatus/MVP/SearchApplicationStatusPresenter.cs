@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
     public class SearchApplicationStatusPresenter : SearchApplicationStatusContract.IPresenter
     {

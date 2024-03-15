@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using SQLite;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     public class SitecoreCmsEntity
     {

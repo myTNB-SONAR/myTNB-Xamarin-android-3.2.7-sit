@@ -11,18 +11,18 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Login.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.ResetPassword.MVP;
-using myTNB.Android.Src.ResetPasswordSuccess.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Login.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.ResetPassword.MVP;
+using myTNB.AndroidApp.Src.ResetPasswordSuccess.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.ResetPassword.Activity
+namespace myTNB.AndroidApp.Src.ResetPassword.Activity
 {
     [Activity(Label = "@string/reset_password_activity_title"
               , Icon = "@drawable/ic_launcher"

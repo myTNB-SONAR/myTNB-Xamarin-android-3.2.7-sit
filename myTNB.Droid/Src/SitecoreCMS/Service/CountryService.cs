@@ -8,7 +8,7 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Diagnostics;
-using myTNB.Android.Src.SiteCore;
+using myTNB.AndroidApp.Src.SiteCore;
 
 namespace myTNB.SitecoreCMS.Service
 {

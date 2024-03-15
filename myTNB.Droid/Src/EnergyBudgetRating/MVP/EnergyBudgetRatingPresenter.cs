@@ -1,17 +1,17 @@
 ﻿using Android.Util;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.EnergyBudgetRating.Model;
-using myTNB.Android.Src.EnergyBudgetRating.Request;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.EnergyBudgetRating.Model;
+using myTNB.AndroidApp.Src.EnergyBudgetRating.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace myTNB.Android.Src.EnergyBudgetRating.MVP
+namespace myTNB.AndroidApp.Src.EnergyBudgetRating.MVP
 {
     public class EnergyBudgetRatingPresenter : EnergyBudgetRatingContract.IUserActionsListener
     {

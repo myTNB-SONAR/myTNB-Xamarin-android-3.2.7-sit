@@ -2,7 +2,7 @@
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.XEmailRegistrationForm.Models
+namespace myTNB.AndroidApp.Src.XEmailRegistrationForm.Models
 {
     public class UserRegistration
     {

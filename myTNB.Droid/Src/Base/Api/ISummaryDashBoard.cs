@@ -1,10 +1,10 @@
 ﻿using myTNB.Mobile.Business;
-using myTNB.Android.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.SummaryDashBoard.API
+namespace myTNB.AndroidApp.Src.SummaryDashBoard.API
 {
     public interface ISummaryDashBoard
     {

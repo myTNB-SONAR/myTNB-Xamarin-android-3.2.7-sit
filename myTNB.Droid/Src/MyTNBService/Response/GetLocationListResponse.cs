@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.FindUs.Models;
+using myTNB.AndroidApp.Src.FindUs.Models;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class GetLocationListResponse : BaseResponse<List<LocationData>>
     {

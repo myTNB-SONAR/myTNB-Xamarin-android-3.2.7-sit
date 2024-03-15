@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SummaryDashBoard.Models
+namespace myTNB.AndroidApp.Src.SummaryDashBoard.Models
 {
     public class SummaryDashBordRequest
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class RegisteredCardsResponse : BaseResponse<List<CreditCard>>
     {

@@ -1,10 +1,10 @@
 ﻿using myTNB.Mobile.Business;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.myTNBMenu.Api
+namespace myTNB.AndroidApp.Src.myTNBMenu.Api
 {
     public interface IUsageHistoryApi
     {

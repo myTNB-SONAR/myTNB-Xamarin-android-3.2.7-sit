@@ -1,18 +1,18 @@
 ﻿using Android.OS;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.AddAccount.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.AddAccount.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
 using System;
-using myTNB.Android.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.AddAccount.Models;
 using CheeseBind;
 using Android.Content;
 using Newtonsoft.Json;
-using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
 using Android.App;
 
-namespace myTNB.Android.Src.AddAccount.Fragment
+namespace myTNB.AndroidApp.Src.AddAccount.Fragment
 {
     public class AddAccountTypeFragmentBusiness : AndroidX.Fragment.App.Fragment 
     {

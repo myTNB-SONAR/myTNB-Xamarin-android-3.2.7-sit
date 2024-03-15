@@ -3,17 +3,17 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.NotificationDetails.Models;
-using myTNB.Android.Src.Notifications.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.NotificationDetails.Models;
+using myTNB.AndroidApp.Src.Notifications.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using NotificationType = myTNB.Android.Src.Utils.Notification.Notification.TypeEnum;
-namespace myTNB.Android.Src.AppLaunch.MVP
+using NotificationType = myTNB.AndroidApp.Src.Utils.Notification.Notification.TypeEnum;
+namespace myTNB.AndroidApp.Src.AppLaunch.MVP
 {
     public class AppLaunchContract
     {

@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Rating.Model
+namespace myTNB.AndroidApp.Src.Rating.Model
 {
     public class RateUsQuestion
     {

@@ -7,18 +7,18 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.Fragment.App;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyHome.Model;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Android.Graphics.ColorSpace;
 using ServiceEnum = myTNB.Mobile.MobileEnums.ServiceEnum;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
     public class MyServiceAdapter : RecyclerView.Adapter
     {

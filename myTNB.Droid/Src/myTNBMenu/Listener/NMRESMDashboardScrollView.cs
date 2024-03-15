@@ -5,7 +5,7 @@ using Android.Util;
 using Android.Views;
 using AndroidX.Core.Widget;
 
-namespace myTNB.Android.Src.myTNBMenu.Listener
+namespace myTNB.AndroidApp.Src.myTNBMenu.Listener
 {
     public class NMRESMDashboardScrollView : NestedScrollView
     {

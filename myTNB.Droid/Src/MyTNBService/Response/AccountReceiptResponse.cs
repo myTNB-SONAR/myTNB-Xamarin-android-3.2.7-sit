@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class AccountReceiptResponse
     {

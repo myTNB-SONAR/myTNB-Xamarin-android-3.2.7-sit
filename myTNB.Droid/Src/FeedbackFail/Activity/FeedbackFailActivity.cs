@@ -5,14 +5,14 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.FeedbackFail.Activity
+namespace myTNB.AndroidApp.Src.FeedbackFail.Activity
 {
     [Activity(
        ScreenOrientation = ScreenOrientation.Portrait

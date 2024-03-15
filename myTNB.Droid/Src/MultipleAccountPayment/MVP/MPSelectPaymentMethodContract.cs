@@ -1,13 +1,13 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.MyTNBService.Response;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 using System.Collections.Generic;
-using static myTNB.Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
+using static myTNB.AndroidApp.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using myTNB.Mobile.API.Models.ApplicationStatus;
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.MVP
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.MVP
 {
     public class MPSelectPaymentMethodContract
     {

@@ -5,11 +5,11 @@ using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.ServiceDistruption.MVP
+namespace myTNB.AndroidApp.Src.ServiceDistruption.MVP
 {
     public class ServiceDistruptionPresenter : ServiceDistruptionContract.IUserActionsListener
     {

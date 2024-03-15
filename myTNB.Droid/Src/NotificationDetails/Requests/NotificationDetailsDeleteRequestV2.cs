@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.NotificationDetails.Requests
+namespace myTNB.AndroidApp.Src.NotificationDetails.Requests
 {
     public class NotificationDetailsDeleteRequestV2
     {

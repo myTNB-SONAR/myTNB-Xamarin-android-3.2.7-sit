@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.UpdateNickname.MVP
+namespace myTNB.AndroidApp.Src.UpdateNickname.MVP
 {
     public class UpdateNicknameContract
     {

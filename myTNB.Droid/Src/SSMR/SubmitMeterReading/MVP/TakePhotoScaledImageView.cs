@@ -7,7 +7,7 @@ using Android.Views;
 using Android.Widget;
 using static Android.Views.View;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     public class ScaleImageViewGestureDetector : GestureDetector.SimpleOnGestureListener
         {

@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.Base.MVP;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
 
-namespace myTNB.Android.Src.Barcode.MVP
+namespace myTNB.AndroidApp.Src.Barcode.MVP
 {
     public class BarcodeContract
     {

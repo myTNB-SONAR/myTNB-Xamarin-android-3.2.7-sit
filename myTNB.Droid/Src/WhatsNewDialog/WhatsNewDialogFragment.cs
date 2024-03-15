@@ -10,16 +10,16 @@ using Android.Widget;
 using AndroidX.Fragment.App;
 using AndroidX.ViewPager.Widget;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.WhatsNewDetail.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.WhatsNewDetail.MVP;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace myTNB.Android.Src.WhatsNewDialog
+namespace myTNB.AndroidApp.Src.WhatsNewDialog
 {
     public class WhatsNewDialogFragment : DialogFragment, ViewPager.IOnPageChangeListener
     {

@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Util;
 using Android.Views;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
 	public class AutoFitTextureView : TextureView
 	{

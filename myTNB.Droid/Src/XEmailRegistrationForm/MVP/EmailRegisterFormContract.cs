@@ -1,10 +1,10 @@
 ﻿using Android.Content.PM;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.XEmailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.XEmailRegistrationForm.Models;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.XEmailRegistrationForm.MVP
+namespace myTNB.AndroidApp.Src.XEmailRegistrationForm.MVP
 {
     public class EmailRegisterFormContract
     {

@@ -5,11 +5,11 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using Java.Lang;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Common.Adapter
+namespace myTNB.AndroidApp.Src.Common.Adapter
 {
     public class SelectCountryISDCodeAdapter : BaseCustomAdapter<Country>, ISectionIndexer
     {

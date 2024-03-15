@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.Business;
 using Refit;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.Api
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.Api
 {
     public interface SMRregistrationApi
     {

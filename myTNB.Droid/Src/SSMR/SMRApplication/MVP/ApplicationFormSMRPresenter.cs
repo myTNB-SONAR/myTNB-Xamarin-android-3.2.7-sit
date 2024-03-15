@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 using Android.Text;
 using Android.Util;
 using myTNB.Mobile.Business;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SSMR.SMRApplication.Api;
-using myTNB.Android.Src.SSMRMeterHistory.Api;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.Api;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
-using static myTNB.Android.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
-using static myTNB.Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
+using static myTNB.AndroidApp.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
+using static myTNB.AndroidApp.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     public class ApplicationFormSMRPresenter : ApplicationFormSMRContract.IPresenter
     {

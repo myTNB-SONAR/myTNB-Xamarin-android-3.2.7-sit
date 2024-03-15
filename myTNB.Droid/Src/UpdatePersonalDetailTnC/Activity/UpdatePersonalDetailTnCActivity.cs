@@ -12,15 +12,15 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.TermsAndConditions.Activity;
-using myTNB.Android.Src.UpdatePersonalDetailTnC.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.TermsAndConditions.Activity;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailTnC.Activity
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.Activity
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait
         , WindowSoftInputMode = SoftInput.AdjustPan

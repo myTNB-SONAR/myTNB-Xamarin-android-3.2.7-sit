@@ -5,18 +5,18 @@ using Java.Lang;
 using Java.Text;
 using Java.Util;
 using myTNB.Mobile;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.DBR.DBRApplication.MVP;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.DBR.DBRApplication.MVP;
 using Newtonsoft.Json;
-using myTNB.Android.Src.MyHome;
-using myTNB.Android.Src.QuickActionArrange.Model;
-using myTNB.Android.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.MyHome;
+using myTNB.AndroidApp.Src.QuickActionArrange.Model;
+using myTNB.AndroidApp.Src.MyHome.Model;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public sealed class UserSessions
     {

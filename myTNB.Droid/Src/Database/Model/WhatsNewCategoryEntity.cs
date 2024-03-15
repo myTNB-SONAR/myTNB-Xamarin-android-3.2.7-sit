@@ -1,10 +1,10 @@
 ﻿using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     [Table("WhatsNewCategoryEntityV4")]
     public class WhatsNewCategoryEntity

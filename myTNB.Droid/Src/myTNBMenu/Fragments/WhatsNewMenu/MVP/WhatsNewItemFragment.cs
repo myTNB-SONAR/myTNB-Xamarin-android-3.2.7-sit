@@ -1,19 +1,19 @@
 ﻿using Android.Content;
 using Android.OS;
 using Android.Views;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-using static myTNB.Android.Src.Utils.Constants;
+using static myTNB.AndroidApp.Src.Utils.Constants;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 using Android.Preferences;
 using System;
-using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
-using myTNB.Android.Src.WhatsNewDetail.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.Adapter;
+using myTNB.AndroidApp.Src.WhatsNewDetail.MVP;
 using AndroidX.Fragment.App;
 using AndroidX.RecyclerView.Widget;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
     public class WhatsNewItemFragment : Fragment, WhatsNewItemContract.IWhatsNewItemView
     {

@@ -3,10 +3,10 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Fragments;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.ManageBillDelivery.MVP
+namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 {
     public class ManageBillDeliveryFragment : BaseFragmentV4Custom
     {

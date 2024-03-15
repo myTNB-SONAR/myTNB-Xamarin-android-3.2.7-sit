@@ -13,7 +13,7 @@ using Android.Views;
 using Android.Widget;
 using Com.Airbnb.Lottie;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     class DayZoomOutPinchUtil
     {

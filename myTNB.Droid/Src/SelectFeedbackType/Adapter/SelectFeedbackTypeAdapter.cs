@@ -2,13 +2,13 @@
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SelectFeedbackType.Adapter
+namespace myTNB.AndroidApp.Src.SelectFeedbackType.Adapter
 {
     public class SelectFeedbackTypeAdapter : BaseCustomAdapter<FeedbackType>
     {

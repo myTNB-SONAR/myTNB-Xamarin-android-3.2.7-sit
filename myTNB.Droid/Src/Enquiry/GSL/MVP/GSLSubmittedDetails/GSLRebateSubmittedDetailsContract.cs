@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
 
-namespace myTNB.Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
 {
     public class GSLRebateSubmittedDetailsContract
     {

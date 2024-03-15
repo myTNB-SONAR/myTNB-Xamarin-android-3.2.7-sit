@@ -1,11 +1,11 @@
 ﻿using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace myTNB.Android.Src.Database.Model
+namespace myTNB.AndroidApp.Src.Database.Model
 {
     //syahmi add
     [Table("EPPToolTipEntity")]

@@ -12,20 +12,20 @@ using Java.IO;
 using Java.Lang;
 using Java.Net;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
-using myTNB.Android.Src.MyHome;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Rating.Activity;
-using myTNB.Android.Src.Rating.Model;
-using myTNB.Android.Src.SummaryDashBoard.Models;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewReceipt.Activity;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.MyHome;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Rating.Activity;
+using myTNB.AndroidApp.Src.Rating.Model;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 using System;
 using System.Web;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.Fragment
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.Fragment
 {
     public class MPPaymentWebViewFragment : AndroidX.Fragment.App.Fragment
     {

@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.myTNBMenu.Models
+namespace myTNB.AndroidApp.Src.myTNBMenu.Models
 {
     public class AccountDueAmount
     {

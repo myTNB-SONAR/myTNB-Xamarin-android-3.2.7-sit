@@ -1,7 +1,7 @@
 ﻿using System;
 using Android.Views;
 
-namespace myTNB.Android.Src.Base.Fragments
+namespace myTNB.AndroidApp.Src.Base.Fragments
 {
     public interface IBaseFragmentCustomView
     {

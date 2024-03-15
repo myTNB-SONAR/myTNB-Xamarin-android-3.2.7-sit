@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusListing.MVP
 {
     public class ApplicationStatusLandingContract
     {

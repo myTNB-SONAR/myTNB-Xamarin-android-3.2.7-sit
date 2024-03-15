@@ -13,23 +13,23 @@ using CheeseBind;
 using Facebook.Shimmer;
 using Google.Android.Material.Snackbar;
 using Java.Text;
-using myTNB.Android.Src.Base.Fragments;
-using myTNB.Android.Src.Billing.MVP;
-using myTNB.Android.Src.Bills.AccountStatement.Activity;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.DeviceCache;
-using myTNB.Android.Src.ManageBillDelivery.MVP;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.myTNBMenu.Async;
-using myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.ViewBill.Activity;
-using myTNB.Android.Src.ViewReceipt.Activity;
+using myTNB.AndroidApp.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Billing.MVP;
+using myTNB.AndroidApp.Src.Bills.AccountStatement.Activity;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DeviceCache;
+using myTNB.AndroidApp.Src.ManageBillDelivery.MVP;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.ViewBill.Activity;
+using myTNB.AndroidApp.Src.ViewReceipt.Activity;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
 using myTNB.Mobile.AWS.Models.DBR;
@@ -38,7 +38,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
     public class ItemisedBillingMenuFragment : BaseFragmentCustom, ItemisedBillingContract.IView
     {

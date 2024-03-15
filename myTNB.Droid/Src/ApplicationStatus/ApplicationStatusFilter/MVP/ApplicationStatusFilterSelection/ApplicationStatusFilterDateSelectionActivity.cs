@@ -1,19 +1,19 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
 using Android.Views;
 using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
 using System.Globalization;
-using myTNB.Android.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Base.Fragments;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusFilter.MVP.ApplicationStatusFilterSelection
 {
     [Activity(Label = "Select Creation Date", Theme = "@style/Theme.RegisterForm")]
     public class ApplicationStatusFilterDateSelectionActivity : BaseActivityCustom, DatePickerDialog.IOnDateSetListener

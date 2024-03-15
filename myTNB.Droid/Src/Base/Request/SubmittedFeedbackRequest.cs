@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Base.Request
+namespace myTNB.AndroidApp.Src.Base.Request
 {
     public class SubmittedFeedbackRequest
     {

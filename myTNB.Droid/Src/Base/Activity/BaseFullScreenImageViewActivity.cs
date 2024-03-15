@@ -7,14 +7,14 @@ using Android.OS;
 using Android.Util;
 using Android.Views;
 using CheeseBind;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.ZoomImageView;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.ZoomImageView;
 using System;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.Base.Activity
+namespace myTNB.AndroidApp.Src.Base.Activity
 {
     [Activity(Label = "Base Image Viewer"
           , ScreenOrientation = ScreenOrientation.Portrait

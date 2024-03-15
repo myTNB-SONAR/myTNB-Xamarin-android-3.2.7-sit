@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 
-namespace myTNB.Android.Src.AppLaunch.Requests
+namespace myTNB.AndroidApp.Src.AppLaunch.Requests
 {
     public class GetAccountTypesRequest : BaseRequest
     {

@@ -6,12 +6,12 @@ using Android.Widget;
 using AndroidX.CardView.Widget;
 using AndroidX.RecyclerView.Widget;
 using Facebook.Shimmer;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 {
 	public class NewFAQShimmerAdapter : RecyclerView.Adapter
 	{

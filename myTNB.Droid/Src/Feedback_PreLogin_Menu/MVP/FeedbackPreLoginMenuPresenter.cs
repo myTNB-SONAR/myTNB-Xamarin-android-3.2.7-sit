@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.Api;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.Api;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB.Android.Src.Feedback_PreLogin_Menu.MVP
+namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.MVP
 {
     public class FeedbackPreLoginMenuPresenter : FeedbackPreLoginMenuContract.IUserActionsListener
     {

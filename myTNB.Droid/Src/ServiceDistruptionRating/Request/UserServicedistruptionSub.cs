@@ -1,8 +1,8 @@
 ﻿using System;
-using myTNB.Android.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.ServiceDistruptionRating.Request
+namespace myTNB.AndroidApp.Src.ServiceDistruptionRating.Request
 {
     public class UserServicedistruptionSub : BaseRequest
     {

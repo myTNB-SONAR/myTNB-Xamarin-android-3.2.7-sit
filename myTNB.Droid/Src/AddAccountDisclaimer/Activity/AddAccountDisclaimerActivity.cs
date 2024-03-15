@@ -8,12 +8,12 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 
-namespace myTNB.Android.Src.AddAccountDisclaimer.Activity
+namespace myTNB.AndroidApp.Src.AddAccountDisclaimer.Activity
 {
     [Activity(Label = "DisclaimerAddAccount", ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.OwnerTenantBaseTheme")]

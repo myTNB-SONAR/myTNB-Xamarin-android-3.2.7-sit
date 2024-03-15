@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Enquiry.GSL.MVP
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateStepTwoPresenter : GSLRebateStepTwoContract.IUserActionsListener
     {

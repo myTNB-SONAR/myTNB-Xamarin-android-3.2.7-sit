@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Model;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Response
 {
 	public class GetUserRewardsResponse
     {

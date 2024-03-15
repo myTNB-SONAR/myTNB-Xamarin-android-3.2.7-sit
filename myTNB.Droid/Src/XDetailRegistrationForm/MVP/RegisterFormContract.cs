@@ -1,10 +1,10 @@
 ﻿using Android.Content.PM;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.XDetailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Models;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.XDetailRegistrationForm.MVP
+namespace myTNB.AndroidApp.Src.XDetailRegistrationForm.MVP
 {
     public class RegisterFormContract
     {

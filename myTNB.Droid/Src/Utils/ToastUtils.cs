@@ -3,7 +3,7 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class ToastUtils
     {

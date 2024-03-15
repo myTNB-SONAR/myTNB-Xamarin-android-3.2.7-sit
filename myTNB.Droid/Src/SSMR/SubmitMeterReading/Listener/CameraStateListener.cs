@@ -1,9 +1,9 @@
 ﻿using System;
 using Android.App;
 using Android.Hardware.Camera2;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Listener
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Listener
 {
     public class CameraStateListener : CameraDevice.StateCallback
     {

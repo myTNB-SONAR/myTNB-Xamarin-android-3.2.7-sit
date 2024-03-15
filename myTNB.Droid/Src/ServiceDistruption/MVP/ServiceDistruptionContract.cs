@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Database.Model;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.ServiceDistruption.MVP
+namespace myTNB.AndroidApp.Src.ServiceDistruption.MVP
 {
     public class ServiceDistruptionContract
     {

@@ -7,9 +7,9 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class ItemisedBillingGroupContentComponent : LinearLayout
     {

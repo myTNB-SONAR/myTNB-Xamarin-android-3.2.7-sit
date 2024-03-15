@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.SSMR.SSMRBase.MVP;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.Api;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.SSMR.SSMRBase.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP
 {
     public class SubmitMeterReadingContract
     {

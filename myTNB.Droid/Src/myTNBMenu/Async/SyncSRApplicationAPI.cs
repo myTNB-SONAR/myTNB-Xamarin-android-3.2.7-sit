@@ -3,10 +3,10 @@ using Android.Content;
 using Android.OS;
 using Android.Preferences;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
 
-namespace myTNB.Android.Src.myTNBMenu.Async
+namespace myTNB.AndroidApp.Src.myTNBMenu.Async
 {
     public class SyncSRApplicationAPI : AsyncTask
     {

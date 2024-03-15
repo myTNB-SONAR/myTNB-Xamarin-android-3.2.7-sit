@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     public class ItemisedBillingAccountDataModel
     {

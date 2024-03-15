@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.SummaryDashBoard
+﻿namespace myTNB.AndroidApp.Src.SummaryDashBoard
 {
     class SummaryDashboardModel
     {

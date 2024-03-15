@@ -4,8 +4,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Fragment.App;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.Custom.Scanner;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.Custom.Scanner;
 using System;
 
 namespace ZXing.Mobile

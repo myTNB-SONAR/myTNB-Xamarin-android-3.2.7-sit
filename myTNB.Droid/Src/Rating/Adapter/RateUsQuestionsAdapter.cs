@@ -6,14 +6,14 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Rating.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Rating.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static myTNB.Android.Src.Rating.Request.SubmitRateUsRequest;
+using static myTNB.AndroidApp.Src.Rating.Request.SubmitRateUsRequest;
 
-namespace myTNB.Android.Src.Rating.Adapter
+namespace myTNB.AndroidApp.Src.Rating.Adapter
 {
     public class RateUsQuestionsAdapter : RecyclerView.Adapter
     {

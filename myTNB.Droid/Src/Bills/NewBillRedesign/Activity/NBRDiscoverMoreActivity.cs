@@ -4,21 +4,21 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Bills.NewBillRedesign.MVP;
-using myTNB.Android.Src.Bills.NewBillRedesign.Fragment;
-using myTNB.Android.Src.Bills.NewBillRedesign.Model;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign.MVP;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign.Fragment;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign.Model;
 using Android.Graphics;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
 using Android.Content;
-using myTNB.Android.Src.Bills.NewBillRedesign.Activity;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign.Activity;
 using myTNB.Mobile;
 using Android.Preferences;
 
-namespace myTNB.Android.Src.Bills.NewBillRedesign
+namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign
 {
     [Activity(Label = "TNB New Bill Design", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class NBRDiscoverMoreActivity : BaseActivityCustom, NBRDiscoverMoreContract.IView

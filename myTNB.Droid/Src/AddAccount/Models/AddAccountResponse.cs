@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 
-namespace myTNB.Android.Src.AddAccount.Models
+namespace myTNB.AndroidApp.Src.AddAccount.Models
 {
     public class AddAccountResponse : BaseResponse<ServiceResponse>
     {

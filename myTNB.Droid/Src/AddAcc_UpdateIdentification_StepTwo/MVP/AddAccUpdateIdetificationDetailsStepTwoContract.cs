@@ -10,10 +10,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Model;
 
-namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepTwo.MVP
+namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.MVP
 {
     public class AddAccUpdateIdetificationDetailsStepTwoContract
     {

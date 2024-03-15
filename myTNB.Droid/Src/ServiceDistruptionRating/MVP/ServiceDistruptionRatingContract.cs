@@ -1,9 +1,9 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MyTNBService.Response;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.ServiceDistruptionRating.MVP
+namespace myTNB.AndroidApp.Src.ServiceDistruptionRating.MVP
 {
     public class ServiceDistruptionRatingContract
     {

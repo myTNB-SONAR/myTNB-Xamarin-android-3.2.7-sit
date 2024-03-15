@@ -8,40 +8,40 @@ using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Text;
-using myTNB.Android.Src.AddCard.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Maintenance.Activity;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
-using myTNB.Android.Src.MultipleAccountPayment.Adapter;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.MultipleAccountPayment.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.SummaryDashBoard.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddCard.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Maintenance.Activity;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Adapter;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static myTNB.Android.Src.MyTNBService.Request.PaymentTransactionIdRequest;
+using static myTNB.AndroidApp.Src.MyTNBService.Request.PaymentTransactionIdRequest;
 using System.Globalization;
 using Google.Android.Material.Snackbar;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Android.Src.DeviceCache;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.DeviceCache;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
 using myTNB.Mobile.AWS.Models.DBR;
 using static Android.Icu.Text.CaseMap;
-using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
-using myTNB.Android.Src.MyHome;
+using static myTNB.AndroidApp.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.AndroidApp.Src.MyHome;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.Fragment
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.Fragment
 {
     public class MPSelectPaymentMethodFragment : AndroidX.Fragment.App.Fragment, MPSelectPaymentMethodContract.IView
     {

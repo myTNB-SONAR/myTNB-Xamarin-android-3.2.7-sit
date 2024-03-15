@@ -11,17 +11,17 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.DigitalSignature.DSNotificationDetails.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.NotificationDetails.Activity;
-using myTNB.Android.Src.NotificationFilter.Activity;
-using myTNB.Android.Src.Notifications.Adapter;
-using myTNB.Android.Src.Notifications.Models;
-using myTNB.Android.Src.Notifications.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DigitalSignature.DSNotificationDetails.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.NotificationDetails.Activity;
+using myTNB.AndroidApp.Src.NotificationFilter.Activity;
+using myTNB.AndroidApp.Src.Notifications.Adapter;
+using myTNB.AndroidApp.Src.Notifications.Models;
+using myTNB.AndroidApp.Src.Notifications.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 using Refit;
@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Runtime;
 using static Android.Widget.CompoundButton;
 
-namespace myTNB.Android.Src.Notifications.Activity
+namespace myTNB.AndroidApp.Src.Notifications.Activity
 {
     enum EditNotificationStates
     {

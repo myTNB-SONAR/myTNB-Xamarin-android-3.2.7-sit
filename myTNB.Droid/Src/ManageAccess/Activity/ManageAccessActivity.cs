@@ -11,32 +11,32 @@ using AndroidSwipeLayout;
 using AndroidSwipeLayout.Util;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.AddAccount.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.ManageSupplyAccount.Activity;
-using myTNB.Android.Src.ManageAccess.Adapter;
-using myTNB.Android.Src.ManageAccess.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.ManageSupplyAccount.Activity;
+using myTNB.AndroidApp.Src.ManageAccess.Adapter;
+using myTNB.AndroidApp.Src.ManageAccess.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using static myTNB.Android.Src.ManageAccess.Adapter.ManageAccessAdapter;
-using myTNB.Android.Src.ManageUser.Activity;
-using myTNB.Android.Src.AddNewUser.Activity;
+using static myTNB.AndroidApp.Src.ManageAccess.Adapter.ManageAccessAdapter;
+using myTNB.AndroidApp.Src.ManageUser.Activity;
+using myTNB.AndroidApp.Src.AddNewUser.Activity;
 using AndroidX.CoordinatorLayout.Widget;
 using Android.Graphics;
 using Android.Preferences;
-using static myTNB.Android.Src.ManageAccess.Adapter.ManageAccessDeleteAdapter;
+using static myTNB.AndroidApp.Src.ManageAccess.Adapter.ManageAccessDeleteAdapter;
 using AndroidX.Core.Content;
-using myTNB.Android.Src.LogUserAccess.Activity;
-using myTNB.Android.Src.LogUserAccess.Models;
+using myTNB.AndroidApp.Src.LogUserAccess.Activity;
+using myTNB.AndroidApp.Src.LogUserAccess.Models;
 using Java.Util;
-using myTNB.Android.Src.ManageAccess.Models;
+using myTNB.AndroidApp.Src.ManageAccess.Models;
 
-namespace myTNB.Android.Src.ManageAccess.Activity
+namespace myTNB.AndroidApp.Src.ManageAccess.Activity
 {
     [Activity(Label = "@string/my_account_activity_title_new"
         //, Icon = "@drawable/Logo"

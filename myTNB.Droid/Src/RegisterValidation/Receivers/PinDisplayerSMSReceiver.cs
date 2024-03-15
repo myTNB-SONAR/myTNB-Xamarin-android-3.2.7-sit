@@ -2,9 +2,9 @@
 using Android.App;
 using Android.Content;
 using Android.Widget;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.RegisterValidation.Receivers
+namespace myTNB.AndroidApp.Src.RegisterValidation.Receivers
 {
     //[BroadcastReceiver(Enabled = true)]
     //[IntentFilter(new[] { "com.myTNB.smsReceiver" })]

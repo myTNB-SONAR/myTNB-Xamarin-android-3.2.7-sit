@@ -8,20 +8,20 @@ using Android.Widget;
 using AndroidX.ConstraintLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity;
-using myTNB.Android.Src.Feedback_PreLogin_Menu.MVP;
-using myTNB.Android.Src.Feedback_Prelogin_NewIC.Activity;
-using myTNB.Android.Src.Feedback_PreLogin_Others.Activity;
-using myTNB.Android.Src.SelectSubmittedFeedback.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Feedback_PreLogin_FaultyStreetLamps.Activity;
+using myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.MVP;
+using myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity;
+using myTNB.AndroidApp.Src.Feedback_PreLogin_Others.Activity;
+using myTNB.AndroidApp.Src.SelectSubmittedFeedback.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.Feedback_PreLogin_Menu.Activity
+namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.Activity
 {
     [Activity(Label = "@string/menu_feedback"
       , ScreenOrientation = ScreenOrientation.Portrait

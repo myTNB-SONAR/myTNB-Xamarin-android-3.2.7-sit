@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using myTNB.Android.Src.SSMR.SMRApplication.Api;
-using myTNB.Android.Src.SSMRTerminate.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
+using myTNB.AndroidApp.Src.SSMRTerminate.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 
-namespace myTNB.Android.Src.SSMRTerminate.Api
+namespace myTNB.AndroidApp.Src.SSMRTerminate.Api
 {
     public class SSMRTerminateImpl : SSMRTerminateContract.SSMRTerminateApiPresenter
     {

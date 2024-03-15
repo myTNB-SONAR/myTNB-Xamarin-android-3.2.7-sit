@@ -5,14 +5,14 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Login.Activity;
-using myTNB.Android.Src.ResetPasswordSuccess.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Login.Activity;
+using myTNB.AndroidApp.Src.ResetPasswordSuccess.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.ResetPasswordSuccess.Activity
+namespace myTNB.AndroidApp.Src.ResetPasswordSuccess.Activity
 {
     [Activity(NoHistory = true
               , Icon = "@drawable/ic_launcher"

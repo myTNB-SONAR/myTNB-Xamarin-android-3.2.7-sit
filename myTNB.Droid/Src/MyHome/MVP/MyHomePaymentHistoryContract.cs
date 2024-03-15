@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.OS;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
 
-namespace myTNB.Android.Src.MyHome.MVP
+namespace myTNB.AndroidApp.Src.MyHome.MVP
 {
 	public class MyHomePaymentHistoryContract
 	{

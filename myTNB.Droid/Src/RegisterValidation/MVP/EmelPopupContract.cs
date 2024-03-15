@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.ManageCards.Models;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.ManageCards.Models;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
 using Refit;
 
-namespace myTNB.Android.Src.RegisterValidation.MVP
+namespace myTNB.AndroidApp.Src.RegisterValidation.MVP
 {
     public class EmelPopupContract
     {

@@ -1,61 +1,61 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 using CheeseBind;
 using Android.Widget;
-using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.Adapter;
 using AndroidX.RecyclerView.Widget;
 using System;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.Database.Model;
 using AndroidX.Core.Content;
 using Android.Views;
-using myTNB.Android.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
-using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationDetailActivityLog.MVP;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetailPayment.MVP;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.ViewReceipt.Activity;
-using myTNB.Android.Src.ViewBill.Activity;
+using myTNB.AndroidApp.Src.ViewReceipt.Activity;
+using myTNB.AndroidApp.Src.ViewBill.Activity;
 using Android.Preferences;
 using Android.Graphics;
-using myTNB.Android.Src.Login.Activity;
+using myTNB.AndroidApp.Src.Login.Activity;
 using myTNB.Mobile.SessionCache;
-using myTNB.Android.Src.ApplicationStatusRating.Activity;
+using myTNB.AndroidApp.Src.ApplicationStatusRating.Activity;
 using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB;
 using Android.Runtime;
-using myTNB.Android.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
 using myTNB.Mobile.API.DisplayModel.Scheduler;
 using myTNB.Mobile.API.Managers.Scheduler;
-using myTNB.Android.Src.AppointmentScheduler.AppointmentSelect.MVP;
+using myTNB.AndroidApp.Src.AppointmentScheduler.AppointmentSelect.MVP;
 using Android.Text;
 using Android.Content.PM;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.NotificationDetails.Models;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.NotificationDetails.Models;
 
-using MyHomeModel = myTNB.Android.Src.MyHome.Model.MyHomeModel;
-using myTNB.Android.Src.MyHome;
-using myTNB.Android.Src.MyHome.Activity;
+using MyHomeModel = myTNB.AndroidApp.Src.MyHome.Model.MyHomeModel;
+using myTNB.AndroidApp.Src.MyHome;
+using myTNB.AndroidApp.Src.MyHome.Activity;
 using static Android.Graphics.ColorSpace;
-using myTNB.Android.Src.DeviceCache;
+using myTNB.AndroidApp.Src.DeviceCache;
 using System.Threading.Tasks;
 using System.Reflection;
 using myTNB.Mobile.Constants;
 using Xamarin.Facebook;
-using static myTNB.Android.Src.myTNBMenu.Models.SMUsageHistoryData;
+using static myTNB.AndroidApp.Src.myTNBMenu.Models.SMUsageHistoryData;
 using Android;
-using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
-using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.Models;
+using static myTNB.AndroidApp.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.Models;
 
-using myTNB.Android.Src.DigitalSignature.IdentityVerification.Activity;
-using myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP;
-using myTNB.Android.Src.DigitalSignature;
+using myTNB.AndroidApp.Src.DigitalSignature.IdentityVerification.Activity;
+using myTNB.AndroidApp.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB.AndroidApp.Src.DigitalSignature;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.MVP
 {
     [Activity(Label = "Application Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.AppointmentScheduler")]
     public class ApplicationStatusDetailActivity : BaseActivityCustom, ApplicationStatusDetailContract.IView

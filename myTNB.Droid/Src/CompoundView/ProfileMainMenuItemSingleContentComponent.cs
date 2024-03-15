@@ -4,9 +4,9 @@ using Android.Runtime;
 using Android.Util;
 using Android.Widget;
 using AndroidX.Core.Content;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class ProfileMainMenuItemSingleContentComponent : RelativeLayout
     {

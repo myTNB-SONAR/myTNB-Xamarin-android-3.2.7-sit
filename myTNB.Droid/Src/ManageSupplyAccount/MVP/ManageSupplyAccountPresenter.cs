@@ -1,14 +1,14 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Async;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -17,7 +17,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB.Android.Src.ManageSupplyAccount.MVP
+namespace myTNB.AndroidApp.Src.ManageSupplyAccount.MVP
 {
     public class ManageSupplyAccountPresenter : ManageSupplyAccountContract.IUserActionsListener
     {

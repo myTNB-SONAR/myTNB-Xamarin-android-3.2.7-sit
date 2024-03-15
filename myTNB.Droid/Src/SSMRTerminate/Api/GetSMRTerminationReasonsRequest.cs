@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMRTerminate.Api
+namespace myTNB.AndroidApp.Src.SSMRTerminate.Api
 {
     public class GetSMRTerminationReasonsRequest
     {

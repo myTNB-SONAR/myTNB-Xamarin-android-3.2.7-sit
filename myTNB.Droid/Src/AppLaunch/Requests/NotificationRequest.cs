@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.AppLaunch.Requests
+namespace myTNB.AndroidApp.Src.AppLaunch.Requests
 {
     public class NotificationRequest
     {

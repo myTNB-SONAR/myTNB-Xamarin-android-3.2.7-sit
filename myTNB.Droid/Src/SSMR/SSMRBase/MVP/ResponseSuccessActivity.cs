@@ -12,15 +12,15 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.Api;
-using myTNB.Android.Src.SSMRMeterHistory.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using static myTNB.Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
+using static myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
 
-namespace myTNB.Android.Src.SSMR.SSMRBase.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SSMRBase.MVP
 {
     [Activity(Label = "ResponseSuccessActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.BillRelated")]
     public class ResponseSuccessActivity : BaseAppCompatActivity

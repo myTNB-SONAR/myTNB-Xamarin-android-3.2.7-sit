@@ -6,13 +6,13 @@ using Android.Widget;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Globalization;
 using System.Runtime;
 
-namespace myTNB.Android.Src.FeedbackSuccess.Activity
+namespace myTNB.AndroidApp.Src.FeedbackSuccess.Activity
 {
     [Activity(
         ScreenOrientation = ScreenOrientation.Portrait

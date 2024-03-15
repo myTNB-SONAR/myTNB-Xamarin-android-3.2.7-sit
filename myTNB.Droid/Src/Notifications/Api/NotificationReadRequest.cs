@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.Notifications.Models;
+using myTNB.AndroidApp.Src.Notifications.Models;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Notifications.Api
+namespace myTNB.AndroidApp.Src.Notifications.Api
 {
 	public class NotificationReadRequest
 	{

@@ -1,17 +1,17 @@
 ﻿using Android.Content;
 using Android.Text;
 using Android.Util;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.AddAccount.Requests;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Api;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.SummaryDashBoard.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.AddAccount.Requests;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Api;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 
-namespace myTNB.Android.Src.AddAccount.MVP
+namespace myTNB.AndroidApp.Src.AddAccount.MVP
 {
     public class LinkAccountPresenter : LinkAccountContract.IUserActionsListener
     {

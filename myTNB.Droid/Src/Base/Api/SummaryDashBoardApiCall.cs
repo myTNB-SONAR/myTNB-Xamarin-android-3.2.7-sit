@@ -1,9 +1,9 @@
 ﻿using Android.Util;
 using myTNB.Mobile.Business;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SummaryDashBoard.API;
-using myTNB.Android.Src.SummaryDashBoard.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SummaryDashBoard.API;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -12,7 +12,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.Base.Api
+namespace myTNB.AndroidApp.Src.Base.Api
 {
     public class SummaryDashBoardApiCall
     {

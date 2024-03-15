@@ -9,24 +9,24 @@ using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Enquiry;
-using myTNB.Android.Src.Enquiry.GSL.Activity;
-using myTNB.Android.Src.FeedbackDetails.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.PreLogin.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Enquiry;
+using myTNB.AndroidApp.Src.Enquiry.GSL.Activity;
+using myTNB.AndroidApp.Src.FeedbackDetails.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.PreLogin.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Runtime;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.SubmitEnquirySuccess.Activity
+namespace myTNB.AndroidApp.Src.SubmitEnquirySuccess.Activity
 {
     [Activity(
     ScreenOrientation = ScreenOrientation.Portrait

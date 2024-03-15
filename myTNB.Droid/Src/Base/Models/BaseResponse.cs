@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Base.Models
+namespace myTNB.AndroidApp.Src.Base.Models
 {
     public abstract class BaseResponse<T>
     {

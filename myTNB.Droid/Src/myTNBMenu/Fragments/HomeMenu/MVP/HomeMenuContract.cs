@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB.Android.Src.SummaryDashBoard.Models;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.AppLaunch.Requests;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Requests;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyHome.Model;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
     public class HomeMenuContract
     {

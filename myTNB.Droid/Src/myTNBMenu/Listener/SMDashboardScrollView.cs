@@ -2,7 +2,7 @@
 using Android.Util;
 using Android.Widget;
 
-namespace myTNB.Android.Src.myTNBMenu.Listener
+namespace myTNB.AndroidApp.Src.myTNBMenu.Listener
 {
     public class SMDashboardScrollView : ScrollView
     {

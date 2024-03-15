@@ -3,17 +3,17 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using myTNB.Android.Src.AddAccount.Activity;
-using myTNB.Android.Src.AddAccount.Adapter;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Activity;
+using myTNB.AndroidApp.Src.AddAccount.Adapter;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Runtime;
 
-namespace myTNB.Android.Src.AddAccount.Fragment
+namespace myTNB.AndroidApp.Src.AddAccount.Fragment
 {
     [Activity(Label = "Select Account Type"
               , Icon = "@drawable/ic_launcher"

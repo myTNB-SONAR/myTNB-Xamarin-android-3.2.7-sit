@@ -17,17 +17,17 @@ using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.AddAcc_UpdateIdentification_StepOne.MVP;
-using myTNB.Android.Src.AddAcc_UpdateIdentification_StepTwo.Activity;
-using myTNB.Android.Src.Barcode.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Feedback_Login_BillRelated.Activity;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.UpdatePersonalDetailStepOne.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP;
+using myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity;
+using myTNB.AndroidApp.Src.Barcode.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -35,7 +35,7 @@ using System.Runtime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.AddAcc_UpdateIdentification_StepOne.Activity
+namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
 {
     [Activity(Label = "Update Personal Details"
   , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,6 +1,6 @@
 ﻿using Android.Gms.Maps;
 
-namespace myTNB.Android.Src.FindUs.Fragment
+namespace myTNB.AndroidApp.Src.FindUs.Fragment
 {
     public class MapViewFragment : MapFragment
     {

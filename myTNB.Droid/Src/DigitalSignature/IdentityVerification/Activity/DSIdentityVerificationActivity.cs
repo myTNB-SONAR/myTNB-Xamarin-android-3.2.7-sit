@@ -14,16 +14,16 @@ using CheeseBind;
 using myTNB;
 using myTNB.Mobile;
 using myTNB.Mobile.Constants.DS;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.DigitalSignature.IdentityVerification.Fragment;
-using myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP;
-using myTNB.Android.Src.DigitalSignature.WebView.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.Deeplink;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DigitalSignature.IdentityVerification.Fragment;
+using myTNB.AndroidApp.Src.DigitalSignature.IdentityVerification.MVP;
+using myTNB.AndroidApp.Src.DigitalSignature.WebView.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.Deeplink;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.DigitalSignature.IdentityVerification.Activity
+namespace myTNB.AndroidApp.Src.DigitalSignature.IdentityVerification.Activity
 {
     [Activity(Label = "DS Identity Verification", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class DSIdentityVerificationActivity : BaseActivityCustom, DSIdentityVerificationContract.IView

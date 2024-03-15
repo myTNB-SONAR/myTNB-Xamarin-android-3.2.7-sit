@@ -4,12 +4,12 @@ using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using myTNB.Mobile;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusListing.Adapter
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusListing.Adapter
 {
     public class ApplicationStatusLandingAdapter : RecyclerView.Adapter
     {

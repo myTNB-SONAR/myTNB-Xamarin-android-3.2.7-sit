@@ -17,21 +17,21 @@ using AndroidX.Core.Content;
 using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.UpdatePersonalDetailStepOne.Fragment;
-using myTNB.Android.Src.UpdatePersonalDetailStepOne.Model;
-using myTNB.Android.Src.UpdatePersonalDetailStepOne.MVP;
-using myTNB.Android.Src.UpdatePersonalDetailStepTwo.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Fragment;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Model;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.MVP;
+using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using NSubstitute.Core;
-using static myTNB.Android.Src.UpdatePersonalDetailStepOne.Fragment.UpdatePersonalDetailStepOneSelectRelationshipFragment;
+using static myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Fragment.UpdatePersonalDetailStepOneSelectRelationshipFragment;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepOne.Activity
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
 
 
 {

@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MyTNBService.Response;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 
-namespace myTNB.Android.Src.ViewReceipt.MVP
+namespace myTNB.AndroidApp.Src.ViewReceipt.MVP
 {
     public class ViewReceiptMultiAccountNewDesignContract
     {

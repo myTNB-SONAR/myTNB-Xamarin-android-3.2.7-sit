@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.ApplicationStatus.ApplicationStatusFilter.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusFilter.MVP
 {
     public class ApplicationStatusFilterPresenter : ApplicationStatusFilterContract.IPresenter
     {

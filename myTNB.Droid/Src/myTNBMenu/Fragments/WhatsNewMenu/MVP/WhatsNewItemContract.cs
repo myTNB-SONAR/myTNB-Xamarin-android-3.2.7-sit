@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
     public class WhatsNewItemContract
     {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.AndroidApp.Src.SitecoreCMS.Model;
 using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS.Model

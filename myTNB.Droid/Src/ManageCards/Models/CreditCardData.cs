@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.MultipleAccountPayment.Models;
+﻿using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.ManageCards.Models
+namespace myTNB.AndroidApp.Src.ManageCards.Models
 {
     public class CreditCardData
     {

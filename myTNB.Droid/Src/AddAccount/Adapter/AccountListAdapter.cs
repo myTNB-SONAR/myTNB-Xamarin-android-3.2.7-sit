@@ -3,13 +3,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.AddAccount
+namespace myTNB.AndroidApp.Src.AddAccount
 {
     public class AccountListAdapter : RecyclerView.Adapter
     {

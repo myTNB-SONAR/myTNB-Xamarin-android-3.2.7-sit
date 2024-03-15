@@ -1,8 +1,8 @@
 ﻿using System;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Login.Models
+namespace myTNB.AndroidApp.Src.Login.Models
 {
     public class UpdateUserStatusActivateResponse
     {

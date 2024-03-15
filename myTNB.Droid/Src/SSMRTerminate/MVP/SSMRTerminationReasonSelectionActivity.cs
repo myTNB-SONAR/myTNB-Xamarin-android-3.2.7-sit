@@ -5,19 +5,19 @@ using Android.Content;
 using Android.OS;
 using Android.Util;
 using Android.Views;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using Android.Content.PM;
 
-using myTNB.Android.Src.SSMRTerminate.Api;
+using myTNB.AndroidApp.Src.SSMRTerminate.Api;
 using System.Collections.Generic;
-using myTNB.Android.Src.SSMRTerminate.Adapter;
+using myTNB.AndroidApp.Src.SSMRTerminate.Adapter;
 using CheeseBind;
 using AndroidX.RecyclerView.Widget;
 
-namespace myTNB.Android.Src.SSMRTerminate.MVP
+namespace myTNB.AndroidApp.Src.SSMRTerminate.MVP
 {
     [Activity(Label = "Select Reason"
         , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.Rating.Response
+namespace myTNB.AndroidApp.Src.Rating.Response
 {
     public class SubmitRateUsResponse
     {

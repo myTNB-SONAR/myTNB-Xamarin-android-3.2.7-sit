@@ -1,6 +1,6 @@
 ﻿using Refit;
 
-namespace myTNB.Android.Src.Base.Models
+namespace myTNB.AndroidApp.Src.Base.Models
 {
     public class BaseRequest
     {

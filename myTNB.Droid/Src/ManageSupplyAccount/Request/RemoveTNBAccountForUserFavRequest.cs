@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.ManageSupplyAccount.Request
+namespace myTNB.AndroidApp.Src.ManageSupplyAccount.Request
 {
     public class RemoveTNBAccountForUserFavRequest
     {

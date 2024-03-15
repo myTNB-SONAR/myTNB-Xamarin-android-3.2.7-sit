@@ -3,7 +3,7 @@ using Android.Content;
 using Android.Util;
 using Android.OS;
 using Android.Text;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using Android.Graphics;
 using System.Net;
 using System;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using Android.Views;
 
-namespace myTNB.Android.Src.Bills.NewBillRedesign.Fragment
+namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign.Fragment
 {
     public class NBRDiscoverMoreListItemComponent : LinearLayout
     {

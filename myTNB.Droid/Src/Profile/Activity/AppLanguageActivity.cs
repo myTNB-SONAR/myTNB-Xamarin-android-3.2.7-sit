@@ -9,17 +9,17 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Base;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
 using System.Threading.Tasks;
-using myTNB.Android.Src.Maintenance.Activity;
+using myTNB.AndroidApp.Src.Maintenance.Activity;
 using AndroidX.Core.Content;
 using myTNB;
 using myTNB.Mobile.SessionCache;
 
-namespace myTNB.Android.Src.Profile.Activity
+namespace myTNB.AndroidApp.Src.Profile.Activity
 {
     [Activity(Label = "Set App Language", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class AppLanguageActivity : BaseActivityCustom

@@ -1,7 +1,7 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Refit;
 
-namespace myTNB.Android.Src.ResetPassword.Request
+namespace myTNB.AndroidApp.Src.ResetPassword.Request
 {
     public class ResetPasswordRequest : BaseRequest
     {

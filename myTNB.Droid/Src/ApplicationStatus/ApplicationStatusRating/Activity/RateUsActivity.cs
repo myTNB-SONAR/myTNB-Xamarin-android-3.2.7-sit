@@ -20,13 +20,13 @@ using myTNB.Mobile.API.Managers.Rating;
 using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using myTNB.Mobile.API.Models.Rating.PostSubmitRating;
 using myTNB.Mobile.SessionCache;
-using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-namespace myTNB.Android.Src.ApplicationStatusRating.Activity
+namespace myTNB.AndroidApp.Src.ApplicationStatusRating.Activity
 {
     [Activity(Label = "Rate"
         , ScreenOrientation = ScreenOrientation.Portrait

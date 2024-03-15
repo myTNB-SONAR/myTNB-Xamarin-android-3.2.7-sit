@@ -5,7 +5,7 @@ using Android.OS;
 using Android.Runtime;
 using System;
 
-namespace myTNB.Android.Src.FindUs.Maps
+namespace myTNB.AndroidApp.Src.FindUs.Maps
 {
     public class MapLocationListener : Java.Lang.Object, ILocationListener
     {

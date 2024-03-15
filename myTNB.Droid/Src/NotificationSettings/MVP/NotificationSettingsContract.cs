@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.SelectNotification.Models;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.SelectNotification.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.NotificationSettings.MVP
+namespace myTNB.AndroidApp.Src.NotificationSettings.MVP
 {
     public class NotificationSettingsContract
     {

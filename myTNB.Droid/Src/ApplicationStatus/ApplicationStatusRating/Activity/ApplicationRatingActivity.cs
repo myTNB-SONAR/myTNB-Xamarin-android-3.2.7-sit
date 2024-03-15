@@ -3,8 +3,8 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using myTNB.Mobile;
 using Newtonsoft.Json;
@@ -12,7 +12,7 @@ using myTNB.Mobile.API.Models.Rating.GetCustomerRatingMaster;
 using System.Linq;
 using Android.Runtime;
 
-namespace myTNB.Android.Src.ApplicationStatusRating.Activity
+namespace myTNB.AndroidApp.Src.ApplicationStatusRating.Activity
 {
     [Activity(Label = "Rate"
         , ScreenOrientation = ScreenOrientation.Portrait

@@ -8,13 +8,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using AlertDialog = Android.App.AlertDialog;
-using Constants = myTNB.Android.Src.Utils.Constants;
+using Constants = myTNB.AndroidApp.Src.Utils.Constants;
 using Android.Util;
 
-namespace myTNB.Android.Src.Base.Fragments
+namespace myTNB.AndroidApp.Src.Base.Fragments
 {
     /// <summary>
     /// The class that abstracts the implementation of the resourceId and permissions

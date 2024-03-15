@@ -1,7 +1,7 @@
 ﻿using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Rating.Request
+namespace myTNB.AndroidApp.Src.Rating.Request
 {
     public class SubmitRateUsRequest
     {

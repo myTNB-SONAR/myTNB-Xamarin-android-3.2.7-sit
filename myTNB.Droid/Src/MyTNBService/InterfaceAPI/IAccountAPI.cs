@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.Business;
 using Refit;
 
-namespace myTNB.Android.Src.MyTNBService.InterfaceAPI
+namespace myTNB.AndroidApp.Src.MyTNBService.InterfaceAPI
 {
     public interface IAccountAPI
     {

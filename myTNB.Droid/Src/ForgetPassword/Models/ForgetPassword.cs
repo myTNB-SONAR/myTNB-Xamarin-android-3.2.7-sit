@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.ForgetPassword.Models
+namespace myTNB.AndroidApp.Src.ForgetPassword.Models
 {
     public class ForgetPassword
     {

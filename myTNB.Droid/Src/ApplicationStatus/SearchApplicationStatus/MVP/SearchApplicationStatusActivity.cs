@@ -1,38 +1,38 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.OS;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
 using Android.Views;
 using Android.Util;
 using System;
 using CheeseBind;
 using Android.Widget;
-using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.Models;
+using myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.Models;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP;
+using myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.SearchApplicationStatusSelection.MVP;
 using Android.Runtime;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
 using myTNB.Mobile;
 using System.Linq;
 using myTNB;
-using myTNB.Android.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
 using System.Text;
 using Android.Text;
-using myTNB.Android.Src.Database.Model;
+using myTNB.AndroidApp.Src.Database.Model;
 using Android.Graphics.Drawables;
 using myTNB.Mobile.API.Models.ApplicationStatus.GetApplicationsByCA;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.Adapter;
+using myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.Adapter;
 using myTNB.Mobile.SessionCache;
 using Android.Content.PM;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB.Android.Src.XDetailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Models;
 using static myTNB.Mobile.Constants.Notifications.PushNotificationDetails;
 
-namespace myTNB.Android.Src.ApplicationStatus.SearchApplicationStatus.MVP
+namespace myTNB.AndroidApp.Src.ApplicationStatus.SearchApplicationStatus.MVP
 {
     [Activity(Label = "Search Application Status", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.RegisterForm")]
     public class SearchApplicationStatusActivity : BaseActivityCustom, SearchApplicationStatusContract.IView, View.IOnTouchListener

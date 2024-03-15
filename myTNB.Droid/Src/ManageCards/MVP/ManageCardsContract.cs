@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.ManageCards.Models;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.ManageCards.Models;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.ManageCards.MVP
+namespace myTNB.AndroidApp.Src.ManageCards.MVP
 {
     public class ManageCardsContract
     {

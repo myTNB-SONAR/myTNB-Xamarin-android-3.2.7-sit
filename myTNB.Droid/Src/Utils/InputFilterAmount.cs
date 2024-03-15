@@ -1,10 +1,10 @@
 ﻿using Android.Text;
 using Android.Widget;
 using Java.Lang;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using static myTNB.Android.Src.MultipleAccountPayment.Adapter.SelectAccountListAdapter;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using static myTNB.AndroidApp.Src.MultipleAccountPayment.Adapter.SelectAccountListAdapter;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class InputFilterAmount : Java.Lang.Object, ITextWatcher
     {

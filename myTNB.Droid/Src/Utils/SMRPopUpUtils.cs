@@ -1,15 +1,15 @@
 ﻿
 using AndroidX.Fragment.App;
 using myTNB.SitecoreCMS.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.SSMR.SSMRMeterReadingTooltip.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.SSMR.SSMRMeterReadingTooltip.MVP;
 using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class SMRPopUpUtils
     {

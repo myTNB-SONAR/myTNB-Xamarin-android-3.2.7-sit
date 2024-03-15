@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.NotificationFilter.Models;
+﻿using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.NotificationFilter.Models;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.NotificationFilter.MVP
+namespace myTNB.AndroidApp.Src.NotificationFilter.MVP
 {
     public class NotificationFilterContract
     {

@@ -7,19 +7,19 @@ using Android.App;
 using Android.Content;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Api;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Model;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Request;
-using myTNB.Android.Src.myTNBMenu.Fragments.RewardMenu.Response;
-using myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.Model;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.Utils;
-using static myTNB.Android.Src.Utils.Constants;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Api;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Request;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.Response;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.Model;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.Utils;
+using static myTNB.AndroidApp.Src.Utils.Constants;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP
 {
     public class WhatsNewMenuPresenter : WhatsNewMenuContract.IWhatsNewMenuPresenter
     {

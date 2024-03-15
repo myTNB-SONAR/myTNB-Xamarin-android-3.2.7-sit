@@ -12,14 +12,14 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.UpdatePassword.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.UpdatePassword.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.UpdatePassword.Activity
+namespace myTNB.AndroidApp.Src.UpdatePassword.Activity
 {
     [Activity(Label = "@string/update_password_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

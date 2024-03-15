@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Extensions;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.Android.Src.SiteCore;
+using myTNB.AndroidApp.Src.SiteCore;
 using Sitecore.MobileSDK.API.Items;
 using Sitecore.MobileSDK.API.Request.Parameters;
 

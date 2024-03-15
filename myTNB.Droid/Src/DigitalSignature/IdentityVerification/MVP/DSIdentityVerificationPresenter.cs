@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.DeviceCache;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DeviceCache;
 using myTNB.Mobile;
 using myTNB.Mobile.AWS.Managers.DS;
 using myTNB.Mobile.AWS.Models.DS.Status;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.DigitalSignature.IdentityVerification.MVP
+namespace myTNB.AndroidApp.Src.DigitalSignature.IdentityVerification.MVP
 {
     public class DSIdentityVerificationPresenter : DSIdentityVerificationContract.IUserActionsListener
     {

@@ -22,12 +22,12 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using Java.Lang;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FindUs.Models;
-using myTNB.Android.Src.FindUs.MVP;
-using myTNB.Android.Src.FindUs.Response;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FindUs.Models;
+using myTNB.AndroidApp.Src.FindUs.MVP;
+using myTNB.AndroidApp.Src.FindUs.Response;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.FindUs.Activity
+namespace myTNB.AndroidApp.Src.FindUs.Activity
 {
     [Activity(Label = "Find Us"
         , ScreenOrientation = ScreenOrientation.Portrait

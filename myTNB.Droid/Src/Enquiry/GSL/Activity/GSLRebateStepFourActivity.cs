@@ -16,20 +16,20 @@ using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Enquiry.Common;
-using myTNB.Android.Src.Enquiry.Component;
-using myTNB.Android.Src.Enquiry.GSL.MVP;
-using myTNB.Android.Src.SubmitEnquirySuccess.Activity;
-using myTNB.Android.Src.Utils;
-using FileUtils = myTNB.Android.Src.Utils.FileUtils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Enquiry.Common;
+using myTNB.AndroidApp.Src.Enquiry.Component;
+using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
+using myTNB.AndroidApp.Src.SubmitEnquirySuccess.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using FileUtils = myTNB.AndroidApp.Src.Utils.FileUtils;
 
-namespace myTNB.Android.Src.Enquiry.GSL.Activity
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
     [Activity(Label = "GSL Rebate Step Four"
       , ScreenOrientation = ScreenOrientation.Portrait

@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.LogUserAccess.Models;
-using myTNB.Android.Src.Utils;
+﻿using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.LogUserAccess.Models;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.LogUserAccess.MVP
+namespace myTNB.AndroidApp.Src.LogUserAccess.MVP
 {
     public class LogUserAccessPresenter : LogUserAccessContract.IUserActionsListener
     {

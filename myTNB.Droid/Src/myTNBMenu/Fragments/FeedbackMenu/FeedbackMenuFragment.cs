@@ -11,23 +11,23 @@ using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
 using Google.Android.Material.Snackbar;
 using Java.Lang;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Fragments;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Feedback_Login_BillRelated.Activity;
-using myTNB.Android.Src.Feedback_Login_FaultyStreetLamps.Activity;
-using myTNB.Android.Src.Feedback_Login_Others.Activity;
-using myTNB.Android.Src.Feedback_Prelogin_NewIC.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.myTNBMenu.MVP.Fragment;
-using myTNB.Android.Src.SelectSubmittedFeedback.Activity;
-using myTNB.Android.Src.SubmittedNewEnquiry.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity;
+using myTNB.AndroidApp.Src.Feedback_Login_FaultyStreetLamps.Activity;
+using myTNB.AndroidApp.Src.Feedback_Login_Others.Activity;
+using myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.MVP.Fragment;
+using myTNB.AndroidApp.Src.SelectSubmittedFeedback.Activity;
+using myTNB.AndroidApp.Src.SubmittedNewEnquiry.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.FeedbackMenu
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.FeedbackMenu
 {
     public class FeedbackMenuFragment : BaseFragment, FeedbackMenuContract.IView
     {

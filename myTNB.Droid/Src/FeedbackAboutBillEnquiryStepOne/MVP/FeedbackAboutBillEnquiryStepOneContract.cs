@@ -9,9 +9,9 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.MVP;
 
-namespace myTNB.Android.Src.FeedbackAboutBillEnquiryStepOne.MVP
+namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.MVP
 {
     public class FeedbackAboutBillEnquiryStepOneContract
     {

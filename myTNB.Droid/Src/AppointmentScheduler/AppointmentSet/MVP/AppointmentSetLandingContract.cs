@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.AppointmentScheduler.AppointmentSetLanding.MVP
+namespace myTNB.AndroidApp.Src.AppointmentScheduler.AppointmentSetLanding.MVP
 {
     public class AppointmentSetLandingContract
     {

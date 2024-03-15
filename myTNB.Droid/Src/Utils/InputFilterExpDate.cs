@@ -2,7 +2,7 @@
 using Android.Widget;
 using Java.Lang;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class InputFilterExpDate : Java.Lang.Object, IInputFilter
     {

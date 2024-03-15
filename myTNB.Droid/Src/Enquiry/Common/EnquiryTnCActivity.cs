@@ -8,12 +8,12 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Enquiry.Common
+namespace myTNB.AndroidApp.Src.Enquiry.Common
 {
     [Activity(ScreenOrientation = ScreenOrientation.Portrait
               , WindowSoftInputMode = SoftInput.AdjustPan

@@ -5,7 +5,7 @@ using Dynatrace.Xamarin.Binding.Android;
 using Dynatrace.Xamarin;
 using Firebase.Analytics;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
 	public static class FirebaseAnalyticsUtils
 	{

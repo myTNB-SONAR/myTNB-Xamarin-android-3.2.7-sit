@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.Barcode.MVP
+﻿namespace myTNB.AndroidApp.Src.Barcode.MVP
 {
     public class BarcodePresenter : BarcodeContract.IUserActionsListener
     {

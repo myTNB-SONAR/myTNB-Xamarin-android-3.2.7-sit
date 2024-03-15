@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src
+﻿namespace myTNB.AndroidApp.Src
 {
     internal static class DeviceSizeCache
     {

@@ -2,7 +2,7 @@
 using Refit;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.ServiceDistruptionRating.Model
+namespace myTNB.AndroidApp.Src.ServiceDistruptionRating.Model
 {
     public class RateUsStar
     {

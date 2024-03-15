@@ -13,11 +13,11 @@ using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Text;
 using Java.Util;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.Utils.PDFView;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.PDFView;
 using myTNB.Mobile.API.Managers.Payment;
 using System;
 using System.IO;
@@ -25,9 +25,9 @@ using System.Net;
 using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
-using FileUtils = myTNB.Android.Src.Utils.FileUtils;
+using FileUtils = myTNB.AndroidApp.Src.Utils.FileUtils;
 
-namespace myTNB.Android.Src.ViewBill.Activity
+namespace myTNB.AndroidApp.Src.ViewBill.Activity
 {
     [Activity(Label = "@string/viewbill_activity_title"
           , ScreenOrientation = ScreenOrientation.Portrait

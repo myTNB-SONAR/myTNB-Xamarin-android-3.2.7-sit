@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.AppLaunch.Requests
+namespace myTNB.AndroidApp.Src.AppLaunch.Requests
 {
     public class AccountsSMRStatusRequest
     {

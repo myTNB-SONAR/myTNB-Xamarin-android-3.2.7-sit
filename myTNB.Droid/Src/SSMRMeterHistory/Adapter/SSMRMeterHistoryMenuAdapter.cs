@@ -5,12 +5,12 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
-using myTNB.Android.Src.SSMRMeterHistory.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.SSMRMeterHistory.Adapter
+namespace myTNB.AndroidApp.Src.SSMRMeterHistory.Adapter
 {
     public class SSMRMeterHistoryMenuAdapter : RecyclerView.Adapter
     {

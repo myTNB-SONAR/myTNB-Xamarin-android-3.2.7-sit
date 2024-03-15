@@ -1,9 +1,9 @@
-﻿using myTNB.Android.Src.EnergyBudgetRating.Model;
-using myTNB.Android.Src.MyTNBService.Request;
+﻿using myTNB.AndroidApp.Src.EnergyBudgetRating.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.EnergyBudgetRating.Request
+namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Request
 {
     public class SubmitRateUsRequest : BaseRequest
     {

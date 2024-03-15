@@ -6,7 +6,7 @@ using Android.Views;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Utils.Custom.Scanner
+namespace myTNB.AndroidApp.Src.Utils.Custom.Scanner
 {
     public class ZxingOverlayViewOverride : View
     {

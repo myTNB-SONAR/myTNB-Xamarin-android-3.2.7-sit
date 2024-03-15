@@ -9,12 +9,12 @@ using Android.Content;
 using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.SiteCore;
-using myTNB.Android.Src.SitecoreCMS.Model;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.SiteCore;
+using myTNB.AndroidApp.Src.SitecoreCMS.Model;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class CountryUtil
     {

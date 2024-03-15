@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class HomeMenuUtils
     {

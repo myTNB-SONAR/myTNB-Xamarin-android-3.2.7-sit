@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.XEmailRegistrationForm.Models
+namespace myTNB.AndroidApp.Src.XEmailRegistrationForm.Models
 {
     public class UserAll
     {

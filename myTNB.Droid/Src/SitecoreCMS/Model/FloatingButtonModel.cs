@@ -3,7 +3,7 @@ using Android.Graphics;
 using myTNB.Mobile;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SitecoreCMS.Model
+namespace myTNB.AndroidApp.Src.SitecoreCMS.Model
 {
 
     public class FloatingButtonTimeStampResponseModel

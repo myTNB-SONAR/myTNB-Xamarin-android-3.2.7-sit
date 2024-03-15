@@ -1,12 +1,12 @@
 ﻿using System;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Base.MVP;
 using Refit;
-using myTNB.Android.Src.NotificationDetails.Models;
+using myTNB.AndroidApp.Src.NotificationDetails.Models;
 
-namespace myTNB.Android.Src.DigitalSignature.DSNotificationDetails.MVP
+namespace myTNB.AndroidApp.Src.DigitalSignature.DSNotificationDetails.MVP
 {
     public class DSNotificationDetailsContract
     {

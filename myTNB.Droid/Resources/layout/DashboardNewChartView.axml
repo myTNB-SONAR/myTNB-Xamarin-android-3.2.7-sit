@@ -9,7 +9,7 @@
 	android:theme="@style/Theme.Dashboard"
 	android:background="@color/background_pale_grey"
 	android:id="@+id/rootView">
-	<myTNB.Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView
+	<myTNB.AndroidApp.Src.myTNBMenu.Listener.NMRESMDashboardScrollView
 		android:id="@+id/scroll_view"
 		android:layout_width="match_parent"
 		android:overScrollMode="always"
@@ -1755,7 +1755,7 @@
 				</LinearLayout>
 			</FrameLayout>
 		</LinearLayout>
-	</myTNB.Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView>
+	</myTNB.AndroidApp.Src.myTNBMenu.Listener.NMRESMDashboardScrollView>
 	<LinearLayout
 		android:id="@+id/bottom_sheet"
 		android:layout_height="wrap_content"

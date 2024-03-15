@@ -1,27 +1,27 @@
 ﻿using System;
 using System.IO;
 using Android.Content;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Bills.AccountStatement.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Bills.AccountStatement.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.Mobile;
 using Android.Util;
 using System.Net;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Android.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.MyHome.Model;
 using System.Collections.Generic;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.MyTNBService.Parser;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.MyTNBService.Parser;
 using Refit;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using myTNB.Android.Src.MultipleAccountPayment.Activity;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Activity;
 using Android.Provider;
 using myTNB;
 using myTNB.Mobile.API.Managers.Payment;
@@ -30,13 +30,13 @@ using System.Linq;
 using System.Diagnostics;
 using static Android.Provider.Settings;
 using System.Reflection;
-using static myTNB.Android.Src.MyTNBService.Response.PaymentTransactionIdResponse;
-using myTNB.Android.Src.DeviceCache;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Billing.MVP;
+using static myTNB.AndroidApp.Src.MyTNBService.Response.PaymentTransactionIdResponse;
+using myTNB.AndroidApp.Src.DeviceCache;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Billing.MVP;
 using System.Web;
 
-namespace myTNB.Android.Src.MyHome.MVP
+namespace myTNB.AndroidApp.Src.MyHome.MVP
 {
     public class MyHomeMicrositePresenter : MyHomeMicrositeContract.IUserActionsListener
     {

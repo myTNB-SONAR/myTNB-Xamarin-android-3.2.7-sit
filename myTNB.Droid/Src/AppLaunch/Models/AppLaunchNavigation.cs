@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.AppLaunch.Models
+﻿namespace myTNB.AndroidApp.Src.AppLaunch.Models
 {
     public enum AppLaunchNavigation
     {

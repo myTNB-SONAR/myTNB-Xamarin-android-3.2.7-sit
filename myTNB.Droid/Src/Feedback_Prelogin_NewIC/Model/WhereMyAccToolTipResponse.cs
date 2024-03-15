@@ -11,7 +11,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.Feedback_Prelogin_NewIC.Model
+namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Model
 {
    public class WhereMyAccToolTipResponse
     {

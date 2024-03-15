@@ -15,27 +15,27 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.ForgetPassword.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.RegisterValidation;
-using myTNB.Android.Src.XEmailRegistrationForm.Models;
-using myTNB.Android.Src.XEmailRegistrationForm.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.ForgetPassword.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.RegisterValidation;
+using myTNB.AndroidApp.Src.XEmailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.XEmailRegistrationForm.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
-using myTNB.Android.Src.PreLogin.Activity;
-using myTNB.Android.Src.RegistrationForm.Activity;
+using myTNB.AndroidApp.Src.PreLogin.Activity;
+using myTNB.AndroidApp.Src.RegistrationForm.Activity;
 using System.Threading.Tasks;
 using Android.Util;
 using System.Timers;
 using static Android.Resource;
 
-namespace myTNB.Android.Src.XEmailRegistrationForm.Activity
+namespace myTNB.AndroidApp.Src.XEmailRegistrationForm.Activity
 {
     [Activity(Label = "@string/registration_activity_title"
       , NoHistory = false

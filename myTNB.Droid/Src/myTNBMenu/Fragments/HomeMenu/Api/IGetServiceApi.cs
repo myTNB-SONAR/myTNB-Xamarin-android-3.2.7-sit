@@ -1,10 +1,10 @@
-﻿using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+﻿using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Api
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Api
 {
 	public interface IGetServiceApi
     {

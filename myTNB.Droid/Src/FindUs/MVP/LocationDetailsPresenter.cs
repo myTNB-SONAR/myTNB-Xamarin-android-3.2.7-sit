@@ -1,14 +1,14 @@
 ﻿using Android.Util;
-using myTNB.Android.Src.FindUs.Api;
-using myTNB.Android.Src.FindUs.Response;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.FindUs.Api;
+using myTNB.AndroidApp.Src.FindUs.Response;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB.Android.Src.FindUs.MVP
+namespace myTNB.AndroidApp.Src.FindUs.MVP
 {
     public class LocationDetailsPresenter : LocationDetailsContract.IUserActionsListener
     {

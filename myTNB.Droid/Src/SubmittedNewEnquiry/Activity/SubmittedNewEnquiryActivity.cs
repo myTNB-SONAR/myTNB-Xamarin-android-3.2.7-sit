@@ -14,18 +14,18 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.FeedbackFullScreenImage.Activity;
-using myTNB.Android.Src.FeedbackGeneralEnquiryStepOne.Adapter;
-using myTNB.Android.Src.SubmittedNewEnquiry.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.FeedbackFullScreenImage.Activity;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Adapter;
+using myTNB.AndroidApp.Src.SubmittedNewEnquiry.MVP;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Content;
 
-namespace myTNB.Android.Src.SubmittedNewEnquiry.Activity
+namespace myTNB.AndroidApp.Src.SubmittedNewEnquiry.Activity
 {
 
     [Activity(Label = "Submitted Enquiry"

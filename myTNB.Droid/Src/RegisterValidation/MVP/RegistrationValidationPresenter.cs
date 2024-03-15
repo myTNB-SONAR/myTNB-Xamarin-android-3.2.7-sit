@@ -2,18 +2,18 @@
 using Android.Content.PM;
 using Android.Text;
 using Android.Util;
-using myTNB.Android.Src.AppLaunch.Api;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.AppLaunch.Requests;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Login.Requests;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.RegistrationForm.Models;
-using myTNB.Android.Src.RegistrationForm.Requests;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Api;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Requests;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Login.Requests;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.RegistrationForm.Models;
+using myTNB.AndroidApp.Src.RegistrationForm.Requests;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 
-namespace myTNB.Android.Src.RegisterValidation.MVP
+namespace myTNB.AndroidApp.Src.RegisterValidation.MVP
 {
     public class RegistrationValidationPresenter : RegistrationValidationContract.IUserActionsListener
     {

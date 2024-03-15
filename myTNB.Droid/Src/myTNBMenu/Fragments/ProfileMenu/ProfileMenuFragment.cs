@@ -15,30 +15,30 @@ using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Java.Lang;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Fragments;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.FAQ.Activity;
-using myTNB.Android.Src.FindUs.Activity;
-using myTNB.Android.Src.LogoutEnd.Activity;
-using myTNB.Android.Src.ManageCards.Activity;
-using myTNB.Android.Src.ManageCards.Models;
-using myTNB.Android.Src.MyAccount.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.myTNBMenu.MVP.Fragment;
-using myTNB.Android.Src.NotificationSettings.Activity;
-using myTNB.Android.Src.Profile.Activity;
-using myTNB.Android.Src.SSMR.Util;
-using myTNB.Android.Src.TermsAndConditions.Activity;
-using myTNB.Android.Src.UpdateMobileNo.Activity;
-using myTNB.Android.Src.UpdatePassword.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Fragments;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FAQ.Activity;
+using myTNB.AndroidApp.Src.FindUs.Activity;
+using myTNB.AndroidApp.Src.LogoutEnd.Activity;
+using myTNB.AndroidApp.Src.ManageCards.Activity;
+using myTNB.AndroidApp.Src.ManageCards.Models;
+using myTNB.AndroidApp.Src.MyAccount.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.MVP.Fragment;
+using myTNB.AndroidApp.Src.NotificationSettings.Activity;
+using myTNB.AndroidApp.Src.Profile.Activity;
+using myTNB.AndroidApp.Src.SSMR.Util;
+using myTNB.AndroidApp.Src.TermsAndConditions.Activity;
+using myTNB.AndroidApp.Src.UpdateMobileNo.Activity;
+using myTNB.AndroidApp.Src.UpdatePassword.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.ProfileMenu
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.ProfileMenu
 {
     public class ProfileMenuFragment : BaseFragmentCustom, ProfileMenuContract.IView
     {

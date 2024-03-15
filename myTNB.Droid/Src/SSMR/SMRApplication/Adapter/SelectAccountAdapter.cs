@@ -4,11 +4,11 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.SSMR.SMRApplication.MVP;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.Adapter
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.Adapter
 {
     public class SelectAccountAdapter : BaseCustomAdapter<SMRAccount>
     {

@@ -4,13 +4,13 @@ using Android.App;
 using Android.Content;
 using Android.Runtime;
 using myTNB;
-using myTNB.Android.Src.Common;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Common;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.Enquiry.GSL.MVP
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.MVP
 {
     public class GSLRebateStepOnePresenter : GSLRebateStepOneContract.IUserActionsListener
     {

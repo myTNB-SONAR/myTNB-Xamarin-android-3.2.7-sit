@@ -4,13 +4,13 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.ManageCards.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.ManageCards.Models;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.ManageCards.Adapter
+namespace myTNB.AndroidApp.Src.ManageCards.Adapter
 {
     public class ManageCardsAdapter : BaseRecyclerAdapter<CreditCardData>
     {

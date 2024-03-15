@@ -7,14 +7,14 @@ using Android.Widget;
 using AndroidX.Core.Graphics.Drawable;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.Feedback_Login_FaultyStreetLamps.Adapter
+namespace myTNB.AndroidApp.Src.Feedback_Login_FaultyStreetLamps.Adapter
 {
     public class FeedbackLoginFaultyStreetLampsRecyclerAdapter : BaseRecyclerAdapter<AttachedImage>
     {

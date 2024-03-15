@@ -1,6 +1,6 @@
 ﻿using Android.Util;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public class SSLFactoryHelper
     {

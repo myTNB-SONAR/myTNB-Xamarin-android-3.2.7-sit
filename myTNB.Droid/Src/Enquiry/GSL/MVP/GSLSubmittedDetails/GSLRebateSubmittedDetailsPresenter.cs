@@ -4,12 +4,12 @@ using System.Globalization;
 using System.Threading.Tasks;
 using Android.Content;
 using Android.Graphics;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
-using static myTNB.Android.Src.Base.Models.SubmittedFeedbackDetails;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
+using static myTNB.AndroidApp.Src.Base.Models.SubmittedFeedbackDetails;
 
-namespace myTNB.Android.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
+namespace myTNB.AndroidApp.Src.Enquiry.GSL.MVP.GSLSubmittedDetails
 {
     public class GSLRebateSubmittedDetailsPresenter : GSLRebateSubmittedDetailsContract.IUserActionsListener
     {

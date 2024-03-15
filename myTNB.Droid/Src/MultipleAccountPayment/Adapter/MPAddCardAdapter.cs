@@ -1,13 +1,13 @@
 ﻿using Android.Text;
 using Android.Views;
 using Android.Widget;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.Adapter
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.Adapter
 {
     class MPAddCardAdapter : BaseAdapter
     {

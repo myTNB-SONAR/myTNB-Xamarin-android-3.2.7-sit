@@ -7,17 +7,17 @@ using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.AppBar;
-using myTNB.Android.Src.AddAccount.Adapter;
-using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Adapter;
+using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
 
-namespace myTNB.Android.Src.AddAccount.Activity
+namespace myTNB.AndroidApp.Src.AddAccount.Activity
 {
     [Activity(Label = "Success",
         ScreenOrientation = ScreenOrientation.Portrait,

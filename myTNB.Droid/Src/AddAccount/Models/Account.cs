@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SQLite;
 
-namespace myTNB.Android.Src.AddAccount.Models
+namespace myTNB.AndroidApp.Src.AddAccount.Models
 {
 
     public class Account

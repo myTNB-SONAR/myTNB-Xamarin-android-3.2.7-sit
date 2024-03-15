@@ -1,8 +1,8 @@
 ﻿
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 using Refit;
 
-namespace myTNB.Android.Src.XDetailRegistrationForm.Requests
+namespace myTNB.AndroidApp.Src.XDetailRegistrationForm.Requests
 {
     public class UserRegistrationRequest : BaseRequest
     {

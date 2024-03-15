@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.FindUs.Response
+namespace myTNB.AndroidApp.Src.FindUs.Response
 {
     public class GetLocationTypesResponse
     {

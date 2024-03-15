@@ -6,14 +6,14 @@ using Android.Preferences;
 using Android.Widget;
 using CheeseBind;
 using myTNB;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.PreLogin.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.PreLogin.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Runtime;
 
-namespace myTNB.Android.Src.LogoutEnd.Activity
+namespace myTNB.AndroidApp.Src.LogoutEnd.Activity
 {
     [Activity(Label = "@string/logout_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait

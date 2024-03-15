@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.Utils.Deeplink
+﻿namespace myTNB.AndroidApp.Src.Utils.Deeplink
 {
     public class Deeplink
     {

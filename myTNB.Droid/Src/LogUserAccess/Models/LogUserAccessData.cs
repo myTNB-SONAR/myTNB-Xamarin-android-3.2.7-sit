@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Database.Model;
+﻿using myTNB.AndroidApp.Src.Database.Model;
 using Newtonsoft.Json;
 using System;
 
-namespace myTNB.Android.Src.LogUserAccess.Models
+namespace myTNB.AndroidApp.Src.LogUserAccess.Models
 {
     public class LogUserAccessData
     {

@@ -5,17 +5,17 @@ using Android.Content;
 using Android.OS;
 using Android.Util;
 using Android.Views;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.MultipleAccountPayment.Models;
-using myTNB.Android.Src.MyHome.Model;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.MyTNBService.Parser;
-using myTNB.Android.Src.MyTNBService.Response;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Models;
+using myTNB.AndroidApp.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Parser;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.MyHome.MVP
+namespace myTNB.AndroidApp.Src.MyHome.MVP
 {
     public class MyHomePaymentDetailsPresenter : MyHomePaymentDetailsContract.IUserActionsListener
     {

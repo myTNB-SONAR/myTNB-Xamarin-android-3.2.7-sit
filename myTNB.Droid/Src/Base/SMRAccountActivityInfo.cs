@@ -1,7 +1,7 @@
 ﻿using System;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 
-namespace myTNB.Android.Src.Base
+namespace myTNB.AndroidApp.Src.Base
 {
     public class SMRAccountActivityInfo
     {

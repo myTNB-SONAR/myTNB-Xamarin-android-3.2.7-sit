@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using myTNB.Mobile.Business;
 using Refit;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Api
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api
 {
     public interface SubmitMeterReadingApi
     {

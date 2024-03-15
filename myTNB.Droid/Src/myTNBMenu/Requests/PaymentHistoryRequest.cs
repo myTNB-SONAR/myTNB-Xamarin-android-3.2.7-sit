@@ -1,8 +1,8 @@
-﻿using myTNB.Android.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.Base.Models;
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.myTNBMenu.Requests
+namespace myTNB.AndroidApp.Src.myTNBMenu.Requests
 {
     public class PaymentHistoryRequest : BaseRequest
     {

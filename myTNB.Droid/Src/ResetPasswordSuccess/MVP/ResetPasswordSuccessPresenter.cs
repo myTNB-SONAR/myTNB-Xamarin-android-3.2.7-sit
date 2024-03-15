@@ -1,4 +1,4 @@
-﻿namespace myTNB.Android.Src.ResetPasswordSuccess.MVP
+﻿namespace myTNB.AndroidApp.Src.ResetPasswordSuccess.MVP
 {
     public class ResetPasswordSuccessPresenter : ResetPasswordSuccessContract.IUserActionsListener
     {

@@ -2,18 +2,18 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using myTNB.Mobile.Business;
-using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.AppLaunch.Requests;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Api;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
-using myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
-using myTNB.Android.Src.SummaryDashBoard.API;
-using myTNB.Android.Src.SummaryDashBoard.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Requests;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Api;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Requests;
+using myTNB.AndroidApp.Src.SummaryDashBoard.API;
+using myTNB.AndroidApp.Src.SummaryDashBoard.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.HomeMenu.Service
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.Service
 {
     public class HomeMenuServiceImpl : HomeMenuContract.IHomeMenuService
     {

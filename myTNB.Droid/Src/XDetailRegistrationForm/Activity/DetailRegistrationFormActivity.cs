@@ -15,33 +15,33 @@ using AndroidX.Core.Content;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Common.Activity;
-using myTNB.Android.Src.Common.Model;
-using myTNB.Android.Src.CompoundView;
-using myTNB.Android.Src.RegisterValidation;
-using myTNB.Android.Src.XDetailRegistrationForm.MVP;
-using myTNB.Android.Src.TermsAndConditions.Activity;
-using myTNB.Android.Src.Utils;
-using myTNB.Android.Src.XDetailRegistrationForm.Models;
-using myTNB.Android.Src.XDetailRegistrationForm.Adapter;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Common.Activity;
+using myTNB.AndroidApp.Src.Common.Model;
+using myTNB.AndroidApp.Src.CompoundView;
+using myTNB.AndroidApp.Src.RegisterValidation;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.MVP;
+using myTNB.AndroidApp.Src.TermsAndConditions.Activity;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Models;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Adapter;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
-using myTNB.Android.Src.XDetailRegistrationForm.Activity;
+using myTNB.AndroidApp.Src.XDetailRegistrationForm.Activity;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Android.Graphics;
 using Android.Content.Res;
 using System.Linq;
 using Android.InputMethodServices;
-using static myTNB.Android.Src.RegistrationForm.Activity.DetailRegistrationFormActivity.KeyListener;
-using myTNB.Android.Src.Base;
+using static myTNB.AndroidApp.Src.RegistrationForm.Activity.DetailRegistrationFormActivity.KeyListener;
+using myTNB.AndroidApp.Src.Base;
 using Java.Util.Regex;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.RegistrationForm.Activity
+namespace myTNB.AndroidApp.Src.RegistrationForm.Activity
 {
     [Activity(Label = "@string/registration_activity_title"
       , NoHistory = false

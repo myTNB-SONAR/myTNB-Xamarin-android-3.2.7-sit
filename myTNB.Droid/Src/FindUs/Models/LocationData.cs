@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.FindUs.Models
+namespace myTNB.AndroidApp.Src.FindUs.Models
 {
     public class LocationData
     {

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
 
-namespace myTNB.Android.Src.WhatsNewDetail.MVP
+namespace myTNB.AndroidApp.Src.WhatsNewDetail.MVP
 {
     public class WhatsNewDetailContract
     {

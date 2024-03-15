@@ -1,10 +1,10 @@
 ﻿using myTNB.Mobile.Business;
-using myTNB.Android.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
 using Refit;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace myTNB.Android.Src.Base.Api
+namespace myTNB.AndroidApp.Src.Base.Api
 {
     public interface GetMasterDataApi
     {

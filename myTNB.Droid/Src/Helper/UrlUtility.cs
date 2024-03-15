@@ -1,5 +1,5 @@
 ﻿using System;
-namespace myTNB.Android.Src.Helper
+namespace myTNB.AndroidApp.Src.Helper
 {
     public class UrlUtility
     {

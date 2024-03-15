@@ -1,7 +1,7 @@
 ﻿using System;
-using myTNB.Android.Src.Base.Request;
+using myTNB.AndroidApp.Src.Base.Request;
 
-namespace myTNB.Android.Src.MyTNBService.Request
+namespace myTNB.AndroidApp.Src.MyTNBService.Request
 {
     public class UserNotificationDetailsRequest : BaseRequest
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.MyHome;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.MyHome;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.MyTNBService.Request
+namespace myTNB.AndroidApp.Src.MyTNBService.Request
 {
     public class PaymentTransactionIdRequest : BaseRequest
     {

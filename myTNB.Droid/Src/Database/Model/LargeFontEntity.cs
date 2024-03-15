@@ -1,5 +1,5 @@
-﻿using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Database;
+﻿using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Database;
 using SQLite;
 using System;
 using System.Collections.Generic;

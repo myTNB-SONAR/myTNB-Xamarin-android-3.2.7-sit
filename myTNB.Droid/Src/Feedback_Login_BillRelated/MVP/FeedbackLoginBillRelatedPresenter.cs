@@ -4,20 +4,20 @@ using Android.Runtime;
 using Android.Telephony;
 using Android.Text;
 using Java.Text;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base.Request;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace myTNB.Android.Src.Feedback_Login_BillRelated.MVP
+namespace myTNB.AndroidApp.Src.Feedback_Login_BillRelated.MVP
 {
     public class FeedbackLoginBillRelatedPresenter : FeedbackLoginBillRelatedContract.IUserActionsListener
     {

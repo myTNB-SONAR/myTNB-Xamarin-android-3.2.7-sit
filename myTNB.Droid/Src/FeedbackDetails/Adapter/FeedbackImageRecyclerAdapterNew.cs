@@ -9,16 +9,16 @@ using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Utils;
 using Square.Picasso;
 using System;
 using System.Collections.Generic;
 using AndroidX.RecyclerView.Widget;
 using AndroidX.Core.Graphics.Drawable;
 
-namespace myTNB.Android.Src.FeedbackDetails.Adapter
+namespace myTNB.AndroidApp.Src.FeedbackDetails.Adapter
 {
 
     public class FeedbackImageRecyclerAdapterNew : BaseRecyclerAdapter<AttachedImage>

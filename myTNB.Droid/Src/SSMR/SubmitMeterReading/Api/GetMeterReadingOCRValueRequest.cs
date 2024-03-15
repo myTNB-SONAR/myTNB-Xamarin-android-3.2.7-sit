@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.SSMR.SMRApplication.Api;
+﻿using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Api
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Api
 {
     public class GetMeterReadingOCRValueRequest : BaseRequest
     {

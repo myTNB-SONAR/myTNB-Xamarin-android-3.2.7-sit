@@ -1,18 +1,18 @@
-﻿using myTNB.Android.Src.AppLaunch.Models;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Refit;
 using System;
-using myTNB.Android.Src.AppLaunch.Models;
-using static myTNB.Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
+using myTNB.AndroidApp.Src.AppLaunch.Models;
+using static myTNB.AndroidApp.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.NewAppTutorial.MVP;
-using myTNB.Android.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
 
-namespace myTNB.Android.Src.myTNBMenu.MVP.Fragment
+namespace myTNB.AndroidApp.Src.myTNBMenu.MVP.Fragment
 {
     public class DashboardChartContract
     {

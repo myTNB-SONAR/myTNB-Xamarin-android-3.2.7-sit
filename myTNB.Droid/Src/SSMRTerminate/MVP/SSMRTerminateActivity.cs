@@ -5,10 +5,10 @@ using Android.Content;
 using Android.OS;
 using Android.Util;
 using Android.Views;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 using CheeseBind;
 using Android.Widget;
 
@@ -16,19 +16,19 @@ using Android.Text;
 
 using System.Collections.Generic;
 using Android.Content.PM;
-using myTNB.Android.Src.SSMRTerminate.Api;
+using myTNB.AndroidApp.Src.SSMRTerminate.Api;
 using Android.Runtime;
-using myTNB.Android.Src.TermsAndConditions.Activity;
-using myTNB.Android.Src.SSMR.SMRApplication.Api;
-using myTNB.Android.Src.SSMRMeterHistory.MVP;
+using myTNB.AndroidApp.Src.TermsAndConditions.Activity;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Api;
+using myTNB.AndroidApp.Src.SSMRMeterHistory.MVP;
 using static Android.Views.View;
 using Android.Text.Style;
 using Google.Android.Material.TextField;
 using AndroidX.Core.Content;
-using myTNB.Android.Src.FAQ.Activity;
-using myTNB.Android.Src.SMRnewTncView.Activity;
+using myTNB.AndroidApp.Src.FAQ.Activity;
+using myTNB.AndroidApp.Src.SMRnewTncView.Activity;
 
-namespace myTNB.Android.Src.SSMRTerminate.MVP
+namespace myTNB.AndroidApp.Src.SSMRTerminate.MVP
 {
     [Activity(Label = "Self Meter Reading"
         , ScreenOrientation = ScreenOrientation.Portrait

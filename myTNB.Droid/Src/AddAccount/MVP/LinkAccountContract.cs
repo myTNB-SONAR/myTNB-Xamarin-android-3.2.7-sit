@@ -1,11 +1,11 @@
-﻿using myTNB.Android.Src.AddAccount.Models;
-using myTNB.Android.Src.Base.MVP;
-using myTNB.Android.Src.Database.Model;
+﻿using myTNB.AndroidApp.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Database.Model;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.AddAccount.MVP
+namespace myTNB.AndroidApp.Src.AddAccount.MVP
 {
     public class LinkAccountContract
     {

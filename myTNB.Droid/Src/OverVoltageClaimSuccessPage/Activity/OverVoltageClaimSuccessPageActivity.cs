@@ -11,16 +11,16 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.AppLaunch.Activity;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.OverVoltageFeedback;
-using myTNB.Android.Src.OverVoltageFeedback.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.OverVoltageFeedback;
+using myTNB.AndroidApp.Src.OverVoltageFeedback.Activity;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.OverVoltageClaimSuccessPage.Activity
+namespace myTNB.AndroidApp.Src.OverVoltageClaimSuccessPage.Activity
 {
     [Activity(Label = "OverVoltageClaimSuccessPage"
           , ScreenOrientation = ScreenOrientation.Portrait

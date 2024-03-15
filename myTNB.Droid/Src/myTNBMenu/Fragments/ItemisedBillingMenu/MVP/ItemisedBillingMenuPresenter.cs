@@ -1,31 +1,31 @@
 using System;
 using System.Collections.Generic;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 using System.Threading;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Services;
-using myTNB.Android.Src.SiteCore;
+using myTNB.AndroidApp.Src.SiteCore;
 using myTNB.SitecoreCMS.Model;
 using Android.App;
 using Newtonsoft.Json;
-using myTNB.Android.Src.MyTNBService.Model;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.Response;
-using static myTNB.Android.Src.MyTNBService.Response.AccountChargesResponse;
-using static myTNB.Android.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
-using myTNB.Android.Src.Base.Models;
-using myTNB.Android.Src.Base;
+using myTNB.AndroidApp.Src.MyTNBService.Model;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using static myTNB.AndroidApp.Src.MyTNBService.Response.AccountChargesResponse;
+using static myTNB.AndroidApp.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base;
 using Android.Util;
 using Android.Gms.Common.Apis;
-using myTNB.Android.Src.MyTNBService.Parser;
-using myTNB.Android.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.MyTNBService.Parser;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
 using Android.Content;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
 using myTNB.Mobile;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 
-namespace myTNB.Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
+namespace myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     public class ItemisedBillingMenuPresenter
     {

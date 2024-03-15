@@ -6,7 +6,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Listener
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Listener
 {
     public class CameraPreview : SurfaceView, ISurfaceHolderCallback
     {

@@ -2,7 +2,7 @@
 using Android.Graphics;
 using Facebook.Shimmer;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
 	public class ShimmerUtils
 	{

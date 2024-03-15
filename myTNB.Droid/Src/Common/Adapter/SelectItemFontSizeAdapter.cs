@@ -4,11 +4,11 @@ using Android.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Profile.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Profile.Activity;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.Common
+namespace myTNB.AndroidApp.Src.Common
 {
     public class SelectItemFontSizeAdapter : BaseCustomAdapter<Item>
     {

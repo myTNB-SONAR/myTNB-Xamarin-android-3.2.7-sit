@@ -4,7 +4,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 
-namespace myTNB.Android.Src.CompoundView
+namespace myTNB.AndroidApp.Src.CompoundView
 {
     public class ItemisedBillingHeaderView : LinearLayout
     {

@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Refit;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     public class SMRPhotoPopUpDetailsModel
     {

@@ -1,11 +1,11 @@
 ﻿using MikePhil.Charting.Charts;
 using MikePhil.Charting.Components;
 using MikePhil.Charting.Formatter;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.myTNBMenu.Charts.Formatter
+namespace myTNB.AndroidApp.Src.myTNBMenu.Charts.Formatter
 {
     public class SMChartsMonthFormatter : Java.Lang.Object, IAxisValueFormatter
     {

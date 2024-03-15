@@ -4,9 +4,9 @@ using Android.OS;
 using Java.IO;
 using Java.Lang;
 using Java.Nio;
-using myTNB.Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.MVP;
 
-namespace myTNB.Android.Src.SSMR.SubmitMeterReading.Listener
+namespace myTNB.AndroidApp.Src.SSMR.SubmitMeterReading.Listener
 {
     public class ImageAvailableListener : Java.Lang.Object, ImageReader.IOnImageAvailableListener
     {

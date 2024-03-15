@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SSMRTerminate.Api
+namespace myTNB.AndroidApp.Src.SSMRTerminate.Api
 {
     public class SMRTerminationReasonsResponse
     {

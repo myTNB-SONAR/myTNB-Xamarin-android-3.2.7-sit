@@ -2,9 +2,9 @@
 using Android.App;
 using Android.Content;
 using Android.Runtime;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.UpdatePersonalDetailStepTwo.MVP
+namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.MVP
 {
     public class UpdatePersonalDetailStepTwoPresenter : UpdatePersonalDetailStepTwoContract.IUserActionsListener
     {   

@@ -2,7 +2,7 @@
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.RegistrationForm.Models
+namespace myTNB.AndroidApp.Src.RegistrationForm.Models
 {
     public class UserRegistration
     {

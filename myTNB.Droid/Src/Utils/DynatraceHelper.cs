@@ -1,10 +1,10 @@
 ﻿using Android.Util;
 using Dynatrace.Xamarin;
 using Dynatrace.Xamarin.Binding.Android;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android
+namespace myTNB.AndroidApp
 {
     internal static class DynatraceHelper
     {

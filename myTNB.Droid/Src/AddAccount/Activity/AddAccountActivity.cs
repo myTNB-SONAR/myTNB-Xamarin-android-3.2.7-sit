@@ -6,18 +6,18 @@ using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using myTNB.Android.Src.AddAcc_UpdateIdentification_StepOne.Activity;
-using myTNB.Android.Src.AddAccount.Fragment;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Feedback_Prelogin_NewIC.Activity;
-using myTNB.Android.Src.myTNBMenu.Activity;
-using myTNB.Android.Src.UpdateID.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity;
+using myTNB.AndroidApp.Src.AddAccount.Fragment;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.UpdateID.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Runtime;
 using ZXing.Mobile;
 
-namespace myTNB.Android.Src.AddAccount.Activity
+namespace myTNB.AndroidApp.Src.AddAccount.Activity
 {
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait

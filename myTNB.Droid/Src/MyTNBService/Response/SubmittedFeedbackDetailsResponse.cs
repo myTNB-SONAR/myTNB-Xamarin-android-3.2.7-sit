@@ -1,7 +1,7 @@
 ﻿using System;
-using myTNB.Android.Src.Base.Models;
+using myTNB.AndroidApp.Src.Base.Models;
 
-namespace myTNB.Android.Src.MyTNBService.Response
+namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
     public class SubmittedFeedbackDetailsResponse : BaseResponse<SubmittedFeedbackDetails>
     {

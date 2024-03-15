@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using myTNB.Mobile;
 using myTNB.Mobile.API.Models.ApplicationStatus;
 using myTNB.Mobile.AWS.Models;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.DeviceCache;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.DeviceCache;
 
-namespace myTNB.Android.Src.SessionCache
+namespace myTNB.AndroidApp.Src.SessionCache
 {
     internal sealed class AccountTypeCache
     {

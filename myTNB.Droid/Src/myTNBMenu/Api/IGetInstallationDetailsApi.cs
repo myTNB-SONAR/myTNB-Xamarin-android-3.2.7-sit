@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using myTNB.Android.Src.myTNBMenu.Requests;
-using myTNB.Android.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.myTNBMenu.Requests;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using Refit;
 using myTNB.Mobile.Business;
 
-namespace myTNB.Android.Src.myTNBMenu.Api
+namespace myTNB.AndroidApp.Src.myTNBMenu.Api
 {
     public interface IGetInstallationDetailsApi
     {

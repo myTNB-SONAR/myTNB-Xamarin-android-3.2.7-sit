@@ -1,7 +1,7 @@
 ﻿using System;
-using myTNB.Android.Src.Base.MVP;
+using myTNB.AndroidApp.Src.Base.MVP;
 
-namespace myTNB.Android.Src.DigitalSignature.WebView.MVP
+namespace myTNB.AndroidApp.Src.DigitalSignature.WebView.MVP
 {
     public class DSWebViewContract
     {

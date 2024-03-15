@@ -2,7 +2,7 @@
 using Refit;
 using System;
 
-namespace myTNB.Android.Src.XEmailRegistrationForm.Activity.Models
+namespace myTNB.AndroidApp.Src.XEmailRegistrationForm.Activity.Models
 {
     public class VerificationCode
     {

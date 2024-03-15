@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace myTNB.Android.Src.SummaryDashBoard.Models
+namespace myTNB.AndroidApp.Src.SummaryDashBoard.Models
 {
     public class SummaryDashBoardDetails
     {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Android.Widget;
-using myTNB.Android.Src.AddAccount.Models;
+using myTNB.AndroidApp.Src.AddAccount.Models;
 
-namespace myTNB.Android.Src.Utils
+namespace myTNB.AndroidApp.Src.Utils
 {
     public static class AddAccountUtils
     {

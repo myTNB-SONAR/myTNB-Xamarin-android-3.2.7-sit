@@ -1,6 +1,6 @@
-﻿using myTNB.Android.Src.MyTNBService.Request;
+﻿using myTNB.AndroidApp.Src.MyTNBService.Request;
 using System;
-namespace myTNB.Android.Src.ServiceDistruptionRating.Request
+namespace myTNB.AndroidApp.Src.ServiceDistruptionRating.Request
 {
     public class GetFeedbackCountRequest : BaseRequest
     {

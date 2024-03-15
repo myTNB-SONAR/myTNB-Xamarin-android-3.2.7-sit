@@ -3,7 +3,7 @@ using Refit;
 using System;
 using System.Linq;
 
-namespace myTNB.Android.Src.MultipleAccountPayment.Model
+namespace myTNB.AndroidApp.Src.MultipleAccountPayment.Model
 {
     public class CardDetails
     {

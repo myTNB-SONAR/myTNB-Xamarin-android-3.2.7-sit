@@ -13,15 +13,15 @@ using CheeseBind;
 using Facebook.Shimmer;
 using Firebase.DynamicLinks;
 using Google.Android.Material.Snackbar;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Utils;
 using myTNB.SitecoreCMS.Model;
 using System;
 using System.Globalization;
 using System.Runtime;
 using System.Timers;
 
-namespace myTNB.Android.Src.RewardDetail.MVP
+namespace myTNB.AndroidApp.Src.RewardDetail.MVP
 {
     [Activity(Label = "Rewards"
               , Icon = "@drawable/ic_launcher"

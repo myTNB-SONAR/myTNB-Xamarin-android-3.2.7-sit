@@ -13,15 +13,15 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB.Android.Src.AddAccount.Adapter;
-using myTNB.Android.Src.Base.Activity;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MultipleAccountPayment.Adapter;
-using myTNB.Android.Src.MultipleAccountPayment.Model;
-using myTNB.Android.Src.SSMR.SMRApplication.Adapter;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.AddAccount.Adapter;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Adapter;
+using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
+using myTNB.AndroidApp.Src.SSMR.SMRApplication.Adapter;
+using myTNB.AndroidApp.Src.Utils;
 
-namespace myTNB.Android.Src.SSMR.SMRApplication.MVP
+namespace myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP
 {
     [Activity(Label = "Self Meter Reading"
     , ScreenOrientation = ScreenOrientation.Portrait

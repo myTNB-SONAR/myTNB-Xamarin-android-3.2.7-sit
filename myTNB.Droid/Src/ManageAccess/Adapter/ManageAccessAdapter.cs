@@ -6,20 +6,20 @@ using Android.Widget;
 using AndroidSwipeLayout;
 using AndroidViewAnimations;
 using CheeseBind;
-using myTNB.Android.Src.Base;
-using myTNB.Android.Src.Base.Adapter;
-using myTNB.Android.Src.Database.Model;
-using myTNB.Android.Src.MyAccount.Activity;
-using myTNB.Android.Src.ManageAccess.MVP;
-using myTNB.Android.Src.myTNBMenu.Models;
-using myTNB.Android.Src.MyTNBService.Request;
-using myTNB.Android.Src.MyTNBService.ServiceImpl;
-using myTNB.Android.Src.Utils;
+using myTNB.AndroidApp.Src.Base;
+using myTNB.AndroidApp.Src.Base.Adapter;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.MyAccount.Activity;
+using myTNB.AndroidApp.Src.ManageAccess.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.MyTNBService.Request;
+using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
+using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
 
-namespace myTNB.Android.Src.ManageAccess.Adapter
+namespace myTNB.AndroidApp.Src.ManageAccess.Adapter
 {
     internal class ManageAccessAdapter : BaseCustomAdapter<UserManageAccessAccount>, ManageAccessContract.IUserActionsListener
     {
