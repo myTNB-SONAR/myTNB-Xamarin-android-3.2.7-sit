@@ -8,7 +8,7 @@ using ZXing.Mobile.CameraAccess;
 
 namespace ZXing.Mobile
 {
-    public class ZXingSurfaceView : SurfaceView, ISurfaceHolderCallback, IScannerView
+    public class ZXingSurfaceView : SurfaceView, ISurfaceHolderCallback, IScannerView, IScannerSessionHost
     {
         public ZXingSurfaceView(Context context, MobileBarcodeScanningOptions options)
             : base(context)
@@ -27,7 +27,7 @@ namespace ZXing.Mobile
         {
             try
             {
-                _cameraAnalyzer = new CameraAnalyzer(this, ScanningOptions);
+                _cameraAnalyzer = new CameraAnalyzer(this, this);
                 Holder.AddCallback(this);
                 Holder.SetType(SurfaceType.PushBuffers);
             }
