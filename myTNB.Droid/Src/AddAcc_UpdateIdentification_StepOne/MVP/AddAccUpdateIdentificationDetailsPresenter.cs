@@ -1,31 +1,17 @@
-﻿using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Telephony;
+﻿using Android.Content;
 using Android.Text;
-using Castle.Core.Internal;
-using Java.Text;
-using myTNB.AndroidApp.Src.Base.Api;
-using myTNB.AndroidApp.Src.Base.Models;
-using myTNB.AndroidApp.Src.Base.Request;
 using myTNB.AndroidApp.Src.Database.Model;
-using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.AndroidApp.Src.MyTNBService.Request;
 using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
 using System.Text.RegularExpressions;
-using System.Threading;
 
 namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP
 {
-    public class AddAccUpdateIdentificationDetailsPresenter: AddAccUpdateIdentificationDetailsContract.IUserActionsListener
+    public class AddAccUpdateIdentificationDetailsPresenter : AddAccUpdateIdentificationDetailsContract.IUserActionsListener
     {
 
         AddAccUpdateIdentificationDetailsContract.IView mView;
@@ -129,7 +115,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP
 
                 if (TextUtils.IsEmpty(ic))
                 {
-                    
+
                     this.mView.ShowFullICError();
                     allowToProceed = false;
                 }
@@ -180,7 +166,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP
         //            isCorrect = false;
         //        }
 
-               
+
 
         //        string ic_no = ic.Replace("-", string.Empty);
         //        if (ic_no.Length < 12)
@@ -188,7 +174,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP
         //            this.mView.ShowFullICError();
         //            isCorrect = false;
         //        }
-                
+
 
         //        //handle button to enable or disable
         //        if (isCorrect == true)
@@ -230,7 +216,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP
 
         //            }
 
-                   
+
         //            string ic_no = ic.Replace("-", string.Empty);
         //            if (!CheckIdentificationIsValid(ic_no))
         //            {
@@ -277,7 +263,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.MVP
 
                 var result = await ServiceApiImpl.Instance.ValidateAccIsExist(con);
 
-                if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty() && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
+                if (result != null && !string.IsNullOrWhiteSpace(result.GetSearchForAccount[0].FullName) && !string.IsNullOrWhiteSpace(result.GetSearchForAccount[0].IC))
 
                 {
                     this.mView.HideProgressDialog();

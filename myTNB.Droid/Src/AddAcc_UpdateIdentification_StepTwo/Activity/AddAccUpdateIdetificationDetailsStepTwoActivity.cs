@@ -1,36 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
-using Android.Opengl;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.TextField;
 using myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity;
 using myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.MVP;
-using myTNB.AndroidApp.Src.Base;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Common.Activity;
 using myTNB.AndroidApp.Src.Common.Model;
 using myTNB.AndroidApp.Src.CompoundView;
-using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Fragment;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Model;
-using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.MVP;
-using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using NSubstitute.Core;
+using System;
 
 namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
@@ -241,7 +230,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewOwnerName, txtInputLayoutNewPremiseAddress); //inputLay
                 TextViewUtils.SetMuseoSans500Typeface(txtNewOwnerName); //edit text
                 TextViewUtils.SetMuseoSans500Typeface(TextView_updateOnOwnerBehalf);  //txtView
-                
+
 
                 txtInputLayoutNewOwnerName.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 txtInputLayoutCurrentEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
@@ -251,10 +240,10 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 txtInputLayoutCurrentPremiseAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
                 txtInputLayoutNewPremiseAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutFeedbackCountLarge : Resource.Style.TextInputLayoutFeedbackCount);
 
-                
+
                 ///TextViewUtils.SetTextSize11(TextViewDoINeedOwnerConsent);
                 //TextViewUtils.SetTextSize12(pageStep);
-                TextViewUtils.SetTextSize14(pageStep,txtOwnerName, txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress, txtSkip);
+                TextViewUtils.SetTextSize14(pageStep, txtOwnerName, txtMobileNumber, txtEmailAddress, txtMailingAddress, txtPremiseAddress, txtSkip);
                 TextViewUtils.SetTextSize16(btnNext, TextView_updateOnOwnerBehalf
                     , txtGeneralCurrentOwnerName, txtNewOwnerName, txtGeneralCurrentEmailAddress, txtNewEmailAddress
                     , txtGeneralCurrentMailingAddress, txtNewMailingAddress, txtGeneralCurrentPremiseAddress, txtNewPremiseAddress);
@@ -277,7 +266,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 txtInputLayoutNewMailingAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "mailingAddressHint");
                 txtInputLayoutNewPremiseAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "premiseAddressHint");
 
-                
+
                 txtInputLayoutNewOwnerName.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtInputLayoutNewEmailAddress.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
                 txtInputLayoutNewMailingAddress.SetHintTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayout_TextAppearance_Large : Resource.Style.TextInputLayout_TextAppearance_Small);
@@ -307,7 +296,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 txtNewPremiseAddress.TextChanged += TextChanged;
                 txtNewPremiseAddress.AddTextChangedListener(new InputFilterFormField(txtNewPremiseAddress, txtInputLayoutNewPremiseAddress));
 
-               
+
 
                 //mobile number section
                 mobileNumberFieldContainer.RemoveAllViews();
@@ -372,7 +361,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
         public void parseCheckRequiredField()
         {
-            
+
 
             string ownerName = txtNewOwnerName.Text;
 
@@ -384,7 +373,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
             string premiseAddress = txtNewPremiseAddress.Text;
 
-            
+
 
             this.userActionsListener.CheckRequiredFields(toggleChkBoxSkip, ownerName, toggleChkOwnerName, mobileNumber, toggleChkMobileNumber, emailAddress, toggleChkEmailAddress, mailingAddress, toggleChkMailingAddress, premiseAddress, toggleChkPremiseAddress, isOtherChoosed);
         }
@@ -500,7 +489,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
         {
             if (!this.GetIsClicked())
             {
-                
+
                 // check checkBox 
                 if (toggleChkBoxSkip)
                 {
@@ -569,7 +558,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
                 }
 
-               
+
 
                 this.SetIsClicked(true);
                 this.userActionsListener.OnShowUpdatePersonalDetailStepThreeActivity();
@@ -673,21 +662,21 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
             toggleChkPremiseAddress = false;
 
-           
+
             txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
             mobileNumberFieldContainer.Visibility = ViewStates.Gone;
             txtInputLayoutNewEmailAddress.Visibility = ViewStates.Gone;
             txtInputLayoutNewMailingAddress.Visibility = ViewStates.Gone;
             txtInputLayoutNewPremiseAddress.Visibility = ViewStates.Gone;
-            
 
-            
+
+
             txtInputLayoutNewOwnerName.Error = "";
             mobileNumberInputComponent.ClearError();
             txtInputLayoutNewEmailAddress.Error = "";
             txtInputLayoutNewMailingAddress.Error = "";
             txtInputLayoutNewPremiseAddress.Error = "";
-            
+
 
 
 
@@ -750,7 +739,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 select_mailing_address_chk_box.Clickable = false;
                 premiseAddress_chk_box.Clickable = false;
 
-                
+
                 if (toggleChkOwnerName)
                 {
                     txtInputLayoutNewOwnerName.Visibility = ViewStates.Gone;
@@ -785,7 +774,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                     select_mailing_address_chk_box.Checked = false;
                     toggleChkMailingAddress = !toggleChkMailingAddress;
                     ClearErrors(typeOfLayout.mailingAddress);
-                }   
+                }
 
 
                 if (toggleChkPremiseAddress)
@@ -814,14 +803,14 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 select_email_address_chk_box.SetButtonDrawable(Resource.Drawable.checkbox_selector);
                 select_mailing_address_chk_box.SetButtonDrawable(Resource.Drawable.checkbox_selector);
                 premiseAddress_chk_box.SetButtonDrawable(Resource.Drawable.checkbox_selector);
-                
+
                 selectOwnerNameChkBox.Clickable = true;
                 mobile_number_chk_box.Clickable = true;
                 select_email_address_chk_box.Clickable = true;
                 select_mailing_address_chk_box.Clickable = true;
                 premiseAddress_chk_box.Clickable = true;
 
-                
+
 
 
             }
@@ -837,7 +826,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
         public void toggleAccountOwnerName()
         {
             toggleChkOwnerName = !toggleChkOwnerName;  //boolean change
-            
+
 
             if (toggleChkOwnerName)
             {
@@ -846,7 +835,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_name);
                 txtNewOwnerName.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
-                if (txtNewOwnerName.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewOwnerName.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -881,7 +870,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
             if (toggleChkMobileNumber)
             {
                 mobileNumberFieldContainer.Visibility = ViewStates.Visible;
-                if (mobileNumberInputComponent.GetMobileNumberValue().IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(mobileNumberInputComponent.GetMobileNumberValue()))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -921,7 +910,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 //  parseCheckRequiredField();
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_email);
                 txtNewEmailAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-                if (txtNewEmailAddress.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewEmailAddress.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -960,7 +949,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 txtNewMailingAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
                 //parseCheckRequiredField();
-                if (txtNewMailingAddress.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewMailingAddress.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -998,7 +987,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_address);
                 txtNewPremiseAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                 //parseCheckRequiredField();
-                if (txtNewPremiseAddress.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewPremiseAddress.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -1125,7 +1114,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
 
         public void ShowEmptyError(typeOfLayout lay)
         {
-            
+
 
             if (lay.Equals(typeOfLayout.emailAddress))
             {
@@ -1236,7 +1225,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepTwo.Activity
         public void ShowInvalidError(typeOfLayout lay)
         {
 
-            
+
             if (lay.Equals(typeOfLayout.emailAddress))
             {
                 txtInputLayoutNewEmailAddress.SetErrorTextAppearance(TextViewUtils.IsLargeFonts ? Resource.Style.TextInputLayoutBottomErrorHintLarge : Resource.Style.TextInputLayoutBottomErrorHint);

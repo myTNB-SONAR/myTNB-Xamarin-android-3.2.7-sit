@@ -8,7 +8,6 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.TextField;
 using myTNB.AndroidApp.Src.Base.Activity;
@@ -17,7 +16,6 @@ using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.FeedbackDetails.Adapter;
 using myTNB.AndroidApp.Src.FeedbackDetails.MVP;
 using myTNB.AndroidApp.Src.FeedbackFullScreenImage.Activity;
-using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Adapter;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
@@ -293,25 +291,25 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
 
 
 
-                if ((!name.IsNullOrEmpty() || !email.IsNullOrEmpty() || !mobile.IsNullOrEmpty()) && isNewScreen)
+                if ((!string.IsNullOrWhiteSpace(name) || !string.IsNullOrWhiteSpace(email) || !string.IsNullOrWhiteSpace(mobile)) && isNewScreen)
                 {
                     FrameLayoutContactDetails.Visibility = ViewStates.Visible;
                 }
 
-                if (!name.IsNullOrEmpty() && isNewScreen)
+                if (!string.IsNullOrWhiteSpace(name) && isNewScreen)
                 {
                     TextInputLayoutname.Visibility = ViewStates.Visible;
                     EditTextName.Text = name;
                     TextInputLayoutname.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "name").ToUpper();
                 }
 
-                if (!email.IsNullOrEmpty() && isNewScreen)
+                if (!string.IsNullOrWhiteSpace(email) && isNewScreen)
                 {
                     TextInputLayoutEmailAddress.Visibility = ViewStates.Visible;
                     EditTextEmailAddress.Text = email;
                     TextInputLayoutEmailAddress.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint").ToUpper();
                 }
-                if (!mobile.IsNullOrEmpty() && isNewScreen)
+                if (!string.IsNullOrWhiteSpace(mobile) && isNewScreen)
                 {
                     TextInputLayoutMobileNumber.Visibility = ViewStates.Visible;
                     EditTextMobileNumber.Text = mobile;
@@ -321,7 +319,7 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
 
 
                 //if there was no feedback its mean it is an update
-                if (feedback.IsNullOrEmpty() && !feedbackUpdateList.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(feedback) && feedbackUpdateList != null)
                 {
 
                     TextInputLayoutIsOwner.Visibility = ViewStates.Visible;
@@ -329,7 +327,7 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
                     SetToolBarTitle(Utility.GetLocalizedLabel("SubmitEnquiry", "updatePersonalDetTitle"));
                     EditTextIsOwner.Text = isOwner == true ? Utility.GetLocalizedLabel("SubmitEnquiry", "viewYes") : Utility.GetLocalizedLabel("SubmitEnquiry", "viewNo");
                 }
-                else if(isAboutMyBill == "true")
+                else if (isAboutMyBill == "true")
                 {
                     SetToolBarTitle(acountMyBillToolBarText);
                 }
@@ -462,7 +460,7 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
                 txtFeedbackDateTime.Text = dateTime;
                 txtAccountNo.Text = accountNoName;
 
-                if (feedback.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(feedback))
                 {
                     txtInputLayoutFeedback.Visibility = ViewStates.Gone;
                 }
@@ -506,7 +504,7 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
                 {
                     isAboutMyBill = Intent.GetStringExtra("ABOUTMYBILL");
                 }
-                
+
 
 
                 if (Intent.HasExtra("NEWSCREEN") && !string.IsNullOrEmpty(Intent.GetStringExtra("NEWSCREEN")))
@@ -537,7 +535,7 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);
 
-                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback,txtInputLayoutEnquiryType
+                TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNo, txtInputLayoutFeedback, txtInputLayoutEnquiryType
                     , txtInputLayoutFeedbackId, txtInputLayoutDateTime, txtInputLayoutStatus);
                 TextViewUtils.SetMuseoSans300Typeface(TextInputLayoutname, TextInputLayoutMobileNumber
                     , TextInputLayoutEmailAddress, TextInputLayoutServiceRequestNumber, TextInputLayoutIsOwner);
@@ -553,7 +551,7 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
                     , TextInputLayoutNewMailingAddress, TextInputLayoutNewPremiseAddress);
 
                 TextViewUtils.SetTextSize9(txtRelatedScreenshotTitle);
-                TextViewUtils.SetTextSize14(txtforMyhouse, txtEnquiryDetails, txtFeedback,txtEnquiryType);
+                TextViewUtils.SetTextSize14(txtforMyhouse, txtEnquiryDetails, txtFeedback, txtEnquiryType);
                 TextViewUtils.SetTextSize16(txtStatus, txtFeedback_status_new, TextView_contactDetails
                     , EditTextServiceRequestNumber, EditTextEmailAddress, EditTextMobileNumber, EditTextName);
 

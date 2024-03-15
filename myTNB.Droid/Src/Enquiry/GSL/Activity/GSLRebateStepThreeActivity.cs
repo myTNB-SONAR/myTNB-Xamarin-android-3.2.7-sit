@@ -1,33 +1,31 @@
-﻿using System;
-using System.Runtime;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
+using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-
+using CheeseBind;
+using Java.Text;
+using Java.Util;
 using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.Enquiry.Adapter;
 using myTNB.AndroidApp.Src.Enquiry.Component;
 using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
 using myTNB.AndroidApp.Src.Utils;
-using Android.Provider;
-using Android;
-using FileUtils = myTNB.AndroidApp.Src.Utils.FileUtils;
-using Java.Text;
-using Java.Util;
-using Android.Preferences;
-using myTNB.AndroidApp.Src.Base.Models;
-using System.Threading.Tasks;
-using myTNB.AndroidApp.Src.Enquiry.Adapter;
-using Android.Support.Design.Widget;
 using Newtonsoft.Json;
-using myTNB.AndroidApp.Src.Database.Model;
-using CheeseBind;
-using Castle.Core.Internal;
+using System;
+using System.Runtime;
+using System.Threading.Tasks;
+using FileUtils = myTNB.AndroidApp.Src.Utils.FileUtils;
 
 namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
@@ -557,7 +555,7 @@ namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
         {
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = ImageUtils.Base64ToBitmap(base64Image);
                 MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)

@@ -1,7 +1,5 @@
 ﻿using Android.Content;
 using Android.Text;
-using Castle.Core.Internal;
-using myTNB;
 using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.MyTNBService.Request;
 using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
@@ -9,8 +7,8 @@ using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
-using static myTNB.LanguageManager;
 using static myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity.FeedbackPreloginNewICActivity;
+using static myTNB.LanguageManager;
 
 namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.MVP
 {
@@ -150,7 +148,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.MVP
 
                     var result = await ServiceApiImpl.Instance.ValidateAccIsExist(con);
 
-                    if (result != null && !result.GetSearchForAccount[0].FullName.IsNullOrEmpty() && !result.GetSearchForAccount[0].IC.IsNullOrEmpty())
+                    if (result != null && !string.IsNullOrWhiteSpace(result.GetSearchForAccount[0].FullName) && !string.IsNullOrWhiteSpace(result.GetSearchForAccount[0].IC))
                     {
                         this.mView.HideProgressDialog();
                         var data = result.GetSearchForAccount[0];

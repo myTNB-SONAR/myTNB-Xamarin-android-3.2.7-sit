@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Text;
-using Android.Views;
-using Android.Widget;
-using myTNB.AndroidApp.Src.Utils;
-using Android.Util;
-using myTNB.AndroidApp.Src.Base.Models;
+﻿using Android.Gms.Common.Apis;
 using Android.Telephony;
-using myTNB.AndroidApp.Src.Database.Model;
+using Android.Text;
+using Android.Util;
+using Java.Text;
+using myTNB.AndroidApp.Src.Base.Models;
 using myTNB.AndroidApp.Src.Base.Request;
+using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Model;
 using myTNB.AndroidApp.Src.MyTNBService.Request;
 using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
-using Java.Text;
-using Android.Gms.Common.Apis;
+using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Model;
-using Castle.Core.Internal;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.MVP
 {
@@ -174,7 +165,7 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.MVP
 
                 int category = 1;
 
-                if (feedback.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(feedback))
                 {
                     //if empty it is update personal detail which will inject 4
                     category = 4;

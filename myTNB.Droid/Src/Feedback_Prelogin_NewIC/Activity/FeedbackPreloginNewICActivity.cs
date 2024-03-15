@@ -15,12 +15,9 @@ using Android.Widget;
 using AndroidX.ConstraintLayout.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB;
-using myTNB.Mobile;
 using myTNB.AndroidApp.Src.Barcode.Activity;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Database.Model;
@@ -29,17 +26,15 @@ using myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity;
 using myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.MVP;
 using myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity;
 using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity;
-using myTNB.AndroidApp.Src.myTNBMenu.Activity;
-using myTNB.AndroidApp.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.AndroidApp.Src.MyTNBService.Request;
 using myTNB.AndroidApp.Src.MyTNBService.Response;
 using myTNB.AndroidApp.Src.MyTNBService.ServiceImpl;
-using myTNB.AndroidApp.Src.NotificationSettings.Activity;
 using myTNB.AndroidApp.Src.OverVoltageClaim.Activity;
 using myTNB.AndroidApp.Src.SiteCore;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity;
 using myTNB.AndroidApp.Src.Utils;
+using myTNB.Mobile;
 using Newtonsoft.Json;
 using Org.Json;
 using System;
@@ -1074,7 +1069,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
                 }
             }
         }
-        
+
         [OnClick(Resource.Id.overvoltageclaimConstraint)]
         void OnovervoltageclaimConstraint(object sender, EventArgs eventArgs)
         {
@@ -1261,7 +1256,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
             else
             {
                 string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-                if (!base64Image.IsNullOrEmpty())
+                if (!string.IsNullOrWhiteSpace(base64Image))
                 {
                     var imageCache = Base64ToBitmap(base64Image);
                     MyTNBAppToolTipBuilder whereisMyacc = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
@@ -1308,7 +1303,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
 
@@ -1348,7 +1343,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
 
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
@@ -1387,7 +1382,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
 
@@ -1425,7 +1420,7 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
 
@@ -1547,5 +1542,5 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
         //    }
         //}
     }
-    
+
 }

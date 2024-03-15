@@ -10,10 +10,8 @@ using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using AndroidX.ConstraintLayout.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
@@ -26,13 +24,11 @@ using myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity;
 using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity;
 using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.AndroidApp.Src.SiteCore;
-using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Runtime;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
@@ -276,7 +272,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     }
                     flagDel = false;
                 }
-                
+
             }
 
         }
@@ -407,7 +403,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 }
                 else
                 {
-                   
+
                     string accno = txtAccountNo.Text.ToString().Trim();
                     string ic = txtNewIC.Text.ToString().Trim();
                     this.userActionsListener.CheckRequiredFields(accno, ic);
@@ -460,7 +456,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                 //    txtInputLayoutAccountNo.Error = null;
 
                 //}
-               
+
                 this.userActionsListener.CheckRequiredFields(accno, ic);
 
             }
@@ -638,7 +634,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
               ? Resource.Style.TextInputLayoutBottomErrorHintLarge
               : Resource.Style.TextInputLayoutBottomErrorHint);
 
-            
+
             if (txtInputLayoutNewIC.HelperText != Utility.GetLocalizedLabel("SubmitEnquiry", "idHint"))
             {
                 txtInputLayoutNewIC.HelperText = Utility.GetLocalizedLabel("SubmitEnquiry", "idHint");
@@ -853,7 +849,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
         {
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = Base64ToBitmap(base64Image);
 
@@ -900,7 +896,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.WHERE_MY_ACC);
 
@@ -940,7 +936,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
 
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
@@ -979,7 +975,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
 
@@ -1017,7 +1013,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity
                     {
                         // recheck local is the base64 exist or not is not need update
                         string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
-                        if (base64Image.IsNullOrEmpty())
+                        if (string.IsNullOrWhiteSpace(base64Image))
                         {
                             TooltipImageDirectEntity.DeleteImage(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -16,7 +10,6 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
@@ -35,6 +28,11 @@ using myTNB.AndroidApp.Src.SubmitEnquirySuccess.Activity;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity
 {
@@ -325,7 +323,7 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity
                 WhoShouldWeContact.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "contactEnquiryTitle");
 
                 /// cater on is need tnc or not
-                if (!feedback.IsNullOrEmpty())
+                if (!string.IsNullOrWhiteSpace(feedback))
                 {
                     LinearLayout_TNC.Visibility = ViewStates.Gone;
                     isNeedTNC = false;
@@ -393,13 +391,13 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity
 
 
 
-                    if (!tempPhone.IsNullOrEmpty())
+                    if (!string.IsNullOrWhiteSpace(tempPhone))
                     {
                         if (tempPhone.Contains("+"))
                         {
                             var CountryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(tempPhone);
 
-                            if (!CountryFromPhoneNumber.ToString().IsNullOrEmpty())
+                            if (CountryFromPhoneNumber != null)
                             {
 
                                 mobileNumberInputComponent.SetSelectedCountry(CountryFromPhoneNumber);   // set flag and country
@@ -607,16 +605,16 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity
             if (!this.GetIsClicked())
             {
 
-                if (!txtEmail.Text.Trim().IsNullOrEmpty() && !txtName.Text.Trim().IsNullOrEmpty())
+                if (!string.IsNullOrWhiteSpace(txtEmail.Text.Trim()) && !string.IsNullOrWhiteSpace(txtName.Text.Trim()))
                 {
                     this.SetIsClicked(true);
                     this.userActionsListener.NavigateToTermsAndConditions();
                 }
-                else if (txtEmail.Text.Trim().IsNullOrEmpty())
+                else if (string.IsNullOrWhiteSpace(txtEmail.Text.Trim()))
                 {
                     ShowInvalidEmailError();
                 }
-                else if (txtName.Text.Trim().IsNullOrEmpty())
+                else if (string.IsNullOrWhiteSpace(txtName.Text.Trim()))
                 {
                     ShowFullNameError();
                 }
@@ -733,7 +731,7 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     int ownerRelationshipID = 0;
 
                     // ensure not from feedback and owner must be false to pass this parameter
-                    if (feedback.IsNullOrEmpty() && isOwner == false)
+                    if (string.IsNullOrWhiteSpace(feedback) && isOwner == false)
                     {
                         if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"))
                         {
@@ -763,7 +761,7 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity
                     }
 
                     // to ensure feedback is emty if null
-                    if (feedback.IsNullOrEmpty())
+                    if (string.IsNullOrWhiteSpace(feedback))
                     {
                         feedback = "";
                     }

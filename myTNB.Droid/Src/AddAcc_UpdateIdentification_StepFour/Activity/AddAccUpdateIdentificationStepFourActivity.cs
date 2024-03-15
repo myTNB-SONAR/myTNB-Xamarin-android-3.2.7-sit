@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -16,7 +10,6 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using AndroidX.Core.Content;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
@@ -31,11 +24,15 @@ using myTNB.AndroidApp.Src.Common.Model;
 using myTNB.AndroidApp.Src.CompoundView;
 using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Model;
-using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.MVP;
 using myTNB.AndroidApp.Src.SubmitEnquirySuccess.Activity;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailTnC.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
 {
@@ -143,7 +140,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
 
                 if (extras != null)
                 {
-                    ///PAGE TITLE FROM BEFORE PAGE
+                    // PAGE TITLE FROM BEFORE PAGE
                     if (extras.ContainsKey(Constants.PAGE_TITLE))
                     {
                         SetToolBarTitle(extras.GetString(Constants.PAGE_TITLE));
@@ -156,7 +153,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     }
 
 
-                    /// general enquiry
+                    // general enquiry
                     if (extras.ContainsKey("FEEDBACK"))
                     {
                         feedback = extras.GetString("FEEDBACK");
@@ -170,7 +167,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                         acc = extras.GetString(Constants.ACCOUNT_NUMBER);
                     }
 
-                    ///update personal info
+                    // update personal info
 
                     if (extras.ContainsKey(Constants.SELECT_REGISTERED_OWNER))
                     {
@@ -183,7 +180,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                         // add image 
                         attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWNER))[0]);
                         attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_OWN))[0]);
-                        
+
                         if (extras.ContainsKey(Constants.ACCOUNT_PREMISE_ADDRESS))
                         {
                             attachList.Add(DeSerialze<List<AttachedImage>>(extras.GetString(Constants.IMAGE_PERMISES))[0]);
@@ -301,7 +298,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit, WhoShouldWeContact);
 
 
-                //SET TRANSLATION
+                // SET TRANSLATION
                 txtstep2of2.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "pageStep4");
                 txtInputLayoutName.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "nameHint");
                 txtInputLayoutEmail.Hint = Utility.GetLocalizedLabel("SubmitEnquiry", "emailHint");
@@ -315,7 +312,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     ? Resource.Style.TextInputLayout_TextAppearance_Large
                     : Resource.Style.TextInputLayout_TextAppearance_Small);
 
-                //set translation of string 
+                // set translation of string 
                 txtTermsConditionsGeneralEnquiry.TextFormatted = GetFormattedText(Utility.GetLocalizedLabel("SubmitEnquiry", "enquiryTnc"));
 
                 StripUnderlinesFromLinks(txtTermsConditionsGeneralEnquiry);
@@ -324,8 +321,8 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
 
                 WhoShouldWeContact.Text = Utility.GetLocalizedLabel("SubmitEnquiry", "contactEnquiryTitle");
 
-                /// cater on is need tnc or not
-                if (!feedback.IsNullOrEmpty())
+                // cater on is need tnc or not
+                if (!string.IsNullOrWhiteSpace(feedback))
                 {
                     LinearLayout_TNC.Visibility = ViewStates.Gone;
                     isNeedTNC = false;
@@ -372,7 +369,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                 };
 
 
-                //mobile number section
+                // mobile number section
                 mobileNumberFieldContainer.RemoveAllViews();
                 mobileNumberInputComponent = new MobileNumberInputComponent(this);
                 mobileNumberInputComponent.SetOnTapCountryCodeAction(OnTapCountryCode);
@@ -384,7 +381,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
 
 
 
-                //auto populate if login 
+                // auto populate if login 
                 if (UserEntity.IsCurrentlyActive())
                 {
                     txtName.Text = UserEntity.GetActive().DisplayName;
@@ -393,13 +390,13 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
 
 
 
-                    if (!tempPhone.IsNullOrEmpty())
+                    if (!string.IsNullOrWhiteSpace(tempPhone))
                     {
                         if (tempPhone.Contains("+"))
                         {
                             var CountryFromPhoneNumber = CountryUtil.Instance.GetCountryFromPhoneNumber(tempPhone);
 
-                            if (!CountryFromPhoneNumber.ToString().IsNullOrEmpty())
+                            if (CountryFromPhoneNumber != null)
                             {
 
                                 mobileNumberInputComponent.SetSelectedCountry(CountryFromPhoneNumber);   // set flag and country
@@ -607,16 +604,16 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
             if (!this.GetIsClicked())
             {
 
-                if (!txtEmail.Text.Trim().IsNullOrEmpty() && !txtName.Text.Trim().IsNullOrEmpty())
+                if (!string.IsNullOrWhiteSpace(txtEmail.Text.Trim()) && !string.IsNullOrWhiteSpace(txtName.Text.Trim()))
                 {
                     this.SetIsClicked(true);
                     this.userActionsListener.NavigateToTermsAndConditions();
                 }
-                else if (txtEmail.Text.Trim().IsNullOrEmpty())
+                else if (string.IsNullOrWhiteSpace(txtEmail.Text.Trim()))
                 {
                     ShowInvalidEmailError();
                 }
-                else if (txtName.Text.Trim().IsNullOrEmpty())
+                else if (string.IsNullOrWhiteSpace(txtName.Text.Trim()))
                 {
                     ShowFullNameError();
                 }
@@ -734,7 +731,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     //isOwner = true;
 
                     // ensure not from feedback and owner must be false to pass this parameter
-                    if (feedback.IsNullOrEmpty() && isOwner == false)
+                    if (string.IsNullOrWhiteSpace(feedback) && isOwner == false)
                     {
                         if (ownerRelationship == Utility.GetLocalizedLabel("SubmitEnquiry", "childTitle"))
                         {
@@ -764,7 +761,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepFour.Activity
                     }
 
                     // to ensure feedback is emty if null
-                    if (feedback.IsNullOrEmpty())
+                    if (string.IsNullOrWhiteSpace(feedback))
                     {
                         feedback = "";
                     }

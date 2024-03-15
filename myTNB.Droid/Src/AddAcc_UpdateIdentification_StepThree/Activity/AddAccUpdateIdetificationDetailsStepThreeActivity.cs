@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -17,7 +12,6 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using Castle.Core.Internal;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
@@ -28,10 +22,14 @@ using myTNB.AndroidApp.Src.Base.Models;
 using myTNB.AndroidApp.Src.Base.Request;
 using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Adapter;
-using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Adapter;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Runtime;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
 {
@@ -54,7 +52,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
         TextView uploadSupportingDoc;
 
         [BindView(Resource.Id.CopyOfOwnerLabel)]
-        TextView CopyOfOwnerLabel; 
+        TextView CopyOfOwnerLabel;
 
         [BindView(Resource.Id.TextViewtitle_frontIC)]
         TextView TextViewtitle_frontIC;
@@ -209,7 +207,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 //2 set font type , 300 normal 500 button
                 TextViewUtils.SetMuseoSans300Typeface(TextViewtitle_frontIC, TextViewtitle_backIC, txtRelatedScreenshotTitle3);
                 TextViewUtils.SetMuseoSans300Typeface(txtstep, TextView_yourIC_image, TextView_ownerIC, TextView_proofOfConsent_image3);
-                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc, CopyOfOwnerLabel,TextView_exampleofIC, TextView_agreement);
+                TextViewUtils.SetMuseoSans500Typeface(uploadSupportingDoc, CopyOfOwnerLabel, TextView_exampleofIC, TextView_agreement);
                 TextViewUtils.SetTextSize9(TextView_ownerIC, TextView_yourIC_image, TextView_proofOfConsent_image3);
                 TextViewUtils.SetTextSize12(txtstep, TextView_exampleofIC, TextView_agreement);
                 TextViewUtils.SetTextSize14(TextViewtitle_frontIC, TextViewtitle_backIC, txtRelatedScreenshotTitle3);
@@ -319,7 +317,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
 
                 //}
 
-                if (!premiseAddress.IsNullOrEmpty())
+                if (!string.IsNullOrWhiteSpace(premiseAddress))
                 {
 
                     txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
@@ -365,18 +363,18 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
                 {
                     DisableSubmitButton();
 
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+                    if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
                 }
                 else
                 {
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count > 1)
+                    if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count > 1)
                     {
                         EnableSubmitButton();
                     }
-                    else if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+                    else if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
@@ -385,7 +383,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
                         EnableSubmitButton();
                     }
                 }
-               
+
             }
             //else
             //{
@@ -759,7 +757,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
                         Intent.PutExtra(Constants.IMAGE_SUPPORTING_DOC, JsonConvert.SerializeObject(SupportingDocAdapter?.GetAllImages()));
                     }
 
-                    if (!premiseAddress.IsNullOrEmpty())
+                    if (!string.IsNullOrWhiteSpace(premiseAddress))
                     {
 
                         Intent.PutExtra(Constants.IMAGE_PERMISES, JsonConvert.SerializeObject(permiseAdapter?.GetAllImages()));
@@ -1024,7 +1022,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
 
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = Base64ToBitmap(base64Image);
                 MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
@@ -1053,7 +1051,7 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
         {
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = Base64ToBitmap(base64Image);
                 MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)

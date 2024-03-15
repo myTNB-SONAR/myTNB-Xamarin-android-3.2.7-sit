@@ -1,9 +1,4 @@
-﻿using System;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -17,7 +12,6 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
-using Castle.Core.Internal;
 using CheeseBind;
 using Java.Text;
 using Java.Util;
@@ -31,6 +25,11 @@ using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Adapter;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.MVP;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Runtime;
+using System.Text;
+using System.Threading.Tasks;
+using System.Web;
 
 namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
 {
@@ -337,7 +336,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
 
                 }
 
-                if (!premiseAddress.IsNullOrEmpty())
+                if (!string.IsNullOrWhiteSpace(premiseAddress))
                 {
 
                     txtRelatedScreenshotTitle3.Visibility = ViewStates.Visible;
@@ -383,18 +382,18 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     DisableSubmitButton();
 
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+                    if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
                 }
                 else
                 {
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count > 1)
+                    if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count > 1)
                     {
                         EnableSubmitButton();
                     }
-                    else if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+                    else if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
@@ -411,7 +410,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
                 {
                     DisableSubmitButton();
 
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+                    if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
@@ -419,12 +418,12 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
                 else
                 {
 
-                    if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count > 1)
+                    if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count > 1)
                     {
 
                         EnableSubmitButton();
                     }
-                    else if (!premiseAddress.IsNullOrEmpty() && permiseAdapter.GetAllImages().Count == 0)
+                    else if (!string.IsNullOrWhiteSpace(premiseAddress) && permiseAdapter.GetAllImages().Count == 0)
                     {
                         DisableSubmitButton();
                     }
@@ -772,7 +771,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
                         Intent.PutExtra(Constants.IMAGE_SUPPORTING_DOC, JsonConvert.SerializeObject(SupportingDocAdapter?.GetAllImages()));
                     }
 
-                    if (!premiseAddress.IsNullOrEmpty())
+                    if (!string.IsNullOrWhiteSpace(premiseAddress))
                     {
 
                         Intent.PutExtra(Constants.IMAGE_PERMISES, JsonConvert.SerializeObject(permiseAdapter?.GetAllImages()));
@@ -1003,7 +1002,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
         {
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PROOF_OF_CONSENT);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = Base64ToBitmap(base64Image);
                 MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
@@ -1037,7 +1036,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
 
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.IC_SAMPLE);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = Base64ToBitmap(base64Image);
                 MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
@@ -1066,7 +1065,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity
         {
             string base64Image = TooltipImageDirectEntity.GetImageBase64(TooltipImageDirectEntity.IMAGE_CATEGORY.PERMISE_IMAGE);
 
-            if (!base64Image.IsNullOrEmpty())
+            if (!string.IsNullOrWhiteSpace(base64Image))
             {
                 var imageCache = Base64ToBitmap(base64Image);
                 MyTNBAppToolTipBuilder infoLabelWhoIsRegistered = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)

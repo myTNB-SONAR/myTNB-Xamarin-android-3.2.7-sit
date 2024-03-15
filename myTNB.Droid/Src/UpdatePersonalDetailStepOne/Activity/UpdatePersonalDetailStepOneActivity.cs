@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
-using Android.Opengl;
 using Android.OS;
 using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
-using Castle.Core.Internal;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB.AndroidApp.Src.Base;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Common.Activity;
 using myTNB.AndroidApp.Src.Common.Model;
@@ -28,8 +20,7 @@ using myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.MVP;
 using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
-using NSubstitute.Core;
-using static myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Fragment.UpdatePersonalDetailStepOneSelectRelationshipFragment;
+using System;
 
 namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
 
@@ -961,7 +952,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_ic);
                 txtNewIC.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
-                if (txtNewIC.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewIC.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -1000,7 +991,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_name);
                 txtNewOwnerName.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
-                if (txtNewOwnerName.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewOwnerName.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -1035,7 +1026,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
             if (toggleChkMobileNumber)
             {
                 mobileNumberFieldContainer.Visibility = ViewStates.Visible;
-                if (mobileNumberInputComponent.GetMobileNumberValue().IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(mobileNumberInputComponent.GetMobileNumberValue()))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -1075,7 +1066,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
                 //  parseCheckRequiredField();
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.placeholder_email);
                 txtNewEmailAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-                if (txtNewEmailAddress.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewEmailAddress.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -1114,7 +1105,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
                 txtNewMailingAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
 
                 //parseCheckRequiredField();
-                if (txtNewMailingAddress.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewMailingAddress.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
@@ -1152,7 +1143,7 @@ namespace myTNB.AndroidApp.Src.UpdatePersonalDetailStepOne.Activity
                 Drawable icon = ContextCompat.GetDrawable(this, Resource.Drawable.ic_field_address);
                 txtNewPremiseAddress.SetCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
                 //parseCheckRequiredField();
-                if (txtNewPremiseAddress.Text.IsNullOrEmpty())
+                if (string.IsNullOrWhiteSpace(txtNewPremiseAddress.Text))
                 {
                     this.userActionsListener.OnDisableSubmitButton();
                 }
