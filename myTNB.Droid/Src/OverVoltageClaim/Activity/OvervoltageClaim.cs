@@ -28,8 +28,8 @@ using myTNB.AndroidApp.Src.OverVoltageClaimSuccessPage.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using Org.Json;
-using Microsoft.Maui.Devices;
 using Microsoft.Maui.Devices.Sensors;
+using Microsoft.Maui.Devices;
 
 
 namespace myTNB.AndroidApp.Src.OverVoltageClaim.Activity
