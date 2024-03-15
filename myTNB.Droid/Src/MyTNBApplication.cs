@@ -33,8 +33,8 @@ namespace myTNB.AndroidApp.Src
             base.OnCreate();
             FirebaseApp.InitializeApp(Context);
             FirebaseAnalytics.GetInstance(Context);
-            Fabric.Fabric.With(Context, new Crashlytics.Crashlytics());
-            Crashlytics.Crashlytics.HandleManagedExceptions();
+            //Fabric.Fabric.With(Context, new Crashlytics.Crashlytics());
+            //Crashlytics.Crashlytics.HandleManagedExceptions();
             FacebookSdk.SdkInitialize(ApplicationContext);
             //FacebookSdk.AutoInitEnabled = true;
             //FacebookSdk.FullyInitialize();

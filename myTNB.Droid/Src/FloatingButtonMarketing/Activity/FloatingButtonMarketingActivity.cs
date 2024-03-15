@@ -9,7 +9,6 @@ using CheeseBind;
 using myTNB.AndroidApp.Src.Bills.NewBillRedesign.MVP;
 using Android.OS;
 using myTNB.AndroidApp.Src.Utils;
-using Fabric.Services.Common;
 using myTNB.AndroidApp.Src.Database.Model;
 using System.Collections.Generic;
 using Android.Preferences;

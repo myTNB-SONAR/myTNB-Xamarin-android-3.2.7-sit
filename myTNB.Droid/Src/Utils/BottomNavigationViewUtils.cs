@@ -77,8 +77,8 @@ namespace myTNB.AndroidApp.Src.Utils
 
                 iconView.LayoutParameters = layoutParams;
 
-                TextView selectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.largeLabel);
-                TextView unselectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.smallLabel);
+                TextView selectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.navigation_bar_item_large_label_view);
+                TextView unselectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.navigation_bar_item_small_label_view);
 
                 selectedTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.powerBlue)));
                 unselectedTextView.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(mActivity, Resource.Color.charcoalGrey)));

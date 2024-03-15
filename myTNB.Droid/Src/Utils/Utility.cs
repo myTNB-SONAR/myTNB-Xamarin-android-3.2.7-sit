@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using myTNB.AndroidApp.Src.Base.Models;
 using myTNB.Mobile.Helpers;
+using Firebase.Crashlytics;
 
 namespace myTNB.AndroidApp.Src.Utils
 {
@@ -101,7 +102,7 @@ namespace myTNB.AndroidApp.Src.Utils
 
         public static void LoggingNonFatalError(Exception e)
         {
-            Crashlytics.Crashlytics.LogException(new Java.Lang.Throwable(e.ToString()));
+            FirebaseCrashlytics.Instance.RecordException(new Java.Lang.Throwable(e.ToString()));
         }
 
 

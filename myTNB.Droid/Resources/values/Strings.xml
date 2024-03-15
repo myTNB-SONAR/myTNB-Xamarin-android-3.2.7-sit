@@ -4,6 +4,7 @@
   <!-- Launch Activity-->
   <string name="launch">Launch</string>
   <string name="text_app_version">App Version </string>
+
   <!-- End of Launch Activity-->
 
   <!-- OnBoarding Activity -->
