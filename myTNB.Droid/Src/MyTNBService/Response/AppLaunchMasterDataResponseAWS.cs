@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using myTNB.AndroidApp.Src.AppLaunch.Models;
-using myTNB.AndroidApp.Src.Base.Models;
+﻿using myTNB.AndroidApp.Src.AppLaunch.Models;
 using myTNB.AndroidApp.Src.FindUs.Response;
 using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
-using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP.Models;
 using Newtonsoft.Json;
-using myTNB.AndroidApp.Src.Utils;
 using Refit;
+using System.Collections.Generic;
 
 namespace myTNB.AndroidApp.Src.MyTNBService.Response
 {
@@ -134,11 +130,11 @@ namespace myTNB.AndroidApp.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "State")]
             [AliasAs("State")]
-            public List<FeedbackState> States { get; set; }
+            public List<FeedbackState> States { get; set; } = new List<FeedbackState>();
 
             [JsonProperty(PropertyName = "FeedbackCategory")]
             [AliasAs("FeedbackCategory")]
-            public List<FeedbackCategory> FeedbackCategorys { get; set; }
+            public List<FeedbackCategory> FeedbackCategorys { get; set; } = new List<FeedbackCategory>();
 
             [JsonProperty(PropertyName = "FeedbackCategory_v2")]
             [AliasAs("FeedbackCategory_v2")]
