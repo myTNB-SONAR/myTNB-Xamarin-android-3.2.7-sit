@@ -114,19 +114,19 @@ namespace myTNB.AndroidApp.Src.MyTNBService.Response
         {
             [JsonProperty(PropertyName = "AppVersionList")]
             [AliasAs("AppVersionList")]
-            public List<AppVersionList> AppVersionList { get; set; }
+            public List<AppVersionList> AppVersionList { get; set; } = new List<AppVersionList>();
 
             [JsonProperty(PropertyName = "Downtime")]
             [AliasAs("Downtime")]
-            public List<DownTime> Downtimes { get; set; }
+            public List<DownTime> Downtimes { get; set; } = new List<DownTime>();
 
             [JsonProperty(PropertyName = "WebLink")]
             [AliasAs("WebLink")]
-            public List<Weblink> WebLinks { get; set; }
+            public List<Weblink> WebLinks { get; set; } = new List<Weblink>();
 
             [JsonProperty(PropertyName = "LocationType")]
             [AliasAs("LocationType")]
-            public List<GetLocationTypesResponse.LocationType> LocationTypes { get; set; }
+            public List<GetLocationTypesResponse.LocationType> LocationTypes { get; set; } = new List<GetLocationTypesResponse.LocationType>();
 
             [JsonProperty(PropertyName = "State")]
             [AliasAs("State")]
@@ -138,19 +138,19 @@ namespace myTNB.AndroidApp.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "FeedbackCategory_v2")]
             [AliasAs("FeedbackCategory_v2")]
-            public List<FeedbackCategory> FeedbackCategorysV2 { get; set; }
+            public List<FeedbackCategory> FeedbackCategorysV2 { get; set; } = new List<FeedbackCategory>();
 
             [JsonProperty(PropertyName = "FeedbackType")]
             [AliasAs("FeedbackType")]
-            public List<FeedbackType> FeedbackTypes { get; set; }
+            public List<FeedbackType> FeedbackTypes { get; set; } = new List<FeedbackType>();
 
             [JsonProperty(PropertyName = "NotificationType")]
             [AliasAs("NotificationType")]
-            public List<NotificationTypes> NotificationTypes { get; set; }
+            public List<NotificationTypes> NotificationTypes { get; set; } = new List<NotificationTypes>();
 
             [JsonProperty(PropertyName = "NotificationTypeChannel")]
             [AliasAs("NotificationTypeChannel")]
-            public List<NotificationChannels> NotificationTypeChannels { get; set; }
+            public List<NotificationChannels> NotificationTypeChannels { get; set; } = new List<NotificationChannels>();
 
             [JsonProperty(PropertyName = "ForceUpdateInfo")]
             [AliasAs("ForceUpdateInfo")]
@@ -166,7 +166,7 @@ namespace myTNB.AndroidApp.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "ServicesPreLogin")]
             [AliasAs("ServicesPreLogin")]
-            public List<MyService> ServicesPreLogin { set; get; }
+            public List<MyService> ServicesPreLogin { set; get; } = new List<MyService>();
 
             //[JsonProperty(PropertyName = "UserVerificationInfo")]
             //[AliasAs("NotificatiUserVerificationInfoonType")]
@@ -236,7 +236,7 @@ namespace myTNB.AndroidApp.Src.MyTNBService.Response
 
             [JsonProperty(PropertyName = "AndroidVersionToUpdate")]
             [AliasAs("AndroidVersionToUpdate")]
-            public List<string> AndroidVersionToUpdate { get; set; }
+            public List<string> AndroidVersionToUpdate { get; set; } = new List<string>();
 
             [JsonProperty(PropertyName = "ModalRecommendTitle")]
             [AliasAs("ModalRecommendTitle")]
