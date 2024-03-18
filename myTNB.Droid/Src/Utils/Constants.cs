@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using Microsoft.Maui.Storage;
+using System.IO;
 
 namespace myTNB.AndroidApp.Src.Utils
 {
     public sealed class Constants
     {
-        internal static string LIBRARY_PATH => System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        internal static string LIBRARY_PATH => Path.Combine(FileSystem.Current.AppDataDirectory);
         internal static readonly string DB_NAME = "myTNB.db3";
         internal static string DB_PATH => Path.Combine(LIBRARY_PATH, DB_NAME);
 
@@ -355,7 +356,7 @@ namespace myTNB.AndroidApp.Src.Utils
         public const string BCRM_NOTIFICATION_PAYMENT_FAILED_ID = "71";
         public const string BCRM_NOTIFICATION_PAYMENT_SUCCESS_ID = "72";
 
-        
+
 
 
         //DBR
@@ -398,7 +399,7 @@ namespace myTNB.AndroidApp.Src.Utils
         public const string BCRM_NOTIFICATION_APP_UPDATE_DBR = "21010";
 
         //myHome
-        
+
         public const string BCRM_NOTIFICATION_MYHOME_NC_RESUME_APPLICATION = "41002";
         public const string BCRM_NOTIFICATION_MYHOME_NC_OTP_VERIFY = "41005";
         public const string BCRM_NOTIFICATION_MYHOME_COA_OTP_VERIFY = "42005";
@@ -406,7 +407,7 @@ namespace myTNB.AndroidApp.Src.Utils
         public const string BCRM_NOTIFICATION_MYHOME_COT_OTP_VERIFY = "43005";
         public const string BCRM_NOTIFICATION_MYHOME_COT_REQUEST = "43006";
         public const string BCRM_NOTIFICATION_MYHOME_COT_REMINDER = "43007";
-        public const string BCRM_NOTIFICATION_MYHOME_COT_NEW_OWNER_RESUME_APPLICATION = "43008"; 
+        public const string BCRM_NOTIFICATION_MYHOME_COT_NEW_OWNER_RESUME_APPLICATION = "43008";
         public const string BCRM_NOTIFICATION_MYHOME_COA_RESUME_APPLICATION = "42004";
         public const string BCRM_NOTIFICATION_MYHOME_APP_UPDATE_GTM2 = "44001";
         public const string BCRM_NOTIFICATION_MYHOME_APP_UPDATE_GTM2_FOLLOW_UP_AFTER_UPDATE = "44002";
