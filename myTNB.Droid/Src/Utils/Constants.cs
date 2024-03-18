@@ -1,10 +1,11 @@
-﻿using System.IO;
+﻿using Microsoft.Maui.Storage;
+using System.IO;
 
 namespace myTNB.AndroidApp.Src.Utils
 {
     public sealed class Constants
     {
-        internal static string LIBRARY_PATH => System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        internal static string LIBRARY_PATH => Path.Combine(FileSystem.Current.AppDataDirectory);
         internal static readonly string DB_NAME = "myTNB.db3";
         internal static string DB_PATH => Path.Combine(LIBRARY_PATH, DB_NAME);
 
