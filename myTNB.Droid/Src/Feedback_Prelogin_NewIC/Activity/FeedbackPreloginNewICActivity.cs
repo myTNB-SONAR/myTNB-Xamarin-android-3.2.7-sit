@@ -41,7 +41,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime;
 using System.Threading.Tasks;
 using static myTNB.LanguageManager;
 
@@ -721,11 +720,11 @@ namespace myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

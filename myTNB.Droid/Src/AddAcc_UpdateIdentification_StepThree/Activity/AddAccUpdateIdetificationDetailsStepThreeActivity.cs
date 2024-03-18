@@ -26,7 +26,6 @@ using myTNB.AndroidApp.Src.UpdatePersonalDetailStepTwo.Adapter;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -974,11 +973,11 @@ namespace myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepThree.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

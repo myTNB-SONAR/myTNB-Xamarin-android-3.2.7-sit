@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
-using Android.Runtime;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -11,27 +10,23 @@ using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.Mobile.SessionCache;
 using myTNB.AndroidApp.Src.AddAccount.Activity;
 using myTNB.AndroidApp.Src.AppLaunch.Activity;
 using myTNB.AndroidApp.Src.Base.Activity;
-using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.ForgetPassword.Activity;
 using myTNB.AndroidApp.Src.Login.MVP;
 using myTNB.AndroidApp.Src.Login.Requests;
 using myTNB.AndroidApp.Src.myTNBMenu.Activity;
-using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB.AndroidApp.Src.PreLogin.Activity;
-using myTNB.AndroidApp.Src.RegistrationForm.Activity;
 using myTNB.AndroidApp.Src.ResetPassword.Activity;
 using myTNB.AndroidApp.Src.UpdateMobileNo.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using myTNB.AndroidApp.Src.XEmailRegistrationForm.Activity;
+using myTNB.Mobile.SessionCache;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.IO;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.Login.Activity
 {
@@ -335,15 +330,15 @@ namespace myTNB.AndroidApp.Src.Login.Activity
             base.OnBackPressed();
             //if (fromlink)
             //{
-                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(PreLoginIntent);
+            Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+            PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(PreLoginIntent);
             //}
             //else
             //{
             //    Finish();
             //}
-            
+
         }
 
         public void ShowUpdateUserStatusActivate(string message)
@@ -902,11 +897,11 @@ namespace myTNB.AndroidApp.Src.Login.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

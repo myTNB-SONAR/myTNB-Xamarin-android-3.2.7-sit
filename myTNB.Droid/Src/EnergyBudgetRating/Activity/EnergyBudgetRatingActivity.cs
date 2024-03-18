@@ -12,7 +12,6 @@ using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Activity
 {
@@ -26,7 +25,7 @@ namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Activity
         private FrameLayout frameContainer;
         //private AndroidX.CoordinatorLayout.Widget.CoordinatorLayout coordinatorLayout;
 
-        AndroidX.Fragment.App.Fragment  currentFragment;
+        AndroidX.Fragment.App.Fragment currentFragment;
 
         private int SelectStar = 1;
         private string SelectYesOrNo;
@@ -140,7 +139,7 @@ namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Activity
             currentFragment = feedbackTwo;
         }
 
-        public void nextFragment(AndroidX.Fragment.App.Fragment  fragment, Bundle bundle)
+        public void nextFragment(AndroidX.Fragment.App.Fragment fragment, Bundle bundle)
         {
             if (currentFragment is FeedbackTwo || currentFragment is FeedbackOne)
             {
@@ -178,11 +177,11 @@ namespace myTNB.AndroidApp.Src.EnergyBudgetRating.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

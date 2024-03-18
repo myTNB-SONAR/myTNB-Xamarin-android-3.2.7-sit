@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -13,7 +9,6 @@ using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.TextField;
-using myTNB;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Base.Models;
 using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
@@ -22,6 +17,8 @@ using myTNB.AndroidApp.Src.FeedbackDetails.Adapter;
 using myTNB.AndroidApp.Src.FeedbackFullScreenImage.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 
 namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
 {
@@ -504,11 +501,11 @@ namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

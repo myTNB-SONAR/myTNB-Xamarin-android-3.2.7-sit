@@ -29,7 +29,6 @@ using myTNB.AndroidApp.Src.SelectFeedbackType.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -701,11 +700,11 @@ namespace myTNB.AndroidApp.Src.Feedback_Login_Others.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

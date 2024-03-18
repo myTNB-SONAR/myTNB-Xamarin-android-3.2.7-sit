@@ -1,38 +1,31 @@
-﻿using AFollestad.MaterialDialogs;
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Base.Models;
+using myTNB.AndroidApp.Src.Common;
 using myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Adapter;
 using myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.MVP;
 using myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepTwo.Activity;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using System.Runtime;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Android.Support.Design.Widget;
-using myTNB.AndroidApp.Src.myTNBMenu.Models;
-using myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity;
-using myTNB.AndroidApp.Src.Common;
 using System.Collections.Generic;
-using myTNB;
+using System.Threading.Tasks;
 
 namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
 {
@@ -106,7 +99,7 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
         public string EnquiryId = string.Empty;
         public string EnquiryName = string.Empty;
-        
+
 
         private string accNo = null;
 
@@ -165,7 +158,7 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
                 // set font
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAboutBillEnquiry1, txtInputLayoutCategory);
-                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent, TextView_CharLeft,txtCategory);
+                TextViewUtils.SetMuseoSans300Typeface(txtRelatedScreenshotTitle, txtMaxImageContent, TextView_CharLeft, txtCategory);
                 TextViewUtils.SetMuseoSans500Typeface(txtstep1of2, IwantToEnquire, uploadSupportingDoc, btnNext);
 
                 //set translation 
@@ -185,13 +178,13 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
                 //set feedback setting
                 TextView_CharLeft.Text = string.Format(Utility.GetLocalizedCommonLabel("charactersLeft"), Constants.FEEDBACK_CHAR_LIMIT);
                 Dictionary<string, List<SelectorModel>> selectors = LanguageManager.Instance.GetSelectorsByPage("SubmitEnquiry");
-                List<SelectorModel>  _mappingList = new List<SelectorModel>();
+                List<SelectorModel> _mappingList = new List<SelectorModel>();
                 if (selectors != null && selectors.ContainsKey("enquiryType"))
                 {
                     _mappingList = selectors["enquiryType"];
                 }
-                txtCategory.Text = _mappingList.Count>0 ? _mappingList[0].Description : string.Empty;
-                EnquiryId = _mappingList.Count>0 ? _mappingList[0].Key : string.Empty;
+                txtCategory.Text = _mappingList.Count > 0 ? _mappingList[0].Description : string.Empty;
+                EnquiryId = _mappingList.Count > 0 ? _mappingList[0].Key : string.Empty;
                 EnquiryName = _mappingList[0].Description;
 
             }
@@ -229,11 +222,11 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -388,17 +381,19 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
         public String getFilename(Android.Net.Uri uri)
         {
-            try {
+            try
+            {
 
                 string filename = FileUtils.getFilenameUsingContentResolver(this, uri);
                 return filename;
 
-            } catch
+            }
+            catch
 
             {
                 return null;
             }
-       
+
         }
 
 
@@ -593,7 +588,7 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
             //StartActivityForResult(feedbackAboutBillEnquiry, Constants.REQUEST_FEEDBACK_SUCCESS_VIEW);
 
         }
-        
+
         [OnClick(Resource.Id.btnNext)]
         void OnNextButton(object sender, EventArgs eventArgs)
         {
@@ -611,7 +606,7 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
 
             this.userActionsListener.OnActivityResult(requestCode, resultCode, data);
 
-            
+
             if (requestCode == Constants.SELECT_ENQUIRY_REQUEST_CODE)
             {
                 if (resultCode == Result.Ok && data != null && data.Extras != null)
@@ -622,19 +617,19 @@ namespace myTNB.AndroidApp.Src.FeedbackAboutBillEnquiryStepOne.Activity
                     //selectedCustomerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
 
                     //injecting string into the accno
-                    foreach(Item item in CategoryItemList)
+                    foreach (Item item in CategoryItemList)
                     {
-                        if(item.selected)
+                        if (item.selected)
                         {
                             txtCategory.Text = item.title;
                             EnquiryName = item.title;
                             EnquiryId = item.type;
                         }
                     }
-                   
+
                 }
             }
-            
+
 
         }
 

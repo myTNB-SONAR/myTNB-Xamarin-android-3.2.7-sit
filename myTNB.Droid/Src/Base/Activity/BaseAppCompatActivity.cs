@@ -15,7 +15,6 @@ using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Runtime;
 using System.Text;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB.AndroidApp.Src.Utils.Constants;
@@ -522,11 +521,11 @@ namespace myTNB.AndroidApp.Src.Base.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

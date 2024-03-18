@@ -11,7 +11,6 @@ using myTNB.AndroidApp.Src.Utils.PDFView;
 using System;
 using System.IO;
 using System.Net;
-using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -257,11 +256,11 @@ namespace myTNB.AndroidApp.Src.Base.Activity
                 switch (level)
                 {
                     case TrimMemory.RunningLow:
-                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                        // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                         GC.Collect();
                         break;
                     default:
-                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                        // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                         GC.Collect();
                         break;
                 }

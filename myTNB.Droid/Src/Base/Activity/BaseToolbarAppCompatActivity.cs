@@ -11,7 +11,6 @@ using Google.Android.Material.Snackbar;
 using myTNB.AndroidApp.Src.Base.MVP;
 using myTNB.AndroidApp.Src.Utils;
 using System;
-using System.Runtime;
 using Toolbar = AndroidX.AppCompat.Widget.Toolbar;
 
 namespace myTNB.AndroidApp.Src.Base.Activity
@@ -182,11 +181,11 @@ namespace myTNB.AndroidApp.Src.Base.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

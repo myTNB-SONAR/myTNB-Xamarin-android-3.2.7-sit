@@ -9,11 +9,9 @@ using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using Card.IO;
-using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
 using myTNB.AndroidApp.Src.AddCard.MVP;
-using myTNB.AndroidApp.Src.Base;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.MultipleAccountPayment.Model;
@@ -22,7 +20,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.AddCard.Activity
 {
@@ -155,7 +152,7 @@ namespace myTNB.AndroidApp.Src.AddCard.Activity
                     ? Resource.Style.Theme_AddCardLarge
                     : Resource.Style.Theme_AddCard);
 
-                
+
             }
             catch (Exception e)
             {
@@ -564,11 +561,11 @@ namespace myTNB.AndroidApp.Src.AddCard.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -593,7 +590,7 @@ namespace myTNB.AndroidApp.Src.AddCard.Activity
                         .Build().Show();
 
                     saveCard.Checked = false;
-                   
+
                 }
                 else
                 {

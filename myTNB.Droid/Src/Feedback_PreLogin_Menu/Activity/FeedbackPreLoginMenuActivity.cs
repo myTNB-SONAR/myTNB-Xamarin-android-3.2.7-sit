@@ -19,7 +19,6 @@ using myTNB.AndroidApp.Src.Utils;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.Activity
 {
@@ -227,7 +226,7 @@ namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.Activity
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.OnFaultyStreetLamps();
-            
+
             }
         }
 
@@ -238,7 +237,7 @@ namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.Activity
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.OnOthers();
-                
+
             }
         }
 
@@ -479,11 +478,11 @@ namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -494,7 +493,7 @@ namespace myTNB.AndroidApp.Src.Feedback_PreLogin_Menu.Activity
             return PAGE_ID;
         }
 
-         public void OnCheckBCRMDowntime()
+        public void OnCheckBCRMDowntime()
         {
             this.SetIsClicked(false);
             //OnBCRMDownTimeErrorMessage();

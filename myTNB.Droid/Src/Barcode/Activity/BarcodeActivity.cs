@@ -12,7 +12,6 @@ using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 using System.Threading.Tasks;
 using ZXing.Mobile;
 
@@ -313,11 +312,11 @@ namespace myTNB.AndroidApp.Src.Barcode.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

@@ -2,17 +2,12 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Views;
-using Android.Widget;
 using CheeseBind;
-using Com.Davemorrissey.Labs.Subscaleview;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Base.Models;
 using myTNB.AndroidApp.Src.Utils;
 using myTNB.AndroidApp.Src.Utils.ZoomImageView;
-using Square.Picasso;
 using System;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.FeedbackFullScreenImage.Activity
 {
@@ -93,11 +88,11 @@ namespace myTNB.AndroidApp.Src.FeedbackFullScreenImage.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

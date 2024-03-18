@@ -1,18 +1,17 @@
-﻿using AFollestad.MaterialDialogs;
-using Android;
+﻿using Android;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Preferences;
 using Android.Provider;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using Google.Android.Material.TextField;
 using Java.Text;
 using Java.Util;
 using myTNB.AndroidApp.Src.Base.Activity;
@@ -23,11 +22,7 @@ using myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepTwo.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using System.Runtime;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
-using Android.Support.Design.Widget;
 
 namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity
 {
@@ -205,11 +200,11 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -359,17 +354,19 @@ namespace myTNB.AndroidApp.Src.FeedbackGeneralEnquiryStepOne.Activity
 
         public String getFilename(Android.Net.Uri uri)
         {
-            try {
+            try
+            {
 
                 string filename = FileUtils.getFilenameUsingContentResolver(this, uri);
                 return filename;
 
-            } catch
+            }
+            catch
 
             {
                 return null;
             }
-       
+
         }
 
 

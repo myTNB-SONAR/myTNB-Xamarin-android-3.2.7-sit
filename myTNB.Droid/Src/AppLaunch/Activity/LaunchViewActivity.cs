@@ -4,54 +4,51 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Common;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Firebase.DynamicLinks;
+using Firebase.Iid;
+using Google.Android.Material.Snackbar;
 using myTNB.AndroidApp.Src.AppLaunch.Models;
 using myTNB.AndroidApp.Src.AppLaunch.MVP;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
+using myTNB.AndroidApp.Src.Base;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.DeviceCache;
+using myTNB.AndroidApp.Src.Login.Activity;
 using myTNB.AndroidApp.Src.Maintenance.Activity;
+using myTNB.AndroidApp.Src.ManageBillDelivery.MVP;
 using myTNB.AndroidApp.Src.myTNBMenu.Activity;
+using myTNB.AndroidApp.Src.MyTNBService.Response;
+using myTNB.AndroidApp.Src.NewWalkthrough.MVP;
+using myTNB.AndroidApp.Src.NotificationDetails.Activity;
 using myTNB.AndroidApp.Src.Notifications.Activity;
+using myTNB.AndroidApp.Src.OverVoltageFeedback.Activity;
 using myTNB.AndroidApp.Src.PreLogin.Activity;
 using myTNB.AndroidApp.Src.UpdateMobileNo.Activity;
 using myTNB.AndroidApp.Src.Utils;
+using myTNB.AndroidApp.Src.Utils.Deeplink;
+using myTNB.AndroidApp.Src.Utils.Notification;
+using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.SessionCache;
+using myTNB.SitecoreCMS.Model;
+using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
-using Android.Text;
-using myTNB.SitecoreCMS.Model;
 using System.Globalization;
-using Android.Graphics.Drawables;
-using myTNB.AndroidApp.Src.NewWalkthrough.MVP;
-using myTNB.AndroidApp.Src.MyTNBService.Response;
-using Firebase.DynamicLinks;
-using Google.Android.Material.Snackbar;
-using AndroidX.Core.Content;
-using myTNB.Mobile;
-using myTNB;
-using myTNB.Mobile.SessionCache;
-using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusDetail.MVP;
-using Newtonsoft.Json;
-using myTNB.AndroidApp.Src.DeviceCache;
-using myTNB.AndroidApp.Src.ManageBillDelivery.MVP;
-using myTNB.Mobile.AWS.Models;
-using myTNB.AndroidApp.Src.NotificationDetails.Activity;
-using myTNB.AndroidApp.Src.Utils.Deeplink;
-using myTNB.AndroidApp.Src.Base;
-using myTNB.AndroidApp.Src.Login.Activity;
-using System.Text.RegularExpressions;
-using myTNB.AndroidApp.Src.OverVoltageFeedback.Activity;
-using myTNB.AndroidApp.Src.Utils.Notification;
-using myTNB.Mobile.AWS.Models.DBR;
-using Firebase.Iid;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace myTNB.AndroidApp.Src.AppLaunch.Activity
 {
@@ -1201,11 +1198,11 @@ namespace myTNB.AndroidApp.Src.AppLaunch.Activity
                 switch (level)
                 {
                     case TrimMemory.RunningLow:
-                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                        // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                         GC.Collect();
                         break;
                     default:
-                        GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                        // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                         GC.Collect();
                         break;
                 }

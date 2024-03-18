@@ -2,23 +2,20 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-
 using Android.Views;
 using Android.Widget;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
-using myTNB;
-using myTNB.SitecoreCMS.Models;
-using myTNB.SQLite.SQLiteDataManager;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.FAQ.Adapter;
 using myTNB.AndroidApp.Src.FAQ.Model;
 using myTNB.AndroidApp.Src.FAQ.MVP;
 using myTNB.AndroidApp.Src.Utils;
+using myTNB.SitecoreCMS.Models;
+using myTNB.SQLite.SQLiteDataManager;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.FAQ.Activity
 {
@@ -178,7 +175,7 @@ namespace myTNB.AndroidApp.Src.FAQ.Activity
                 {
                     List<FAQsEntity> items = new List<FAQsEntity>();
 
-                    foreach(FAQCacheModel item in FAQs)
+                    foreach (FAQCacheModel item in FAQs)
                     {
                         items.Add(new FAQsEntity()
                         {
@@ -328,11 +325,11 @@ namespace myTNB.AndroidApp.Src.FAQ.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

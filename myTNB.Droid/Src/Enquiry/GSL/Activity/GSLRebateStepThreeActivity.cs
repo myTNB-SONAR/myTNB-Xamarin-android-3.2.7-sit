@@ -23,7 +23,6 @@ using myTNB.AndroidApp.Src.Enquiry.GSL.MVP;
 using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
-using System.Runtime;
 using System.Threading.Tasks;
 using FileUtils = myTNB.AndroidApp.Src.Utils.FileUtils;
 
@@ -616,11 +615,11 @@ namespace myTNB.AndroidApp.Src.Enquiry.GSL.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

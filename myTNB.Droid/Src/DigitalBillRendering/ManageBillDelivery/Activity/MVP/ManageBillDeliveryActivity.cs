@@ -1,36 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.RecyclerView.Widget;
 using AndroidX.ViewPager.Widget;
 using CheeseBind;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Database.Model;
-using myTNB.AndroidApp.Src.Utils;
-using Newtonsoft.Json;
 using myTNB.AndroidApp.Src.DBR.DBRApplication.MVP;
-using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.AndroidApp.Src.DigitalBill.Activity;
-using Android.Preferences;
-using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
-using myTNB.Mobile;
-using System.Linq;
-using myTNB.Mobile.AWS.Models;
-using myTNB.AndroidApp.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
-using AndroidX.RecyclerView.Widget;
-using Android.Graphics;
-using static myTNB.Mobile.MobileEnums;
 using myTNB.AndroidApp.Src.DigitalBillRendering.ManageBillDelivery.Activity.MVP;
-using myTNB.Mobile.AWS.Models.DBR;
+using myTNB.AndroidApp.Src.ManageBillDelivery.ManageBillDeliveryEmailList.Adapter;
 using myTNB.AndroidApp.Src.myTNBMenu.Activity;
 using myTNB.AndroidApp.Src.myTNBMenu.Async;
+using myTNB.AndroidApp.Src.myTNBMenu.Models;
+using myTNB.AndroidApp.Src.NewAppTutorial.MVP;
+using myTNB.AndroidApp.Src.Utils;
+using myTNB.Mobile;
+using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using static myTNB.Mobile.MobileEnums;
 
 namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 {
@@ -128,7 +127,7 @@ namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 
         [BindView(Resource.Id.paperTitle)]
         TextView paperTitle;
-        
+
 
 
         private const string PAGE_ID = "ManageDigitalBillLanding";
@@ -276,7 +275,7 @@ namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
                     {
                         //default copywriting when api null";
                         paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
-                    
+
                     }
                 }
                 else
@@ -978,11 +977,11 @@ namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -1180,8 +1179,8 @@ namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
                             }
                             else
                             {
-                                 //default copywriting when api null";
-                                 paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
+                                //default copywriting when api null";
+                                paperTitle.Text = Utility.GetLocalizedLabel("ManageDigitalBillLanding", "defaultTenantApiText");
                             }
                         }
                         else
@@ -1192,7 +1191,7 @@ namespace myTNB.AndroidApp.Src.ManageBillDelivery.MVP
 
                         SetToolBarTitle(GetLabelByLanguage(_isOwner || tenantAllowOptIn ? "title" : "dbrViewBillDelivery"));
 
-                        GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn, fromProfile,  message, notEligible);
+                        GetDeliveryDisplay(_billRenderingResponse, tenantAllowOptIn, fromProfile, message, notEligible);
                     }
                     foreach (DBRAccount account in dbrEligibleAccountList)
                     {

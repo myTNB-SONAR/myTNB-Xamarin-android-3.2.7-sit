@@ -4,13 +4,10 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
 using CheeseBind;
-using Java.Text;
-using Java.Util;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Globalization;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.FeedbackSuccess.Activity
 {
@@ -146,11 +143,11 @@ namespace myTNB.AndroidApp.Src.FeedbackSuccess.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

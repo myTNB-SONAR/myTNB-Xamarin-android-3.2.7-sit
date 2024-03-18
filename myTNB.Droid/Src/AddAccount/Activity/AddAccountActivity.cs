@@ -1,7 +1,6 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -9,12 +8,9 @@ using Android.Views;
 using myTNB.AndroidApp.Src.AddAcc_UpdateIdentification_StepOne.Activity;
 using myTNB.AndroidApp.Src.AddAccount.Fragment;
 using myTNB.AndroidApp.Src.Base.Activity;
-using myTNB.AndroidApp.Src.Feedback_Prelogin_NewIC.Activity;
 using myTNB.AndroidApp.Src.myTNBMenu.Activity;
-using myTNB.AndroidApp.Src.UpdateID.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using System;
-using System.Runtime;
 using ZXing.Mobile;
 
 namespace myTNB.AndroidApp.Src.AddAccount.Activity
@@ -44,7 +40,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                 fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", true);
             }
 
-            
+
             Bundle bundle = new Bundle();
             bundle.PutBoolean("fromRegisterPage", fromRegisterPage);
             //bundle.PutBoolean("hasRights", false);
@@ -138,7 +134,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                 else
                 {
                     //Intent nextIntent = new Intent(this, typeof(FeedbackPreloginNewICActivity));
-                    Intent nextIntent = new Intent(this, typeof(AddAccUpdateIdetificationDetailsActivity)); 
+                    Intent nextIntent = new Intent(this, typeof(AddAccUpdateIdetificationDetailsActivity));
                     StartActivity(nextIntent);
                 }
             }
@@ -199,11 +195,11 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

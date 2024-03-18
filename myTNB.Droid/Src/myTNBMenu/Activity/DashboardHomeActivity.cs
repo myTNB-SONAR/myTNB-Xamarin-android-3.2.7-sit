@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -9,65 +6,63 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
+using Android.Text;
+using Android.Text.Style;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
+using AndroidX.CoordinatorLayout.Widget;
+using AndroidX.Core.Content;
 using CheeseBind;
+using Google.Android.Material.BottomNavigation;
 using myTNB.AndroidApp.Src.AppLaunch.Activity;
+using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusListing.MVP;
 using myTNB.AndroidApp.Src.Base;
 using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.Bills.AccountStatement;
+using myTNB.AndroidApp.Src.Bills.NewBillRedesign;
 using myTNB.AndroidApp.Src.Database.Model;
+using myTNB.AndroidApp.Src.EnergyBudget.Activity;
+using myTNB.AndroidApp.Src.FloatingButtonMarketing.Activity;
+using myTNB.AndroidApp.Src.ManageSupplyAccount.Activity;
+using myTNB.AndroidApp.Src.MyAccount.Activity;
+using myTNB.AndroidApp.Src.MyHome;
+using myTNB.AndroidApp.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.myTNBMenu.Async;
 using myTNB.AndroidApp.Src.myTNBMenu.Fragments;
 using myTNB.AndroidApp.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB.AndroidApp.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB.AndroidApp.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
-using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.MVP;
 using myTNB.AndroidApp.Src.myTNBMenu.Fragments.ProfileMenu;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.RewardMenu.MVP;
+using myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
 using myTNB.AndroidApp.Src.myTNBMenu.Models;
 using myTNB.AndroidApp.Src.myTNBMenu.MVP;
 using myTNB.AndroidApp.Src.PreLogin.Activity;
 using myTNB.AndroidApp.Src.RewardDetail.MVP;
 using myTNB.AndroidApp.Src.SelectSupplyAccount.Activity;
+using myTNB.AndroidApp.Src.ServiceDistruption.Activity;
+using myTNB.AndroidApp.Src.SitecoreCMS.Model;
 using myTNB.AndroidApp.Src.SummaryDashBoard.SummaryListener;
 using myTNB.AndroidApp.Src.Utils;
-using static Android.Views.View;
-using myTNB.AndroidApp.Src.myTNBMenu.Fragments.WhatsNewMenu.MVP;
-using myTNB.AndroidApp.Src.WhatsNewDetail.MVP;
-using Newtonsoft.Json;
-using myTNB.SitecoreCMS.Model;
-using myTNB.AndroidApp.Src.WhatsNewDialog;
-using System.Globalization;
-using AndroidX.CoordinatorLayout.Widget;
-using Google.Android.Material.BottomNavigation;
-using AndroidX.Core.Content;
-using Android.Text;
-using Android.Text.Style;
-using myTNB.Mobile.SessionCache;
-using myTNB;
-using myTNB.AndroidApp.Src.ApplicationStatus.ApplicationStatusListing.MVP;
-using myTNB.Mobile;
-using myTNB.AndroidApp.Src.myTNBMenu.Async;
-using myTNB.AndroidApp.Src.ManageSupplyAccount.Activity;
-using myTNB.AndroidApp.Src.MyAccount.Activity;
-using myTNB.Mobile.AWS.Models;
 using myTNB.AndroidApp.Src.Utils.Deeplink;
-using myTNB.AndroidApp.Src.Bills.AccountStatement;
 using myTNB.AndroidApp.Src.Utils.Notification;
-using NotificationType = myTNB.AndroidApp.Src.Utils.Notification.Notification.TypeEnum;
-using MarketingPopUp = myTNB.Mobile.Constants.MarketingPopup;
-using myTNB.AndroidApp.Src.DeviceCache;
-using myTNB.Mobile.AWS.Models.DBR;
-using myTNB.AndroidApp.Src.MyHome.Model;
+using myTNB.AndroidApp.Src.WhatsNewDetail.MVP;
+using myTNB.AndroidApp.Src.WhatsNewDialog;
+using myTNB.Mobile;
 using myTNB.Mobile.AWS;
-using System.Threading.Tasks;
-using myTNB.AndroidApp.Src.FindUs.Activity;
-using myTNB.AndroidApp.Src.MyHome;
-using Android.Util;
-using myTNB.AndroidApp.Src.SitecoreCMS.Model;
-using myTNB.AndroidApp.Src.EnergyBudget.Activity;
-using myTNB.AndroidApp.Src.Bills.NewBillRedesign;
-using myTNB.AndroidApp.Src.FloatingButtonMarketing.Activity;
-using myTNB.AndroidApp.Src.ServiceDistruption.Activity;
+using myTNB.Mobile.AWS.Models;
+using myTNB.Mobile.AWS.Models.DBR;
+using myTNB.Mobile.SessionCache;
+using myTNB.SitecoreCMS.Model;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using static Android.Views.View;
+using MarketingPopUp = myTNB.Mobile.Constants.MarketingPopup;
 
 namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
 {
@@ -343,7 +338,7 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
                     alreadyStarted = true;
                 }
             }
-           
+
             // if (extras != null && extras.ContainsKey("urlSchemaData"))
             // {
             //     urlSchemaCalled = true;
@@ -764,7 +759,7 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
         [OnClick(Resource.Id.floating_button_img)]
         void OnSelectFloatingIcon(object sender, EventArgs eventArgs)
         {
-           
+
             // FBitem = FloatingButtonUtils.GetFloatingButton();
             FloatingButtonEntity wtManager = new FloatingButtonEntity();
             List<FloatingButtonEntity> floatingButtonList = wtManager.GetAllItems();
@@ -775,7 +770,7 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
             {
                 if (!string.IsNullOrEmpty(floatingButtonList[0].Description))
                 {
-                   
+
                     string url = string.Empty;
                     string title = string.Empty;
 
@@ -2268,11 +2263,11 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -3184,7 +3179,7 @@ namespace myTNB.AndroidApp.Src.myTNBMenu.Activity
                                 OnShowBCRMPopup(bcrmEntity);
                             };
                             h.PostDelayed(myAction, 8000);
-                           //OnShowBCRMPopup(bcrmEntity);
+                            //OnShowBCRMPopup(bcrmEntity);
                         }
                         else
                         {

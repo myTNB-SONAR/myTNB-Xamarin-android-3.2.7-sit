@@ -4,7 +4,6 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Widget;
-using Castle.Core.Internal;
 using CheeseBind;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Database.Model;
@@ -14,7 +13,6 @@ using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity
 {
@@ -68,27 +66,27 @@ namespace myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity
                 List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                 foreach (CustomerBillingAccount customer in accountList)
                 {
-                    
-                        if (previouslySelected!=null)
+
+                    if (previouslySelected != null)
+                    {
+                        if (previouslySelected.AccountNum == customer.AccNum)
                         {
-                            if(previouslySelected.AccountNum == customer.AccNum)
-                            {
                             feedbackSelectAdapter.Add(AccountData.Copy(customer, true));
-                            }
-                            else
-                            {
-                            feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
-                            }
                         }
                         else
                         {
                             feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
                         }
+                    }
+                    else
+                    {
+                        feedbackSelectAdapter.Add(AccountData.Copy(customer, false));
+                    }
 
-                    
-                   
 
-                    
+
+
+
 
                 }
             }
@@ -127,11 +125,11 @@ namespace myTNB.AndroidApp.Src.Feedback_Login_BillRelated.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

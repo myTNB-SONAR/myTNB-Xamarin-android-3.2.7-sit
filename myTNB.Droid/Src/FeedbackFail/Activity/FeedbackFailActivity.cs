@@ -10,7 +10,6 @@ using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.myTNBMenu.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using System;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.FeedbackFail.Activity
 {
@@ -95,11 +94,11 @@ namespace myTNB.AndroidApp.Src.FeedbackFail.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

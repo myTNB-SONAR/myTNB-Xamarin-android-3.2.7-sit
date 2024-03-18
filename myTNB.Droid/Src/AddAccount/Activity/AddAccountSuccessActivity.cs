@@ -15,7 +15,6 @@ using myTNB.AndroidApp.Src.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.AddAccount.Activity
 {
@@ -136,11 +135,11 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

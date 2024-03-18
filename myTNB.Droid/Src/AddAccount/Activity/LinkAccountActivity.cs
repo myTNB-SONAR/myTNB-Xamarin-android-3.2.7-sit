@@ -7,31 +7,27 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Text;
 using Android.Text.Style;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using AndroidX.Core.Content;
 using AndroidX.RecyclerView.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
-using myTNB.Mobile;
 using myTNB.AndroidApp.Src.AddAccount.Models;
 using myTNB.AndroidApp.Src.AddAccount.MVP;
 using myTNB.AndroidApp.Src.AddAccountDisclaimer.Activity;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Database.Model;
 using myTNB.AndroidApp.Src.myTNBMenu.Activity;
-using myTNB.AndroidApp.Src.SSMR.Util;
-using myTNB.AndroidApp.Src.TermsAndConditions.Activity;
 using myTNB.AndroidApp.Src.myTNBMenu.Async;
 using myTNB.AndroidApp.Src.MyTNBService.Request;
 using myTNB.AndroidApp.Src.Utils;
+using myTNB.Mobile;
 using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
 using System.Threading.Tasks;
 
 namespace myTNB.AndroidApp.Src.AddAccount.Activity
@@ -103,7 +99,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
 
         [BindView(Resource.Id.checkboxlayout)]
         LinearLayout checkboxlayout;
-        
+
 
         private LinkAccountPresenter mPresenter;
         private LinkAccountContract.IUserActionsListener userActionsListener;
@@ -182,7 +178,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                           textNoOfAccount.Text = string.Format(Utility.GetLocalizedLabel("AddAccount", "OwnerDetectTitle"), accountList.Count());
 
                       }
-                      
+
                       TextViewUtils.SetTextSize18(textNoOfAccount);
                       //mDeleteDialog.Dismiss();
 
@@ -190,7 +186,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                       {
                           NoAccountLayout.Visibility = ViewStates.Gone;
                       }
-                      else if(accountList.Count() == 0 && additionalAccountList.Count() == 0)
+                      else if (accountList.Count() == 0 && additionalAccountList.Count() == 0)
                       {
                           txtboxcondition.Visibility = ViewStates.Gone;
                           txtTermsConditions.Visibility = ViewStates.Gone;
@@ -315,7 +311,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                 {
                     fromRegisterPage = Intent.Extras.GetBoolean("fromRegisterPage", false);
                 }
-               
+
 
                 mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
 
@@ -415,7 +411,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                     ShowNoInternetSnackbar();
                 }
 
-               
+
             }
             catch (Exception e)
             {
@@ -1061,7 +1057,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
                                 additionalAdapter.AdditionalItemClick += OnAdditionalItemClick;
                                 additionalAdapter.NotifyDataSetChanged();
                                 textAdditionalAccount.Visibility = ViewStates.Visible;
-                               // checkboxlayout.Visibility = ViewStates.Visible;
+                                // checkboxlayout.Visibility = ViewStates.Visible;
                                 textlabelAdditionalAcount.Visibility = ViewStates.Visible;
 
                             }
@@ -1419,11 +1415,11 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
@@ -1461,7 +1457,7 @@ namespace myTNB.AndroidApp.Src.AddAccount.Activity
 
                     if (txtboxcondition.Checked)
                     {
-                       EnableConfirmButton();
+                        EnableConfirmButton();
                     }
                     else
                     {

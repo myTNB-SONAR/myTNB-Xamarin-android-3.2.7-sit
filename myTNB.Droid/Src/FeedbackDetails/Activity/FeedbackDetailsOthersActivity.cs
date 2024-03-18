@@ -18,7 +18,6 @@ using myTNB.AndroidApp.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
 {
@@ -211,11 +210,11 @@ namespace myTNB.AndroidApp.Src.FeedbackDetails.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

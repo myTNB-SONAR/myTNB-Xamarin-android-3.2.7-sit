@@ -1,9 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Runtime;
-using System.Threading;
-using System.Threading.Tasks;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
@@ -14,6 +9,10 @@ using CheeseBind;
 using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.Utils;
 using myTNB.AndroidApp.Src.Utils.ZoomImageView;
+using System;
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign.Activity
 {
@@ -127,11 +126,11 @@ namespace myTNB.AndroidApp.Src.Bills.NewBillRedesign.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

@@ -1,11 +1,9 @@
 ﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
 using Android.Text;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -16,10 +14,8 @@ using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.EBPopupScreen.MVP;
 using myTNB.AndroidApp.Src.SSMR.SMRApplication.MVP;
 using myTNB.AndroidApp.Src.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Runtime;
 
 namespace myTNB.AndroidApp.Src.EBPopupScreen.Activity
 {
@@ -217,11 +213,11 @@ namespace myTNB.AndroidApp.Src.EBPopupScreen.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }

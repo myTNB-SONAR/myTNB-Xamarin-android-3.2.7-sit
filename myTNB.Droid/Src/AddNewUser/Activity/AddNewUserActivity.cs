@@ -1,30 +1,24 @@
-﻿using AFollestad.MaterialDialogs;
-using Android.App;
+﻿using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
-
+using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using AndroidX.CoordinatorLayout.Widget;
 using CheeseBind;
 using Google.Android.Material.Snackbar;
 using Google.Android.Material.TextField;
-using myTNB.AndroidApp.Src.CompoundView;
-using myTNB.AndroidApp.Src.Base.Activity;
 using myTNB.AndroidApp.Src.AddNewUser.MVP;
+using myTNB.AndroidApp.Src.Base.Activity;
+using myTNB.AndroidApp.Src.CompoundView;
 using myTNB.AndroidApp.Src.myTNBMenu.Models;
-using myTNB.AndroidApp.Src.UpdateNickname.Activity;
 using myTNB.AndroidApp.Src.Utils;
-using Newtonsoft.Json;
 using Refit;
 using System;
-using System.Runtime;
-using Android.Support.V4.Content;
-using Android.Text;
-using myTNB.AndroidApp.Src.Database.Model;
-using Android.Preferences;
 
 namespace myTNB.AndroidApp.Src.AddNewUser.Activity
 {
@@ -394,7 +388,7 @@ namespace myTNB.AndroidApp.Src.AddNewUser.Activity
                         .SetCTALabel(Utility.GetLocalizedCommonLabel("gotIt"))
                         .Build().Show();
 
-          
+
 
             //Snackbar errorMessageSnackbar =
             //Snackbar.Make(rootView, error, Snackbar.LengthIndefinite)
@@ -417,11 +411,11 @@ namespace myTNB.AndroidApp.Src.AddNewUser.Activity
             switch (level)
             {
                 case TrimMemory.RunningLow:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
                 default:
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+                    // GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
             }
