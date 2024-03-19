@@ -126,9 +126,6 @@
     <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="AFollestad.MaterialDialogs.Core" Version="0.9.6" />
     <PackageReference Include="AndroidEasingFunctions" Version="2.1.0" />
     <PackageReference Include="AndroidSegmentedControl.Droid.Binding" Version="1.0.8" />
@@ -542,6 +539,9 @@
     <Compile Remove="Src\WalkThrough\MVP\WalkThroughContract.cs" />
     <Compile Remove="Src\WalkThrough\MVP\WalkThroughPresenter.cs" />
     <Compile Remove="Src\WebLink\Activity\WeblinkActivity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj" />
   </ItemGroup>
   <Target Name="RemoveGoogleServicesJsonStampFiles" BeforeTargets="BeforeBuild">
     <Delete Files="$(IntermediateOutputPath)\ProcessGoogleServicesJson.stamp" />
