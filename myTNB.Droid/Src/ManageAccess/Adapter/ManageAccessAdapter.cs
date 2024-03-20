@@ -4,7 +4,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using AndroidSwipeLayout;
-using AndroidViewAnimations;
+//using AndroidViewAnimations;
 using CheeseBind;
 using myTNB.AndroidApp.Src.Base;
 using myTNB.AndroidApp.Src.Base.Adapter;
