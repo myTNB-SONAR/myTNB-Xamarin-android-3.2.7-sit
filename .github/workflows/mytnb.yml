@@ -1,7 +1,7 @@
 name: mytnb
 
 on:
-  workflow_dispatch:
+  push:
     branches:
       - myTNB
        - release/*
